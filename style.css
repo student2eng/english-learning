@@ -1,0 +1,523 @@
+/* ========================================
+   English Learning — Base Styles
+   ======================================== */
+
+:root {
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --surface-soft: #f0f3f7;
+
+  --text: #172033;
+  --text-soft: #667085;
+  --text-light: #98a2b3;
+
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --primary-soft: #eef2ff;
+
+  --border: #e4e7ec;
+
+  --success: #12b76a;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-sm: 0 4px 14px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 12px 30px rgba(16, 24, 40, 0.08);
+
+  --container: 1120px;
+}
+
+
+/* ========================================
+   Reset
+   ======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+  background: var(--bg);
+  color: var(--text);
+
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+
+/* ========================================
+   Container
+   ======================================== */
+
+.container {
+  width: min(100% - 32px, var(--container));
+  margin-inline: auto;
+}
+
+
+/* ========================================
+   Header
+   ======================================== */
+
+.site-header {
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid var(--border);
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  min-height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: -0.3px;
+}
+
+.header-login {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 650;
+
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.header-login:hover {
+  background: var(--primary-soft);
+}
+
+
+/* ========================================
+   Hero
+   ======================================== */
+
+.hero {
+  padding: 72px 0 76px;
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(79, 70, 229, 0.10),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      var(--bg) 100%
+    );
+}
+
+.hero-content {
+  max-width: 780px;
+  text-align: center;
+  margin-inline: auto;
+}
+
+.eyebrow {
+  display: inline-block;
+
+  color: var(--primary);
+
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: 0.4px;
+
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-size: clamp(36px, 8vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -1.8px;
+  font-weight: 800;
+
+  margin-bottom: 22px;
+}
+
+.hero p {
+  max-width: 650px;
+  margin: 0 auto;
+
+  color: var(--text-soft);
+
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+
+/* ========================================
+   Buttons
+   ======================================== */
+
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-top: 32px;
+}
+
+.btn {
+  min-height: 50px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 22px;
+
+  border-radius: 13px;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  border: 1px solid transparent;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.20);
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-soft);
+}
+
+
+/* ========================================
+   Intro Section
+   ======================================== */
+
+.intro-section {
+  padding: 76px 0;
+  background: var(--bg);
+}
+
+.section-heading {
+  max-width: 680px;
+  margin-bottom: 36px;
+}
+
+.section-heading h2 {
+  font-size: clamp(28px, 6vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -0.8px;
+
+  margin-bottom: 14px;
+}
+
+.section-heading p {
+  color: var(--text-soft);
+  font-size: 16px;
+}
+
+
+/* ========================================
+   Feature Cards
+   ======================================== */
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  gap: 16px;
+}
+
+.feature-card {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+
+  padding: 26px;
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.feature-number {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  border-radius: 11px;
+
+  background: var(--primary-soft);
+  color: var(--primary);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.feature-card h3 {
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  color: var(--text-soft);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+
+/* ========================================
+   Guest Section
+   ======================================== */
+
+.guest-section {
+  padding: 20px 0 80px;
+}
+
+.guest-card {
+  display: flex;
+  flex-direction: column;
+
+  gap: 28px;
+
+  padding: 30px;
+
+  background: var(--primary);
+  color: #ffffff;
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-md);
+}
+
+.guest-card .eyebrow {
+  color: #ffffff;
+  opacity: 0.85;
+}
+
+.guest-card h2 {
+  font-size: clamp(26px, 6vw, 38px);
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+
+  margin-bottom: 12px;
+}
+
+.guest-card p {
+  max-width: 620px;
+
+  color: rgba(255, 255, 255, 0.82);
+
+  font-size: 15px;
+}
+
+.guest-card .btn {
+  background: #ffffff;
+  color: var(--primary);
+
+  width: 100%;
+}
+
+.guest-card .btn:hover {
+  background: #f8f9ff;
+}
+
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: #ffffff;
+}
+
+.footer-inner {
+  min-height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.footer-inner p {
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+
+/* ========================================
+   Tablet
+   ======================================== */
+
+@media (min-width: 640px) {
+
+  .container {
+    width: min(100% - 48px, var(--container));
+  }
+
+  .hero {
+    padding: 100px 0 110px;
+  }
+
+  .hero-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .hero-actions .btn {
+    min-width: 170px;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .guest-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 42px;
+  }
+
+  .guest-card .btn {
+    width: auto;
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+}
+
+
+/* ========================================
+   Desktop
+   ======================================== */
+
+@media (min-width: 900px) {
+
+  .container {
+    width: min(100% - 64px, var(--container));
+  }
+
+  .header-inner {
+    min-height: 74px;
+  }
+
+  .hero h1 {
+    max-width: 850px;
+    margin-inline: auto;
+  }
+
+  .feature-card {
+    padding: 30px;
+  }
+
+  .guest-card {
+    padding: 48px;
+  }
+}
+
+
+/* ========================================
+   Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+  }
