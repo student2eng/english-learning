@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | English Learning</title>
+  <meta name="description" content="Your English Learning dashboard. Continue learning, review unmastered words, and track your progress.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">English Learning</a>
+      <a href="auth.html" class="header-auth-link">Account</a>
+    </div>
+  </header>
+
+  <main class="dashboard-page">
+    <div class="container">
+
+      <section class="dashboard-welcome" aria-labelledby="dashboard-title">
+        <span class="eyebrow">Your Learning Dashboard</span>
+        <h1 id="dashboard-title">Welcome back!</h1>
+        <p class="dashboard-level" id="dashboardLevel">B1 — Intermediate</p>
+      </section>
+
+      <section class="dashboard-card continue-card" aria-labelledby="continue-title">
+        <div class="dashboard-card-heading">
+          <h2 id="continue-title">Continue Learning 📚</h2>
+          <p>Keep building your vocabulary.</p>
+        </div>
+
+        <div class="dashboard-divider"></div>
+
+        <div class="learning-stats-grid" aria-label="Learning status">
+          <div class="learning-stat">
+            <span class="learning-stat-icon" aria-hidden="true">🆕</span>
+            <span class="learning-stat-label">New Words</span>
+            <strong class="learning-stat-value" id="newWords">15</strong>
+          </div>
+
+          <div class="learning-stat">
+            <span class="learning-stat-icon" aria-hidden="true">🔄</span>
+            <span class="learning-stat-label">Unmastered</span>
+            <strong class="learning-stat-value" id="unmasteredWords">5</strong>
+          </div>
+
+          <div class="learning-stat">
+            <span class="learning-stat-icon" aria-hidden="true">📅</span>
+            <span class="learning-stat-label">Due Reviews</span>
+            <strong class="learning-stat-value" id="dueReviews">10</strong>
+          </div>
+
+          <div class="learning-stat">
+            <span class="learning-stat-icon" aria-hidden="true">✅</span>
+            <span class="learning-stat-label">Mastered</span>
+            <strong class="learning-stat-value" id="masteredWords">75</strong>
+          </div>
+        </div>
+
+        <div class="dashboard-divider"></div>
+
+        <div class="dashboard-actions">
+          <a href="learning.html" class="btn btn-primary">Start Learning 🧠</a>
+          <a href="learning.html?mode=unmastered" class="btn btn-secondary">Review Unmastered 🔄</a>
+        </div>
+      </section>
+
+      <section class="dashboard-card progress-card" aria-labelledby="progress-title">
+        <div class="dashboard-card-heading">
+          <h2 id="progress-title">Your Progress 📊</h2>
+        </div>
+
+        <div class="progress-stats-grid">
+          <div class="progress-stat">
+            <span class="progress-stat-label">Total Words</span>
+            <strong class="progress-stat-value" id="totalWords">95</strong>
+          </div>
+          <div class="progress-stat">
+            <span class="progress-stat-label">Today</span>
+            <strong class="progress-stat-value" id="todayWords">8</strong>
+          </div>
+          <div class="progress-stat">
+            <span class="progress-stat-label">This Week</span>
+            <strong class="progress-stat-value" id="weekWords">42</strong>
+          </div>
+          <div class="progress-stat">
+            <span class="progress-stat-label">This Month</span>
+            <strong class="progress-stat-value" id="monthWords">120</strong>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 English Learning. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
