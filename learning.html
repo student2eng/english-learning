@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Learning | English Learning</title>
+
+    <meta
+        name="description"
+        content="Learn English vocabulary through focused practice, review, pronunciation, and examples."
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+
+            <a href="index.html" class="logo">
+                English Learning
+            </a>
+
+            <a href="auth.html" class="header-login">
+                Sign In
+            </a>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- Learning Header -->
+        <section class="learning-section">
+
+            <div class="container">
+
+                <div class="learning-header">
+
+                    <a href="level.html" class="back-link">
+                        ← Change Level
+                    </a>
+
+                    <span class="eyebrow">
+                        English Vocabulary Learning
+                    </span>
+
+                    <h1 id="levelTitle">
+                        Level A1
+                    </h1>
+
+                    <p id="levelDescription">
+                        Build your vocabulary with practical English words.
+                    </p>
+
+                </div>
+
+
+                <!-- Progress -->
+                <div class="learning-progress">
+
+                    <div class="progress-info">
+                        <span>Progress</span>
+                        <span id="progressText">1 / 10</span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div
+                            class="progress-fill"
+                            id="progressFill"
+                            style="width: 10%;"
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <!-- Word Card -->
+                <section class="word-card" aria-label="Vocabulary word">
+
+                    <div class="word-number">
+                        Word <span id="wordNumber">1</span>
+                    </div>
+
+                    <h2 id="word">
+                        Welcome
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="pronunciation-btn"
+                        id="pronunciationBtn"
+                        aria-label="Listen to pronunciation"
+                    >
+                        🔊 Listen
+                    </button>
+
+
+                    <div class="word-meaning">
+
+                        <span class="meaning-label">
+                            Meaning
+                        </span>
+
+                        <p id="meaning">
+                            To greet someone in a friendly way.
+                        </p>
+
+                    </div>
+
+
+                    <div class="word-example">
+
+                        <span class="example-label">
+                            Example
+                        </span>
+
+                        <p id="example">
+                            Welcome to our English learning platform.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Word Actions -->
+                    <div class="word-actions">
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            id="notKnownBtn"
+                        >
+                            Still Learning
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="knownBtn"
+                        >
+                            I Know This
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Learning Tips -->
+                <section class="learning-tips">
+
+                    <div class="section-heading">
+
+                        <span class="eyebrow">
+                            Learning Tip
+                        </span>
+
+                        <h2>
+                            Keep practising
+                        </h2>
+
+                        <p>
+                            Review words you have not mastered and keep
+                            practising regularly to build stronger vocabulary.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Navigation -->
+                <div class="learning-navigation">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="previousBtn"
+                    >
+                        ← Previous
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="nextBtn"
+                    >
+                        Next →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <p>
+                © 2026 English Learning. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Learning JavaScript will be added later -->
+    <script src="learning.js"></script>
+
+</body>
+                          </html>
