@@ -350,6 +350,193 @@ img {
   line-height: 1.65;
 }
 
+/* ========================================
+   Level Selection
+   ======================================== */
+
+.level-section {
+  padding: 72px 0 80px;
+
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(79, 70, 229, 0.08),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      var(--bg) 100%
+    );
+}
+
+.level-section .section-heading {
+  max-width: 720px;
+  margin-inline: auto;
+  margin-bottom: 42px;
+  text-align: center;
+}
+
+.level-section .section-heading h1 {
+  font-size: clamp(32px, 7vw, 48px);
+  line-height: 1.12;
+  letter-spacing: -1.2px;
+  font-weight: 800;
+
+  margin-bottom: 16px;
+}
+
+.level-section .section-heading p {
+  max-width: 620px;
+  margin-inline: auto;
+
+  color: var(--text-soft);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+
+/* Level Grid */
+
+.level-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  gap: 16px;
+
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+
+/* Level Card */
+
+.level-card {
+  display: flex;
+  flex-direction: column;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+
+  padding: 24px;
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.level-card:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(79, 70, 229, 0.25);
+
+  box-shadow: var(--shadow-md);
+}
+
+
+/* Level Number */
+
+.level-number {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  border-radius: 12px;
+
+  background: var(--primary-soft);
+  color: var(--primary);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+
+/* Level Content */
+
+.level-content h2 {
+  font-size: 22px;
+  line-height: 1.25;
+
+  margin-bottom: 6px;
+}
+
+.level-name {
+  display: inline-block;
+
+  color: var(--primary);
+
+  font-size: 14px;
+  font-weight: 800;
+
+  margin-bottom: 12px;
+}
+
+.level-content p {
+  color: var(--text-soft);
+
+  font-size: 15px;
+  line-height: 1.65;
+
+  margin-bottom: 22px;
+}
+
+
+/* Level Button */
+
+.level-btn {
+  width: 100%;
+  margin-top: auto;
+}
+
+
+/* ========================================
+   Level Selection — Tablet
+   ======================================== */
+
+@media (min-width: 640px) {
+
+  .level-section {
+    padding: 90px 0 100px;
+  }
+
+  .level-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .level-card {
+    padding: 28px;
+  }
+
+}
+
+
+/* ========================================
+   Level Selection — Desktop
+   ======================================== */
+
+@media (min-width: 900px) {
+
+  .level-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+
+  .level-card {
+    padding: 30px;
+  }
+
+}
 
 /* ========================================
    Guest Section
