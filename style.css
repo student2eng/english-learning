@@ -1684,3 +1684,327 @@ img {
     margin-top: 24px;
   }
 }
+
+/* =========================================
+   Learning Page
+   ========================================= */
+
+.learning-page {
+    background: #f7f8fa;
+}
+
+.learning-container {
+    max-width: 960px;
+    padding-top: 32px;
+    padding-bottom: 80px;
+}
+
+
+/* Exit Learning */
+
+.exit-learning {
+    display: inline-flex;
+    align-items: center;
+    color: #667085;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 28px;
+}
+
+.exit-learning:hover {
+    color: #4f46e5;
+}
+
+
+/* Learning Heading */
+
+.learning-heading {
+    max-width: 760px;
+    margin: 0 auto 28px;
+}
+
+.learning-heading h1 {
+    margin: 6px 0 18px;
+}
+
+
+/* Progress */
+
+.learning-progress {
+    width: 100%;
+}
+
+.progress-meta {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+    color: #475467;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.progress-track {
+    width: 100%;
+    height: 8px;
+    background: #e4e7ec;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 10%;
+    height: 100%;
+    background: #4f46e5;
+    border-radius: 999px;
+    transition: width 0.25s ease;
+}
+
+
+/* Word Card */
+
+.word-card {
+    max-width: 760px;
+    min-height: 520px;
+    margin: 0 auto;
+    padding: 40px;
+
+    background: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-radius: 24px;
+
+    box-shadow:
+        0 8px 24px rgba(16, 24, 40, 0.06);
+
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* Word Image */
+
+.word-image-wrap {
+    margin-bottom: 24px;
+}
+
+.word-image-placeholder {
+    width: 240px;
+    height: 240px;
+
+    border-radius: 20px;
+
+    background: #f2f4f7;
+    border: 1px solid #e4e7ec;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #98a2b3;
+    font-weight: 600;
+}
+
+
+/* Word */
+
+.word-title {
+    margin: 0 0 18px;
+
+    font-size: 48px;
+    line-height: 1.1;
+    font-weight: 700;
+
+    color: #101828;
+}
+
+
+/* Listen */
+
+.listen-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 44px;
+    padding: 0 18px;
+
+    border: 1px solid #e4e7ec;
+    border-radius: 12px;
+
+    background: #ffffff;
+    color: #4f46e5;
+
+    font: inherit;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    margin-bottom: 32px;
+}
+
+.listen-button:hover {
+    background: #f8f8ff;
+}
+
+
+/* I Know / I Don't Know */
+
+.word-actions {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    gap: 12px;
+}
+
+.word-actions .button {
+    min-width: 180px;
+}
+
+
+/* Meaning + Example */
+
+.word-reveal {
+    width: 100%;
+    max-width: 600px;
+
+    text-align: left;
+}
+
+.meaning-block,
+.example-block {
+    padding: 18px 0;
+
+    border-top: 1px solid #e4e7ec;
+}
+
+.meaning-block h3,
+.example-block h3 {
+    margin: 0 0 8px;
+
+    font-size: 15px;
+    color: #475467;
+}
+
+.meaning-block p,
+.example-block p {
+    margin: 0;
+
+    color: #101828;
+
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+
+/* Got It */
+
+.got-it-button {
+    display: block;
+    margin: 24px auto 0;
+}
+
+
+/* Session Complete */
+
+.session-complete {
+    width: 100%;
+    margin: auto;
+
+    text-align: center;
+}
+
+.session-complete h2 {
+    margin: 8px 0 12px;
+
+    font-size: 36px;
+}
+
+.session-complete p:not(.eyebrow) {
+    color: #667085;
+    margin-bottom: 24px;
+}
+
+
+/* =========================================
+   Mobile
+   ========================================= */
+
+@media (max-width: 640px) {
+
+    .learning-container {
+        padding-top: 24px;
+        padding-bottom: 56px;
+    }
+
+    .learning-heading {
+        margin-bottom: 22px;
+    }
+
+    .word-card {
+        min-height: 0;
+        padding: 24px;
+        border-radius: 20px;
+    }
+
+    .word-image-placeholder {
+        width: 200px;
+        height: 200px;
+        border-radius: 18px;
+    }
+
+    .word-title {
+        font-size: 36px;
+    }
+
+    .word-actions {
+        gap: 10px;
+    }
+
+    .word-actions .button {
+        min-width: 0;
+        flex: 1;
+
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .meaning-block p,
+    .example-block p {
+        font-size: 16px;
+    }
+}
+
+
+/* =========================================
+   Small Mobile
+   ========================================= */
+
+@media (max-width: 420px) {
+
+    .word-card {
+        padding: 20px;
+    }
+
+    .word-image-placeholder {
+        width: 180px;
+        height: 180px;
+    }
+
+    .word-title {
+        font-size: 32px;
+    }
+
+    .word-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .word-actions .button {
+        width: 100%;
+    }
+   }
