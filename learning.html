@@ -8,215 +8,197 @@
 
     <meta
         name="description"
-        content="Learn English vocabulary through focused practice, review, pronunciation, and examples."
+        content="Learn English vocabulary with focused word practice and review."
     >
 
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="learning-page">
 
     <!-- Header -->
     <header class="site-header">
         <div class="container header-inner">
 
-            <a href="index.html" class="logo">
+            <a href="index.html" class="brand">
                 English Learning
             </a>
 
-            <a href="auth.html" class="header-login">
-                Sign In
+            <a href="dashboard.html" class="header-account">
+                Account
             </a>
 
         </div>
     </header>
 
 
+    <!-- Learning Page -->
     <main>
 
-        <!-- Learning Header -->
-        <section class="learning-section">
+        <div class="container learning-container">
 
-            <div class="container">
+            <!-- Exit Learning -->
+            <a href="dashboard.html" class="exit-learning">
+                ← Exit Learning
+            </a>
 
-                <div class="learning-header">
 
-                    <a href="level.html" class="back-link">
-                        ← Change Level
-                    </a>
+            <!-- Learning Heading -->
+            <section class="learning-heading">
 
-                    <span class="eyebrow">
-                        English Vocabulary Learning
-                    </span>
+                <p class="eyebrow">
+                    B1 — Intermediate
+                </p>
 
-                    <h1 id="levelTitle">
-                        Level A1
-                    </h1>
-
-                    <p id="levelDescription">
-                        Build your vocabulary with practical English words.
-                    </p>
-
-                </div>
+                <h1>
+                    English Vocabulary Learning
+                </h1>
 
 
                 <!-- Progress -->
                 <div class="learning-progress">
 
-                    <div class="progress-info">
-                        <span>Progress</span>
-                        <span id="progressText">1 / 10</span>
+                    <div class="progress-meta">
+                        <span id="progressText">
+                            Word 1 of 10
+                        </span>
                     </div>
 
-                    <div class="progress-bar">
+                    <div
+                        class="progress-track"
+                        role="progressbar"
+                        aria-valuemin="0"
+                        aria-valuemax="10"
+                        aria-valuenow="1"
+                        aria-label="Learning progress"
+                    >
                         <div
+                            id="progressBar"
                             class="progress-fill"
-                            id="progressFill"
-                            style="width: 10%;"
                         ></div>
                     </div>
 
                 </div>
 
+            </section>
 
-                <!-- Word Card -->
-                <section class="word-card" aria-label="Vocabulary word">
 
-                    <div class="word-number">
-                        Word <span id="wordNumber">1</span>
+            <!-- Word Card -->
+            <section
+                class="word-card"
+                id="wordCard"
+                aria-live="polite"
+            >
+
+                <!-- Word Image -->
+                <div class="word-image-wrap">
+
+                    <div
+                        class="word-image-placeholder"
+                        id="wordImage"
+                        aria-label="Word image"
+                    >
+                        Image
                     </div>
 
-                    <h2 id="word">
-                        Welcome
-                    </h2>
+                </div>
+
+
+                <!-- Word -->
+                <h2
+                    class="word-title"
+                    id="wordText"
+                >
+                    welcome
+                </h2>
+
+
+                <!-- Listen -->
+                <button
+                    type="button"
+                    class="listen-button"
+                    id="listenButton"
+                >
+                    <span aria-hidden="true">🔊</span>
+                    Listen
+                </button>
+
+
+                <!-- Initial Actions -->
+                <div
+                    class="word-actions"
+                    id="initialActions"
+                >
 
                     <button
                         type="button"
-                        class="pronunciation-btn"
-                        id="pronunciationBtn"
-                        aria-label="Listen to pronunciation"
+                        class="button button-secondary"
+                        id="dontKnowButton"
                     >
-                        🔊 Listen
-                    </button>
-
-
-                    <div class="word-meaning">
-
-                        <span class="meaning-label">
-                            Meaning
-                        </span>
-
-                        <p id="meaning">
-                            To greet someone in a friendly way.
-                        </p>
-
-                    </div>
-
-
-                    <div class="word-example">
-
-                        <span class="example-label">
-                            Example
-                        </span>
-
-                        <p id="example">
-                            Welcome to our English learning platform.
-                        </p>
-
-                    </div>
-
-
-                    <!-- Word Actions -->
-                    <div class="word-actions">
-
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            id="notKnownBtn"
-                        >
-                            Still Learning
-                        </button>
-
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            id="knownBtn"
-                        >
-                            I Know This
-                        </button>
-
-                    </div>
-
-                </section>
-
-
-                <!-- Learning Tips -->
-                <section class="learning-tips">
-
-                    <div class="section-heading">
-
-                        <span class="eyebrow">
-                            Learning Tip
-                        </span>
-
-                        <h2>
-                            Keep practising
-                        </h2>
-
-                        <p>
-                            Review words you have not mastered and keep
-                            practising regularly to build stronger vocabulary.
-                        </p>
-
-                    </div>
-
-                </section>
-
-
-                <!-- Navigation -->
-                <div class="learning-navigation">
-
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        id="previousBtn"
-                    >
-                        ← Previous
+                        I Don't Know
                     </button>
 
                     <button
                         type="button"
-                        class="btn btn-primary"
-                        id="nextBtn"
+                        class="button button-primary"
+                        id="knowButton"
                     >
-                        Next →
+                        I Know ✓
                     </button>
 
                 </div>
 
-            </div>
 
-        </section>
+                <!-- Meaning + Example -->
+                <!-- Hidden until I Don't Know is pressed -->
+                <div
+                    class="word-reveal"
+                    id="wordReveal"
+                    hidden
+                >
+
+                    <div class="meaning-block">
+
+                        <h3>
+                            Meaning
+                        </h3>
+
+                        <p id="meaningText"></p>
+
+                    </div>
+
+
+                    <div class="example-block">
+
+                        <h3>
+                            Example
+                        </h3>
+
+                        <p id="exampleText"></p>
+
+                    </div>
+
+
+                    <!-- Got It -->
+                    <button
+                        type="button"
+                        class="button button-primary got-it-button"
+                        id="gotItButton"
+                    >
+                        Got It →
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
 
     </main>
 
 
-    <!-- Footer -->
-    <footer class="site-footer">
-
-        <div class="container">
-
-            <p>
-                © 2026 English Learning. All rights reserved.
-            </p>
-
-        </div>
-
-    </footer>
-
-
-    <!-- Learning JavaScript will be added later -->
+    <!-- Learning JavaScript -->
     <script src="learning.js"></script>
 
 </body>
-                          </html>
+    </html>
