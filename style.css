@@ -1596,6 +1596,10 @@ img {
     margin-bottom: 24px;
 }
 
+.word-actions[hidden],
+.word-reveal[hidden] {
+    display: none !important;
+}
 
 /* =========================================
    Mobile
