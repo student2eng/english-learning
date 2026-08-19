@@ -40,24 +40,37 @@
             <section class="auth-card">
 
                 <div class="auth-heading">
-                    <div class="auth-icon">👤</div>
 
-                    <h1>Account</h1>
+                    <div class="auth-icon">
+                        👤
+                    </div>
+
+                    <h1>
+                        Account
+                    </h1>
 
                     <p>
                         Sign in or create your English Learning account.
                     </p>
+
                 </div>
 
 
+                <!-- ============================= -->
                 <!-- Sign In -->
+                <!-- ============================= -->
+
                 <div class="auth-section">
 
-                    <h2>Sign In</h2>
+                    <h2>
+                        Sign In
+                    </h2>
+
 
                     <form id="login-form">
 
                         <div class="form-group">
+
                             <label for="login-email">
                                 Email
                             </label>
@@ -69,10 +82,12 @@
                                 autocomplete="email"
                                 placeholder="Enter your email"
                             >
+
                         </div>
 
 
                         <div class="form-group">
+
                             <label for="login-password">
                                 Password
                             </label>
@@ -84,53 +99,90 @@
                                 autocomplete="current-password"
                                 placeholder="Enter your password"
                             >
+
                         </div>
 
 
-                        <button type="submit" class="auth-primary-btn" id="login-submit">
+                        <button
+                            type="submit"
+                            class="auth-primary-btn"
+                            id="login-submit"
+                        >
                             Sign In
                         </button>
 
-                        <div id="login-message" class="auth-message" aria-live="polite"></div>
+
+                        <!-- Login message -->
+                        <div
+                            id="login-message"
+                            class="auth-message"
+                            aria-live="polite"
+                        ></div>
 
                     </form>
 
 
-                    <a href="#" class="auth-link" id="forgot-password-link">
+                    <a
+                        href="#"
+                        class="auth-link"
+                        id="forgot-password-link"
+                    >
                         Forgot Password?
                     </a>
 
                 </div>
 
 
+                <!-- Divider -->
                 <div class="auth-divider">
                     <span>or</span>
                 </div>
 
 
+                <!-- ============================= -->
                 <!-- Social Login -->
+                <!-- ============================= -->
+
                 <div class="social-login">
 
-                    <button type="button" class="social-btn" id="google-login-btn">
+                    <button
+                        type="button"
+                        class="social-btn"
+                        id="google-login-btn"
+                    >
                         Continue with Google
                     </button>
 
-                    <button type="button" class="social-btn" id="apple-login-btn">
+
+                    <button
+                        type="button"
+                        class="social-btn"
+                        id="apple-login-btn"
+                    >
                         Continue with Apple
                     </button>
 
                 </div>
 
 
+                <!-- Divider -->
                 <div class="auth-divider">
-                    <span>New to English Learning?</span>
+                    <span>
+                        New to English Learning?
+                    </span>
                 </div>
 
 
+                <!-- ============================= -->
                 <!-- Create Account -->
+                <!-- ============================= -->
+
                 <div class="auth-section">
 
-                    <h2>Create Your Account</h2>
+                    <h2>
+                        Create Your Account
+                    </h2>
+
 
                     <p class="auth-description">
                         Start your vocabulary learning journey.
@@ -139,7 +191,9 @@
 
                     <form id="signup-form">
 
+                        <!-- Email -->
                         <div class="form-group">
+
                             <label for="signup-email">
                                 Email
                             </label>
@@ -151,10 +205,13 @@
                                 autocomplete="email"
                                 placeholder="Enter your email"
                             >
+
                         </div>
 
 
+                        <!-- Password -->
                         <div class="form-group">
+
                             <label for="signup-password">
                                 Password
                             </label>
@@ -166,16 +223,23 @@
                                 autocomplete="new-password"
                                 placeholder="Create a password"
                             >
+
                         </div>
 
 
+                        <!-- Display Name -->
                         <div class="form-group">
+
                             <label for="display-name">
+
                                 Display Name
+
                                 <span class="optional">
                                     Optional
                                 </span>
+
                             </label>
+
 
                             <input
                                 type="text"
@@ -184,40 +248,81 @@
                                 autocomplete="name"
                                 placeholder="Your name"
                             >
+
                         </div>
 
 
+                        <!-- ============================= -->
                         <!-- Level Selection -->
+                        <!-- ============================= -->
+
                         <div class="level-selection">
 
-                            <h3>Choose Your Level</h3>
+                            <h3>
+                                Choose Your Level
+                            </h3>
+
 
                             <p>
                                 Select your starting English level.
                             </p>
 
 
-                            <input type="hidden" id="selected-level" name="level" value="">
+                            <!-- Selected level will be stored here -->
+                            <input
+                                type="hidden"
+                                id="selected-level"
+                                name="level"
+                                value=""
+                            >
 
-                            <div class="level-options" id="level-options">
 
-                                <button type="button" class="level-option" data-level="A1">
+                            <div
+                                class="level-options"
+                                id="level-options"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="level-option"
+                                    data-level="A1"
+                                >
                                     A1
                                 </button>
 
-                                <button type="button" class="level-option" data-level="A2">
+
+                                <button
+                                    type="button"
+                                    class="level-option"
+                                    data-level="A2"
+                                >
                                     A2
                                 </button>
 
-                                <button type="button" class="level-option" data-level="B1">
+
+                                <button
+                                    type="button"
+                                    class="level-option"
+                                    data-level="B1"
+                                >
                                     B1
                                 </button>
 
-                                <button type="button" class="level-option" data-level="B2">
+
+                                <button
+                                    type="button"
+                                    class="level-option"
+                                    data-level="B2"
+                                >
                                     B2
                                 </button>
 
-                                <button type="button" class="level-option" data-level="C1">
+
+                                <button
+                                    type="button"
+                                    class="level-option"
+                                    data-level="C1"
+                                >
                                     C1
                                 </button>
 
@@ -226,6 +331,7 @@
                         </div>
 
 
+                        <!-- Create Account Button -->
                         <button
                             type="submit"
                             class="auth-primary-btn"
@@ -234,20 +340,36 @@
                             Create Account
                         </button>
 
-                        <div id="signup-message" class="auth-message" aria-live="polite"></div>
+
+                        <!-- Signup message -->
+                        <div
+                            id="signup-message"
+                            class="auth-message"
+                            aria-live="polite"
+                        ></div>
 
                     </form>
 
                 </div>
 
 
+                <!-- ============================= -->
+                <!-- Auth Footer -->
+                <!-- ============================= -->
+
                 <div class="auth-footer">
 
                     <p>
+
                         Already have an account?
-                        <a href="#" class="auth-link">
+
+                        <a
+                            href="#"
+                            class="auth-link"
+                        >
                             Sign In
                         </a>
+
                     </p>
 
                 </div>
@@ -272,5 +394,16 @@
 
     </footer>
 
+
+    <!-- ============================= -->
+    <!-- Supabase -->
+    <!-- ============================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- Authentication JavaScript -->
+    <script src="auth.js"></script>
+
 </body>
-  </html>
+    </html>
