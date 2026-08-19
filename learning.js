@@ -2,6 +2,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Temporary learning words
     // These will later be connected to the real Word Library.
+
+    // ================================
+    // Supabase Configuration
+    // ================================
+
+    const SUPABASE_URL = "https://azuzgodrxkxhlsekooyc.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
+
+    const supabase = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+    // Temporary learning words
     const words = [
         {
             word: "welcome",
