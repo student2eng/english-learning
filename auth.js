@@ -7,7 +7,7 @@ const SUPABASE_URL = "https://azuzgodrxkxhlsekooyc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
 
 // Create Supabase client
-const supabase = window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
 
                 const { data, error } =
-                    await supabase.auth.signInWithPassword({
+                    await supabaseClient.auth.signInWithPassword({
                         email: email,
                         password: password
                     });
@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // -------------------------------------------------
 
                 const { data, error } =
-                    await supabase.auth.signUp({
+                    await supabaseClient.auth.signUp({
 
                         email: email,
 
