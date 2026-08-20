@@ -401,12 +401,22 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+window.addEventListener("error", function(event) {
+    alert(
+        "JavaScript Error:\n" +
+        event.message +
+        "\nLine: " +
+        event.lineno
+    );
+});
+</script>
 
-    <!-- Authentication JavaScript -->
-    <script src="auth.js?v=2"></script>
-    <script>
+<script src="auth.js?v=3"></script>
+
+<script>
 console.log("AUTH JS LOADED");
-    </script>
+</script>
 
 </body>
     </html>
