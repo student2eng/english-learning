@@ -13,7 +13,7 @@ const supabaseClient = window.supabase.createClient(
 );
 
 // Temporary connection test
-console.log("Supabase client:", supabase);
+console.log("Supabase client:", supabaseClient);
 
 
 // =====================================================
