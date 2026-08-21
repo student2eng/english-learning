@@ -410,6 +410,7 @@ return;
         if (!element) return;
 
         element.textContent = message;
+        element.style.display = "block";
 
         element.classList.remove(
             "success",
@@ -427,6 +428,7 @@ return;
         if (!element) return;
 
         element.textContent = "";
+        element.style.display = "none";
 
         element.classList.remove(
             "success",
