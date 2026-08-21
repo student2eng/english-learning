@@ -365,7 +365,7 @@ if (showSignupBtn) {
 }
 
 return;
-
+                }
 
                 // -------------------------------------------------
                 // Account created and session available
