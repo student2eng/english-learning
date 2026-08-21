@@ -339,21 +339,8 @@ document.addEventListener("DOMContentLoaded", () => {
         "Account created. Please check your email to confirm your account.",
         "success"
     );
-
-    // Clear signup form
-    signupForm.reset();
-
-    // Clear selected level
-    if (selectedLevel) {
-        selectedLevel.value = "";
-    }
-
-    levelOptions.forEach((item) => {
-        item.classList.remove("selected");
-    });
-
     return;
-                }
+}
 
 
                 // -------------------------------------------------
