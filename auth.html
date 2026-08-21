@@ -172,7 +172,30 @@
                     </span>
                 </div>
 
-
+<div style="text-align: center; margin: 24px 0;">
+    <button
+        type="button"
+        id="show-signup-btn"
+        onclick="
+            document.getElementById('signup-section').style.display = 'block';
+            this.style.display = 'none';
+            document.getElementById('signup-section').scrollIntoView({ behavior: 'smooth' });
+        "
+        style="
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        "
+    >
+        Create an Account
+    </button>
+</div>
                 <!-- ============================= -->
                 <!-- Create Account -->
                 <!-- ============================= -->
