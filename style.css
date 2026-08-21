@@ -1685,6 +1685,7 @@ img {
    ========================= */
 
 #signup-message {
+   display: none;
     margin-top: 16px !important;
     padding: 12px 16px;
     background: #f0fdf4;
