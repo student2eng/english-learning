@@ -234,17 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
             // Validation
             // -------------------------------------------------
 
-            if (!displayName) {
-
-                showMessage(
-                    signupMessage,
-                    "Please enter your name.",
-                    "error"
-                );
-
-                return;
-            }
-
 
             if (!email) {
 
