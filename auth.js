@@ -331,17 +331,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 // -------------------------------------------------
 
                 if (
-                    data.user &&
-                    !data.session
-                ) {
+    data.user &&
+    !data.session
+) {
+    showMessage(
+        signupMessage,
+        "Account created. Please check your email to confirm your account.",
+        "success"
+    );
 
-                    showMessage(
-                        signupMessage,
-                        "Account created. Please check your email to confirm your account.",
-                        "success"
-                    );
+    // Clear signup form
+    signupForm.reset();
 
-                    return;
+    // Clear selected level
+    if (selectedLevel) {
+        selectedLevel.value = "";
+    }
+
+    levelOptions.forEach((item) => {
+        item.classList.remove("selected");
+    });
+
+    return;
                 }
 
 
