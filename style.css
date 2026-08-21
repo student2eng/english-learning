@@ -1696,3 +1696,14 @@ img {
     line-height: 1.6;
     text-align: center;
 }
+#signup-message.success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #16803c;
+}
+
+#signup-message.error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #dc2626;
+}
