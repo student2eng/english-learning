@@ -334,13 +334,37 @@ document.addEventListener("DOMContentLoaded", () => {
     data.user &&
     !data.session
 ) {
-    showMessage(
-        signupMessage,
-        "Account created. Please check your email to confirm your account.",
-        "success"
-    );
-    return;
+showMessage(
+    signupMessage,
+    "Account created. Please check your email to confirm your account.",
+    "success"
+);
+
+// Clear signup form
+signupForm.reset();
+
+if (selectedLevel) {
+    selectedLevel.value = "";
 }
+
+// Remove selected level styling
+levelOptions.forEach((option) => {
+    option.classList.remove("active", "selected");
+});
+
+// Hide signup section
+const signupSection = document.getElementById("signup-section");
+const showSignupBtn = document.getElementById("show-signup-btn");
+
+if (signupSection) {
+    signupSection.style.display = "none";
+}
+
+if (showSignupBtn) {
+    showSignupBtn.style.display = "block";
+}
+
+return;
 
 
                 // -------------------------------------------------
