@@ -8,7 +8,7 @@
 // =====================================================
 
 const SUPABASE_URL =
-    "https://azuzgodrxkxhlsekooyc4.supabase.co";
+    "0000000000000";
 
 const SUPABASE_PUBLISHABLE_KEY =
     "0000000000000";
