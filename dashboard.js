@@ -6,8 +6,8 @@
 // Supabase configuration
 // Use the SAME values from auth.js
 // =====================================================
-const SUPABASE_URL = "https://azuzgodrxkxhlsekooyc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
+const SUPABASE_URL = "000000000";
+const SUPABASE_KEY = "00000000";
 
 // Create Supabase client
 const supabaseClient = window.supabase.createClient(
