@@ -1,49 +1,122 @@
-document.addEventListener("DOMContentLoaded", () => {
+// =====================================================
+// English Learning - Dashboard
+// =====================================================
 
-    // Temporary dashboard data
-    const dashboardData = {
-        newWords: 15,
-        unmastered: 5,
-        dueReviews: 10,
-        mastered: 75,
+// Supabase configuration
+// Use the SAME values from auth.js
+const SUPABASE_URL = "https://azuzgodrxkxhlsekooyc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
 
-        totalWords: 95,
-        today: 8,
-        thisWeek: 42,
-        thisMonth: 120
-    };
+// Create Supabase client
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
-    // Continue Learning
-    document.getElementById("newWords").textContent = dashboardData.newWords;
-    document.getElementById("unmastered").textContent = dashboardData.unmastered;
-    document.getElementById("dueReviews").textContent = dashboardData.dueReviews;
-    document.getElementById("mastered").textContent = dashboardData.mastered;
+// =====================================================
+// DOM Ready
+// =====================================================
 
-    // Your Progress
-    document.getElementById("totalWords").textContent = dashboardData.totalWords;
-    document.getElementById("today").textContent = dashboardData.today;
-    document.getElementById("thisWeek").textContent = dashboardData.thisWeek;
-    document.getElementById("thisMonth").textContent = dashboardData.thisMonth;
+document.addEventListener("DOMContentLoaded", async () => {
 
+    // -------------------------------------------------
+    // Dashboard elements
+    // -------------------------------------------------
 
-    // Start Learning
-    const startLearningBtn = document.getElementById("startLearningBtn");
+    const dashboardTitle =
+        document.getElementById("dashboard-title");
 
-    if (startLearningBtn) {
-        startLearningBtn.addEventListener("click", () => {
-            window.location.href = "learning.html";
-        });
-    }
+    const dashboardLevel =
+        document.getElementById("dashboardLevel");
 
+    // =================================================
+    // Get current user
+    // =================================================
 
-    // Review Unmastered
-    const reviewUnmasteredBtn =
-        document.getElementById("reviewUnmasteredBtn");
+    try {
 
-    if (reviewUnmasteredBtn) {
-        reviewUnmasteredBtn.addEventListener("click", () => {
-            window.location.href = "learning.html?mode=unmastered";
-        });
+        const {
+            data: { user },
+            error: authError
+        } = await supabaseClient.auth.getUser();
+
+        if (authError) {
+            throw authError;
+        }
+
+        // -------------------------------------------------
+        // No logged-in user
+        // -------------------------------------------------
+
+        if (!user) {
+            window.location.href = "auth.html";
+            return;
+        }
+
+        // =================================================
+        // Get user profile
+        // =================================================
+
+        const {
+            data: profile,
+            error: profileError
+        } = await supabaseClient
+            .from("profiles")
+            .select("display_name, level")
+            .eq("id", user.id)
+            .single();
+
+        if (profileError) {
+            throw profileError;
+        }
+
+        // =================================================
+        // Display Name
+        // =================================================
+
+        const displayName =
+            profile?.display_name ||
+            user.user_metadata?.display_name ||
+            "Learner";
+
+        if (dashboardTitle) {
+            dashboardTitle.textContent =
+                `Welcome back, ${displayName}!`;
+        }
+
+        // =================================================
+        // English Level
+        // =================================================
+
+        const levelNames = {
+            A1: "A1 — Beginner",
+            A2: "A2 — Elementary",
+            B1: "B1 — Intermediate",
+            B2: "B2 — Upper Intermediate",
+            C1: "C1 — Advanced"
+        };
+
+        const level =
+            profile?.level || "";
+
+        if (dashboardLevel) {
+            dashboardLevel.textContent =
+                levelNames[level] || level || "—";
+        }
+
+        // -------------------------------------------------
+        // Debug
+        // -------------------------------------------------
+
+        console.log("Dashboard user:", user);
+        console.log("Dashboard profile:", profile);
+
+    } catch (error) {
+
+        console.error(
+            "Dashboard error:",
+            error
+        );
     }
 
 });
