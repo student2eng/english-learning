@@ -1107,9 +1107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             throw error;
         }
 
-      
-      aaa
-
+    
         // -------------------------------------------------
         // Keep current word progress updated
         // -------------------------------------------------
