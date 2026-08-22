@@ -8,10 +8,10 @@
 // =====================================================
 
 const SUPABASE_URL =
-    "0000000000000";
+    "https://azuzgodrxkxhlsekooyc.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-    "0000000000000";
+    "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
 
 const supabaseClient =
     window.supabase.createClient(
