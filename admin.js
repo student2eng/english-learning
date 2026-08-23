@@ -257,15 +257,16 @@ const pronunciation =
                 // ---------------------------------------
 
                 const validation =
-                    validateWord({
-                        word,
-                        level,
-                        pronunciation,
-                        meaning,
-                        example,
-                        status,
-                        imageFile
-                    });
+    validateWord({
+        word,
+        level,
+        partOfSpeech,
+        pronunciation,
+        meaning,
+        example,
+        status,
+        imageFile
+    });
 
 
                 if (!validation.valid) {
