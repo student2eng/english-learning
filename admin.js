@@ -1,24 +1,3 @@
-/*
- * English Learning — Admin Word Library
- * Phase 1: Add Word
- *
- * Approved scope:
- * - Admin adds words to the single Supabase Word Library.
- * - Word data: Word, Level, Meaning, Example, Image, Pronunciation, Status.
- * - Status: Draft / Published.
- * - Draft words are not intended to be available to students.
- *
- * Security:
- * - Never use the Supabase service_role key in browser code.
- * - Use the Publishable/anon key only.
- *
- * IMPORTANT:
- * 1. Add your Supabase URL.
- * 2. Add your Supabase Publishable/anon key.
- * 3. Add the exact Supabase Storage bucket name for word images.
- */
-
-
 // =====================================================
 // Supabase Configuration
 // =====================================================
