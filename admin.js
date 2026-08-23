@@ -555,7 +555,13 @@ function validateWord({
                 "Please select a level."
         };
     }
-
+    
+if (!partOfSpeech) {
+    return {
+        valid: false,
+        message: "Please select a part of speech."
+    };
+}
 
     // Status
 
