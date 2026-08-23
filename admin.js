@@ -1004,9 +1004,8 @@ function showMessage(
 ) {
 
     if (!element) {
-
-        return;
-    }
+    return;
+}
 
 
     element.hidden = false;
