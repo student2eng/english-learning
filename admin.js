@@ -301,7 +301,28 @@ const pronunciation =
                         imageValidation.message
                     );
                 }
+                
+// Check if word already exists
+const { data: existingWords, error: duplicateCheckError } =
+    await supabase
+        .from(WORDS_TABLE)
+        .select("id")
+        .ilike("word", word.trim())
+        .limit(1);
 
+if (duplicateCheckError) {
+    throw duplicateCheckError;
+}
+
+if (existingWords && existingWords.length > 0) {
+    showMessage(
+        formMessage,
+        "This word already exists in the Word Library.",
+        "error"
+    );
+
+    return;
+    }
 
                 // ---------------------------------------
                 // Upload Image
