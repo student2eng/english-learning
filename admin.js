@@ -1116,3 +1116,97 @@ function getFriendlyErrorMessage(
 
     return message;
 }
+
+// =====================================================
+// Check Admin Access
+// =====================================================
+
+async function checkAdminAccess(supabase) {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabase.auth.getUser();
+
+
+        // ---------------------------------------------
+        // Authentication error
+        // ---------------------------------------------
+
+        if (error) {
+
+            console.error(
+                "Could not verify user:",
+                error
+            );
+
+            window.location.replace(
+                "auth.html"
+            );
+
+            return false;
+        }
+
+
+        const user =
+            data?.user;
+
+
+        // ---------------------------------------------
+        // No logged-in user
+        // ---------------------------------------------
+
+        if (!user) {
+
+            window.location.replace(
+                "auth.html"
+            );
+
+            return false;
+        }
+
+
+        // ---------------------------------------------
+        // Check Admin Role
+        // ---------------------------------------------
+
+        const role =
+            user.app_metadata?.role;
+
+
+        if (role !== "admin") {
+
+            window.location.replace(
+                "index.html"
+            );
+
+            return false;
+        }
+
+
+        // ---------------------------------------------
+        // Admin confirmed
+        // ---------------------------------------------
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Admin access check failed:",
+            error
+        );
+
+
+        window.location.replace(
+            "auth.html"
+        );
+
+
+        return false;
+    }
+}
