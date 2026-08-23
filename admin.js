@@ -231,10 +231,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                     getValue("word");
 
                 const level =
-                    getValue("level");
+    getValue("level");
 
-                const pronunciation =
-                    getValue("pronunciation");
+const partOfSpeech =
+    getValue("part_of_speech");
+
+const pronunciation =
+    getValue("pronunciation");
 
                 const meaning =
                     getValue("meaning");
