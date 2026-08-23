@@ -1,0 +1,455 @@
+/* =====================================================
+   English Learning - Admin CSS
+   ===================================================== */
+
+/* =====================================================
+   Base
+   ===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f8fa;
+    color: #172033;
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   Header
+   ===================================================== */
+
+.site-header {
+    height: 74px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 32px;
+}
+
+.site-logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #172033;
+}
+
+.site-account {
+    font-size: 16px;
+    color: #374151;
+}
+
+
+/* =====================================================
+   Main Container
+   ===================================================== */
+
+.admin-container {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+}
+
+
+/* =====================================================
+   Admin Label
+   ===================================================== */
+
+.admin-label {
+    margin-bottom: 12px;
+
+    color: #5146e5;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   Page Heading
+   ===================================================== */
+
+.admin-container h1 {
+    margin: 0;
+
+    font-size: 42px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    color: #172033;
+}
+
+.admin-description {
+    margin: 10px 0 28px;
+
+    font-size: 18px;
+    color: #667085;
+}
+
+
+/* =====================================================
+   Form Card
+   ===================================================== */
+
+.admin-form-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 24px;
+
+    padding: 32px;
+
+    box-shadow:
+        0 10px 30px rgba(23, 32, 51, 0.06);
+}
+
+
+/* =====================================================
+   Section Heading
+   ===================================================== */
+
+.admin-form-card h2 {
+    margin: 0 0 8px;
+
+    font-size: 28px;
+    line-height: 1.3;
+    font-weight: 700;
+
+    color: #172033;
+}
+
+.form-description {
+    margin: 0 0 28px;
+
+    color: #667085;
+    font-size: 16px;
+}
+
+
+/* =====================================================
+   Form Group
+   ===================================================== */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #344054;
+}
+
+
+/* =====================================================
+   Inputs / Select / Textarea
+   ===================================================== */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+
+    border: 1px solid #d9dde5;
+    border-radius: 14px;
+
+    background: #ffffff;
+    color: #172033;
+
+    font-size: 16px;
+
+    padding: 14px 16px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Input */
+
+.form-group input {
+    height: 54px;
+}
+
+
+/* Select */
+
+.form-group select {
+    height: 54px;
+
+    cursor: pointer;
+}
+
+
+/* Textarea */
+
+.form-group textarea {
+    min-height: 120px;
+
+    resize: vertical;
+}
+
+
+/* Placeholder */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #98a2b3;
+}
+
+
+/* Focus */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #5146e5;
+
+    box-shadow:
+        0 0 0 3px rgba(81, 70, 229, 0.12);
+}
+
+
+/* =====================================================
+   Save Button
+   ===================================================== */
+
+.save-word-button {
+    margin-top: 8px;
+
+    min-height: 54px;
+
+    padding: 14px 28px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: #5146e5;
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(81, 70, 229, 0.20);
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+/* Hover */
+
+.save-word-button:hover {
+    background: #4538d4;
+
+    box-shadow:
+        0 10px 24px rgba(81, 70, 229, 0.25);
+}
+
+
+/* Active */
+
+.save-word-button:active {
+    transform: translateY(1px);
+}
+
+
+/* =====================================================
+   Disabled Button
+   ===================================================== */
+
+.save-word-button:disabled {
+    opacity: 0.65;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+
+/* =====================================================
+   Form Message
+   ===================================================== */
+
+.form-message {
+    margin-top: 18px;
+
+    padding: 12px 14px;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    display: none;
+}
+
+.form-message.success {
+    display: block;
+
+    background: #ecfdf3;
+    color: #067647;
+
+    border: 1px solid #abefc6;
+}
+
+.form-message.error {
+    display: block;
+
+    background: #fef3f2;
+    color: #b42318;
+
+    border: 1px solid #fecdca;
+}
+
+
+/* =====================================================
+   Footer
+   ===================================================== */
+
+.site-footer {
+    padding: 20px 24px;
+
+    text-align: center;
+
+    border-top: 1px solid #e5e7eb;
+
+    background: #ffffff;
+
+    color: #667085;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   Tablet
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    .site-header {
+        height: 68px;
+
+        padding: 0 24px;
+    }
+
+    .admin-container {
+        padding: 28px 20px 50px;
+    }
+
+    .admin-container h1 {
+        font-size: 36px;
+    }
+
+    .admin-description {
+        font-size: 17px;
+    }
+
+    .admin-form-card {
+        padding: 26px;
+        border-radius: 22px;
+    }
+
+    .admin-form-card h2 {
+        font-size: 26px;
+    }
+}
+
+
+/* =====================================================
+   Mobile
+   ===================================================== */
+
+@media (max-width: 480px) {
+
+    .site-header {
+        height: 64px;
+
+        padding: 0 18px;
+    }
+
+    .site-logo {
+        font-size: 18px;
+    }
+
+    .site-account {
+        font-size: 15px;
+    }
+
+    .admin-container {
+        padding: 24px 16px 40px;
+    }
+
+    .admin-label {
+        font-size: 15px;
+    }
+
+    .admin-container h1 {
+        font-size: 32px;
+    }
+
+    .admin-description {
+        margin-bottom: 22px;
+
+        font-size: 16px;
+    }
+
+    .admin-form-card {
+        padding: 22px 18px;
+
+        border-radius: 20px;
+    }
+
+    .admin-form-card h2 {
+        font-size: 24px;
+    }
+
+    .form-description {
+        margin-bottom: 22px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group input,
+    .form-group select {
+        height: 52px;
+
+        font-size: 16px;
+    }
+
+    .form-group textarea {
+        min-height: 110px;
+
+        font-size: 16px;
+    }
+
+    .save-word-button {
+        width: 100%;
+
+        margin-top: 4px;
+    }
+  }
