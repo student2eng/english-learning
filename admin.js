@@ -149,7 +149,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Temporary reference for testing
     window.supabaseClient = supabase;
+    
+// =================================================
+// Admin Access Guard
+// =================================================
 
+const isAdmin =
+    await checkAdminAccess(supabase);
+
+if (!isAdmin) {
+    return;
+}
 
     // =================================================
     // Image Selection
