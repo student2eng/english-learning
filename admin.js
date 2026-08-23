@@ -311,12 +311,15 @@ const pronunciation =
 
                 const wordRecord = {
 
-                    word,
+    word,
 
-                    level,
+    level,
 
-                    pronunciation:
-                        pronunciation || null,
+    part_of_speech:
+        partOfSpeech,
+
+    pronunciation:
+        pronunciation || null,
 
                     meaning:
                         meaning || null,
