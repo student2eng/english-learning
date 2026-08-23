@@ -519,21 +519,14 @@ function getValue(id) {
 // =====================================================
 
 function validateWord({
-
     word,
-
     level,
-
+    partOfSpeech,
     pronunciation,
-
     meaning,
-
     example,
-
     status,
-
     imageFile
-
 }) {
 
     // Word
