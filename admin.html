@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard | English Learning</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =================================================
+         Header
+         ================================================= -->
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a
+                href="dashboard.html"
+                class="logo"
+            >
+                English Learning
+            </a>
+
+            <span class="admin-label">
+                Admin
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         Main
+         ================================================= -->
+    <main class="container admin-page">
+
+        <!-- =================================================
+             Page Header
+             ================================================= -->
+        <section class="admin-intro">
+
+            <p class="eyebrow">
+                Admin Dashboard
+            </p>
+
+            <h1>
+                Word Library
+            </h1>
+
+            <p>
+                Add and manage English learning words.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             Add New Word
+             ================================================= -->
+        <section class="admin-card">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        Add New Word
+                    </h2>
+
+                    <p>
+                        Add a new word to the Word Library.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 Word Form
+                 ================================================= -->
+            <form id="wordForm">
+
+                <!-- Word -->
+                <div class="form-group">
+
+                    <label for="word">
+                        Word
+                    </label>
+
+                    <input
+                        type="text"
+                        id="word"
+                        name="word"
+                        placeholder="e.g. recommend"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Level -->
+                <div class="form-group">
+
+                    <label for="level">
+                        Level
+                    </label>
+
+                    <select
+                        id="level"
+                        name="level"
+                        required
+                    >
+
+                        <option value="">
+                            Select level
+                        </option>
+
+                        <option value="A1">
+                            A1 — Beginner
+                        </option>
+
+                        <option value="A2">
+                            A2 — Elementary
+                        </option>
+
+                        <option value="B1">
+                            B1 — Intermediate
+                        </option>
+
+                        <option value="B2">
+                            B2 — Upper Intermediate
+                        </option>
+
+                        <option value="C1">
+                            C1 — Advanced
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Part of Speech -->
+                <div class="form-group">
+
+                    <label for="part_of_speech">
+                        Part of Speech
+                    </label>
+
+                    <select
+                        id="part_of_speech"
+                        name="part_of_speech"
+                        required
+                    >
+
+                        <option value="">
+                            Select part of speech
+                        </option>
+
+                        <option value="noun">
+                            Noun
+                        </option>
+
+                        <option value="verb">
+                            Verb
+                        </option>
+
+                        <option value="adjective">
+                            Adjective
+                        </option>
+
+                        <option value="adverb">
+                            Adverb
+                        </option>
+
+                        <option value="pronoun">
+                            Pronoun
+                        </option>
+
+                        <option value="preposition">
+                            Preposition
+                        </option>
+
+                        <option value="conjunction">
+                            Conjunction
+                        </option>
+
+                        <option value="interjection">
+                            Interjection
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Pronunciation -->
+                <div class="form-group">
+
+                    <label for="pronunciation">
+                        Pronunciation
+                    </label>
+
+                    <input
+                        type="text"
+                        id="pronunciation"
+                        name="pronunciation"
+                        placeholder="e.g. /ˌrekəˈmend/"
+                    >
+
+                </div>
+
+
+                <!-- Meaning -->
+                <div class="form-group">
+
+                    <label for="meaning">
+                        Meaning
+                    </label>
+
+                    <textarea
+                        id="meaning"
+                        name="meaning"
+                        rows="4"
+                        placeholder="Enter the meaning of the word."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Example -->
+                <div class="form-group">
+
+                    <label for="example">
+                        Example
+                    </label>
+
+                    <textarea
+                        id="example"
+                        name="example"
+                        rows="4"
+                        placeholder="Enter an example sentence."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Image URL -->
+                <div class="form-group">
+
+                    <label for="image_url">
+                        Image URL
+                    </label>
+
+                    <input
+                        type="url"
+                        id="image_url"
+                        name="image_url"
+                        placeholder="https://..."
+                    >
+
+                </div>
+
+
+                <!-- Status -->
+                <div class="form-group">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+                    <select
+                        id="status"
+                        name="status"
+                        required
+                    >
+
+                        <option value="draft">
+                            Draft
+                        </option>
+
+                        <option value="published">
+                            Published
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Save -->
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="saveWordButton"
+                    >
+                        Save Word
+                    </button>
+
+                </div>
+
+
+                <!-- Message -->
+                <p
+                    id="formMessage"
+                    class="form-message"
+                    hidden
+                ></p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- =================================================
+         Footer
+         ================================================= -->
+    <footer class="site-footer">
+
+        <div class="container">
+
+            © 2026 English Learning. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =================================================
+         Admin JavaScript
+         Will be added in the next step
+         ================================================= -->
+    <script src="admin.js"></script>
+
+</body>
+
+</html>
