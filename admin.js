@@ -14,14 +14,14 @@ const WORDS_TABLE = "words";
 
 const IMAGE_URL_COLUMN = "image_url";
 
-const STORAGE_BUCKET = "YOUR_WORD_IMAGES_BUCKET";
+const STORAGE_BUCKET = "word-images";
 
 
 // =====================================================
 // Image Configuration
 // =====================================================
 
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
 
 const ALLOWED_IMAGE_TYPES = [
     "image/jpeg",
