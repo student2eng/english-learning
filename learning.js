@@ -27,6 +27,150 @@ const supabaseClient =
 document.addEventListener("DOMContentLoaded", async () => {
 
     // =================================================
+    // Account Dropdown Menu
+    // =================================================
+
+    const accountMenuButton =
+        document.getElementById(
+            "accountMenuButton"
+        );
+
+    const accountMenu =
+        document.getElementById(
+            "accountMenu"
+        );
+
+    const accountLogoutButton =
+        document.getElementById(
+            "accountLogoutButton"
+        );
+
+
+    // -------------------------------------------------
+    // Check Account Menu
+    // -------------------------------------------------
+
+    if (
+        !accountMenuButton ||
+        !accountMenu
+    ) {
+        return;
+    }
+
+
+    // -------------------------------------------------
+    // Open / Close Account Menu
+    // -------------------------------------------------
+
+    accountMenuButton.addEventListener(
+        "click",
+        (event) => {
+
+            event.stopPropagation();
+
+            const isOpen =
+                !accountMenu.hidden;
+
+            accountMenu.hidden =
+                isOpen;
+
+            accountMenuButton.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+        }
+    );
+
+
+    // -------------------------------------------------
+    // Close Menu When Clicking Outside
+    // -------------------------------------------------
+
+    document.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                !accountMenu.contains(
+                    event.target
+                ) &&
+                !accountMenuButton.contains(
+                    event.target
+                )
+            ) {
+
+                accountMenu.hidden =
+                    true;
+
+                accountMenuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        }
+    );
+
+
+    // -------------------------------------------------
+    // Student Log Out
+    // -------------------------------------------------
+
+    if (accountLogoutButton) {
+
+        accountLogoutButton.addEventListener(
+            "click",
+            async () => {
+
+                accountLogoutButton.disabled =
+                    true;
+
+                accountLogoutButton.textContent =
+                    "Logging out...";
+
+
+                try {
+
+                    const {
+                        error
+                    } = await supabaseClient
+                        .auth
+                        .signOut();
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    window.location.replace(
+                        "auth.html"
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Account logout error:",
+                        error
+                    );
+
+
+                    accountLogoutButton.disabled =
+                        false;
+
+                    accountLogoutButton.textContent =
+                        "Log Out";
+                }
+
+            }
+        );
+
+                        }
+    
+    // =================================================
     // DOM Elements
     // =================================================
 
