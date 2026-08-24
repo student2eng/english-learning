@@ -1018,32 +1018,20 @@ function setButtonLoading(
 // Show Message
 // =====================================================
 
-function showMessage(
-    element,
-    message,
-    type
-) {
-
-    if (!element) {
-    return;
-}
-
+function showMessage(element, message, type) {
+    if (!element) return;
 
     element.hidden = false;
+    element.textContent = message;
 
+    element.classList.remove("success", "error");
 
-    element.textContent =
-        message;
+    if (type === "success" || type === "error") {
+        element.classList.add(type);
+    }
 
-
-    element.dataset.type =
-        type;
-
-
-    element.setAttribute(
-        "role",
-        "status"
-    );
+    element.dataset.type = type;
+    element.setAttribute("role", "status");
 }
 
 
@@ -1051,27 +1039,24 @@ function showMessage(
 // Clear Message
 // =====================================================
 
-function clearMessage(
-    element
-) {
-
+function clearMessage(element) {
     if (!element) {
-
         return;
     }
 
-
     element.hidden = true;
-
 
     element.textContent =
         "";
 
+    element.classList.remove(
+        "success",
+        "error"
+    );
 
     element.removeAttribute(
         "role"
     );
-
 
     delete element.dataset.type;
 }
