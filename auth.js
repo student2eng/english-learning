@@ -150,11 +150,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                // Temporary redirect
-                // We will connect Dashboard properly later.
-                setTimeout(() => {
-                    window.location.href = "dashboard.html";
-                }, 800);
+            // Redirect based on user role
+setTimeout(() => {
+
+    const role =
+        data?.user?.app_metadata?.role;
+
+    if (role === "admin") {
+
+        window.location.href =
+            "admin-dashboard.html";
+
+    } else {
+
+        window.location.href =
+            "dashboard.html";
+
+    }
+
+}, 800);
 
 
             } catch (error) {
