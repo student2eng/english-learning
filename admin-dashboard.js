@@ -7,8 +7,8 @@
 // Supabase Configuration
 // =====================================================
 
-const SUPABASE_URL = "00000000000000";
-const SUPABASE_KEY = "00000000000000";
+const SUPABASE_URL = "https://azuzgodrxkxhlsekooyc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
 
 
 // =====================================================
