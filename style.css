@@ -1723,7 +1723,6 @@ img {
 .account-menu-button {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 6px;
 
   padding: 8px 12px;
@@ -1751,25 +1750,19 @@ img {
 }
 
 
-/* Account Menu Arrow */
+/* Existing Account Arrow */
 
 .account-menu-arrow {
   display: inline-block;
+  margin-left: 2px;
 
-  width: 0;
-  height: 0;
-
-  margin-top: 2px;
-
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid currentColor;
+  color: currentColor;
 
   transition: transform 0.2s ease;
 }
 
 
-/* Rotate Arrow When Menu Is Open */
+/* Rotate Existing Arrow */
 
 .account-menu-button[aria-expanded="true"]
 .account-menu-arrow {
@@ -1800,7 +1793,7 @@ img {
 }
 
 
-/* Account Dropdown Item */
+/* Dropdown Item */
 
 .account-dropdown-item {
   width: 100%;
@@ -1832,14 +1825,13 @@ img {
 }
 
 
-/* Disabled Account Options */
+/* Disabled Options */
 
 .account-dropdown-item:disabled {
   color: var(--text-light);
   background: transparent;
 
   cursor: not-allowed;
-
   opacity: 1;
 }
 
@@ -1848,7 +1840,6 @@ img {
 
 .account-dropdown-item.account-logout {
   color: #dc2626;
-
   margin-top: 4px;
 }
 
@@ -1858,16 +1849,14 @@ img {
 }
 
 
-/* Dropdown Hidden State */
+/* Hidden Dropdown */
 
 .account-dropdown[hidden] {
   display: none !important;
 }
 
 
-/* =========================================
-   Account Menu — Mobile
-   ========================================= */
+/* Mobile */
 
 @media (max-width: 640px) {
 
@@ -1880,4 +1869,4 @@ img {
     min-height: 46px;
   }
 
-   }
+}
