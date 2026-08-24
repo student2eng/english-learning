@@ -1707,3 +1707,177 @@ img {
     border-color: #fecaca;
     color: #dc2626;
 }
+/* =========================================
+   Student Account Menu
+   ========================================= */
+
+.account-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+
+/* Account Menu Button */
+
+.account-menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 8px 12px;
+
+  background: transparent;
+  color: var(--primary);
+
+  border: 0;
+  border-radius: var(--radius-sm);
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.account-menu-button:hover {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+
+/* Account Menu Arrow */
+
+.account-menu-arrow {
+  display: inline-block;
+
+  width: 0;
+  height: 0;
+
+  margin-top: 2px;
+
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+
+  transition: transform 0.2s ease;
+}
+
+
+/* Rotate Arrow When Menu Is Open */
+
+.account-menu-button[aria-expanded="true"]
+.account-menu-arrow {
+  transform: rotate(180deg);
+}
+
+
+/* Account Dropdown */
+
+.account-dropdown {
+  position: absolute;
+
+  top: calc(100% + 10px);
+  right: 0;
+
+  width: 220px;
+
+  padding: 8px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+
+  box-shadow: var(--shadow-md);
+
+  z-index: 200;
+}
+
+
+/* Account Dropdown Item */
+
+.account-dropdown-item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  min-height: 44px;
+
+  padding: 10px 12px;
+
+  background: transparent;
+  color: var(--text);
+
+  border: 0;
+  border-radius: 10px;
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+/* Disabled Account Options */
+
+.account-dropdown-item:disabled {
+  color: var(--text-light);
+  background: transparent;
+
+  cursor: not-allowed;
+
+  opacity: 1;
+}
+
+
+/* Log Out */
+
+.account-dropdown-item.account-logout {
+  color: #dc2626;
+
+  margin-top: 4px;
+}
+
+.account-dropdown-item.account-logout:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+
+/* Dropdown Hidden State */
+
+.account-dropdown[hidden] {
+  display: none !important;
+}
+
+
+/* =========================================
+   Account Menu — Mobile
+   ========================================= */
+
+@media (max-width: 640px) {
+
+  .account-dropdown {
+    width: 210px;
+    right: 0;
+  }
+
+  .account-dropdown-item {
+    min-height: 46px;
+  }
+
+   }
