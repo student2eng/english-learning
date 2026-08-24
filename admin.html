@@ -21,20 +21,61 @@
          ================================================= -->
     <header class="site-header">
 
-        <div class="container header-inner">
+    <div class="container header-inner">
 
-            <a
-                href="dashboard.html"
-                class="logo"
+        <a
+            href="dashboard.html"
+            class="logo"
+        >
+            English Learning
+        </a>
+
+        <div class="admin-menu">
+
+            <button
+                type="button"
+                class="admin-menu-button"
+                id="adminMenuButton"
+                aria-expanded="false"
+                aria-controls="adminMenu"
             >
-                English Learning
-            </a>
-
-            <span class="admin-label">
                 Admin
-            </span>
+                <span class="admin-menu-arrow">▾</span>
+            </button>
+
+            <div
+                class="admin-dropdown"
+                id="adminMenu"
+                hidden
+            >
+
+                <a
+                    href="dashboard.html"
+                    class="admin-dropdown-item"
+                >
+                    Admin Dashboard
+                </a>
+
+                <a
+                    href="admin.html"
+                    class="admin-dropdown-item"
+                >
+                    Add New Word
+                </a>
+
+                <button
+                    type="button"
+                    class="admin-dropdown-item admin-logout"
+                    id="adminLogoutButton"
+                >
+                    Log Out
+                </button>
+
+            </div>
 
         </div>
+
+    </div>
 
     </header>
 
