@@ -24,9 +24,60 @@
                 English Learning
             </a>
 
-            <a href="dashboard.html" class="header-account">
-                Account
-            </a>
+            <div class="account-menu">
+
+    <button
+        type="button"
+        class="account-menu-button"
+        id="accountMenuButton"
+        aria-expanded="false"
+        aria-controls="accountMenu"
+    >
+        Account
+        <span class="account-menu-arrow">▼</span>
+    </button>
+
+    <div
+        class="account-dropdown"
+        id="accountMenu"
+        hidden
+    >
+
+        <button
+            type="button"
+            class="account-dropdown-item"
+            disabled
+        >
+            Account
+        </button>
+
+        <button
+            type="button"
+            class="account-dropdown-item"
+            disabled
+        >
+            Change Level
+        </button>
+
+        <button
+            type="button"
+            class="account-dropdown-item"
+            disabled
+        >
+            Change Password
+        </button>
+
+        <button
+            type="button"
+            class="account-dropdown-item account-logout"
+            id="accountLogoutButton"
+        >
+            Log Out
+        </button>
+
+    </div>
+
+            </div>
 
         </div>
     </header>
