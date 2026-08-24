@@ -2,192 +2,178 @@
 // English Learning - Admin Dashboard
 // =====================================================
 
-// Supabase configuration
-const SUPABASE_URL = "0000000000";
-const SUPABASE_KEY = "0000000000000";
-
 
 // =====================================================
-// Create Supabase Client
+// Supabase Configuration
 // =====================================================
 
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+const SUPABASE_URL = "00000000000000";
+const SUPABASE_KEY = "00000000000000";
 
 
 // =====================================================
 // Admin Dashboard Initialization
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    async () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-        const adminMenuButton =
-            document.getElementById(
-                "adminMenuButton"
-            );
+    // -------------------------------------------------
+    // Load Supabase Library
+    // -------------------------------------------------
 
-        const adminMenu =
-            document.getElementById(
-                "adminMenu"
-            );
+    try {
+        await loadSupabaseLibrary();
+    } catch (error) {
 
-        const adminLogoutButton =
-            document.getElementById(
-                "adminLogoutButton"
-            );
+        console.error(
+            "Supabase library loading error:",
+            error
+        );
 
+        window.location.replace("auth.html");
 
-        // -------------------------------------------------
-        // Check Admin Access
-        // -------------------------------------------------
-
-        const isAdmin =
-            await checkAdminAccess();
-
-        if (!isAdmin) {
-            return;
-        }
+        return;
+    }
 
 
-        // -------------------------------------------------
-        // Admin Dropdown
-        // -------------------------------------------------
+    // -------------------------------------------------
+    // Create Supabase Client
+    // -------------------------------------------------
 
-        if (
-            adminMenuButton &&
-            adminMenu
-        ) {
+    const supabase =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
 
-            adminMenuButton.addEventListener(
-                "click",
-                (event) => {
 
-                    event.stopPropagation();
+    // Temporary reference
+    window.supabaseClient = supabase;
 
-                    const isOpen =
-                        !adminMenu.hidden;
 
-                    adminMenu.hidden =
-                        isOpen;
+    // -------------------------------------------------
+    // Check Admin Access
+    // -------------------------------------------------
 
-                    adminMenuButton.setAttribute(
-                        "aria-expanded",
-                        String(!isOpen)
+    const isAdmin =
+        await checkAdminAccess(supabase);
+
+    if (!isAdmin) {
+        return;
+    }
+
+
+    // -------------------------------------------------
+    // Initialize Admin Menu
+    // -------------------------------------------------
+
+    initAdminMenu();
+
+
+    // -------------------------------------------------
+    // Initialize Admin Logout
+    // -------------------------------------------------
+
+    initAdminLogout(supabase);
+
+});
+
+
+// =====================================================
+// Load Supabase Library
+// =====================================================
+
+function loadSupabaseLibrary() {
+
+    // Already loaded
+    if (window.supabase) {
+        return Promise.resolve();
+    }
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const existingScript =
+                document.querySelector(
+                    'script[src*="@supabase/supabase-js"]'
+                );
+
+            if (existingScript) {
+
+                existingScript.addEventListener(
+                    "load",
+                    resolve,
+                    { once: true }
+                );
+
+                existingScript.addEventListener(
+                    "error",
+                    reject,
+                    { once: true }
+                );
+
+                return;
+            }
+
+
+            const script =
+                document.createElement("script");
+
+            script.src =
+                "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+
+            script.async = true;
+
+
+            script.onload = () => {
+
+                if (window.supabase) {
+
+                    resolve();
+
+                } else {
+
+                    reject(
+                        new Error(
+                            "Supabase library loaded without a global client."
+                        )
                     );
 
                 }
-            );
+
+            };
 
 
-            document.addEventListener(
-                "click",
-                (event) => {
+            script.onerror = () => {
 
-                    if (
-                        !adminMenu.contains(
-                            event.target
-                        ) &&
-                        !adminMenuButton.contains(
-                            event.target
-                        )
-                    ) {
+                reject(
+                    new Error(
+                        "Could not load Supabase library."
+                    )
+                );
 
-                        adminMenu.hidden =
-                            true;
+            };
 
-                        adminMenuButton.setAttribute(
-                            "aria-expanded",
-                            "false"
-                        );
 
-                    }
-
-                }
-            );
+            document.head.appendChild(script);
 
         }
-
-
-        // -------------------------------------------------
-        // Admin Logout
-        // -------------------------------------------------
-
-        if (adminLogoutButton) {
-
-            adminLogoutButton.addEventListener(
-                "click",
-                async () => {
-
-                    try {
-
-                        adminLogoutButton.disabled =
-                            true;
-
-                        adminLogoutButton.textContent =
-                            "Logging out...";
-
-
-                        const { error } =
-                            await supabaseClient
-                                .auth
-                                .signOut();
-
-
-                        if (error) {
-                            throw error;
-                        }
-
-
-                        window.location.replace(
-                            "auth.html"
-                        );
-
-                    }
-                    catch (error) {
-
-                        console.error(
-                            "Admin logout error:",
-                            error
-                        );
-
-
-                        adminLogoutButton.disabled =
-                            false;
-
-                        adminLogoutButton.textContent =
-                            "Log Out";
-
-                    }
-
-                }
-            );
-
-        }
-
-    }
-);
+    );
+}
 
 
 // =====================================================
 // Check Admin Access
 // =====================================================
 
-async function checkAdminAccess() {
+async function checkAdminAccess(supabase) {
 
     try {
 
         const {
             data,
             error
-        } =
-            await supabaseClient
-                .auth
-                .getUser();
+        } = await supabase.auth.getUser();
 
 
         // -------------------------------------------------
@@ -216,7 +202,6 @@ async function checkAdminAccess() {
         const user =
             data?.user;
 
-
         if (!user) {
 
             window.location.replace(
@@ -238,7 +223,7 @@ async function checkAdminAccess() {
         if (role !== "admin") {
 
             window.location.replace(
-                "dashboard.html"
+                "index.html"
             );
 
             return false;
@@ -251,8 +236,7 @@ async function checkAdminAccess() {
 
         return true;
 
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Admin access check failed:",
@@ -264,7 +248,162 @@ async function checkAdminAccess() {
         );
 
         return false;
-
     }
+}
+
+
+// =====================================================
+// Admin Dropdown Menu
+// =====================================================
+
+function initAdminMenu() {
+
+    const adminMenuButton =
+        document.getElementById(
+            "adminMenuButton"
+        );
+
+
+    const adminMenu =
+        document.getElementById(
+            "adminMenu"
+        );
+
+
+    if (
+        !adminMenuButton ||
+        !adminMenu
+    ) {
+        return;
+    }
+
+
+    // -------------------------------------------------
+    // Open / Close Menu
+    // -------------------------------------------------
+
+    adminMenuButton.addEventListener(
+        "click",
+        (event) => {
+
+            event.stopPropagation();
+
+
+            const isOpen =
+                !adminMenu.hidden;
+
+
+            adminMenu.hidden =
+                isOpen;
+
+
+            adminMenuButton.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+        }
+    );
+
+
+    // -------------------------------------------------
+    // Close Menu When Clicking Outside
+    // -------------------------------------------------
+
+    document.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                !adminMenu.contains(event.target) &&
+                !adminMenuButton.contains(event.target)
+            ) {
+
+                adminMenu.hidden = true;
+
+
+                adminMenuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// Admin Logout
+// =====================================================
+
+function initAdminLogout(supabase) {
+
+    const adminLogoutButton =
+        document.getElementById(
+            "adminLogoutButton"
+        );
+
+
+    if (!adminLogoutButton) {
+        return;
+    }
+
+
+    adminLogoutButton.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                // Disable button
+                adminLogoutButton.disabled =
+                    true;
+
+
+                adminLogoutButton.textContent =
+                    "Logging out...";
+
+
+                // Sign out
+                const {
+                    error
+                } =
+                    await supabase.auth.signOut();
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                // Redirect to Auth
+                window.location.replace(
+                    "auth.html"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Admin logout error:",
+                    error
+                );
+
+
+                // Restore button
+                adminLogoutButton.disabled =
+                    false;
+
+
+                adminLogoutButton.textContent =
+                    "Log Out";
+
+            }
+
+        }
+    );
 
 }
