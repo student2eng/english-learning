@@ -1265,4 +1265,60 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     );
+    // =====================================================
+// Admin Logout
+// =====================================================
+
+const adminLogoutButton =
+    document.getElementById("adminLogoutButton");
+
+if (adminLogoutButton) {
+
+    adminLogoutButton.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                const supabase =
+                    window.supabaseClient;
+
+                if (!supabase) {
+                    window.location.replace(
+                        "auth.html"
+                    );
+                    return;
+                }
+
+                adminLogoutButton.disabled = true;
+
+                adminLogoutButton.textContent =
+                    "Logging out...";
+
+                const { error } =
+                    await supabase.auth.signOut();
+
+                if (error) {
+                    throw error;
+                }
+
+                window.location.replace(
+                    "auth.html"
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Admin logout error:",
+                    error
+                );
+
+                adminLogoutButton.disabled = false;
+
+                adminLogoutButton.textContent =
+                    "Log Out";
+            }
+        }
+    );
+}
 });
