@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard | English Learning</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
+</head>
+
+<body>
+
+    <!-- =================================================
+         Header
+         ================================================= -->
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a
+                href="admin-dashboard.html"
+                class="logo"
+            >
+                English Learning
+            </a>
+
+            <div class="admin-menu">
+
+                <button
+                    type="button"
+                    class="admin-menu-button"
+                    id="adminMenuButton"
+                    aria-expanded="false"
+                    aria-controls="adminMenu"
+                >
+                    Admin
+
+                    <span class="admin-menu-arrow">
+                        ▾
+                    </span>
+                </button>
+
+                <div
+                    class="admin-dropdown"
+                    id="adminMenu"
+                    hidden
+                >
+
+                    <a
+                        href="admin-dashboard.html"
+                        class="admin-dropdown-item"
+                    >
+                        Admin Dashboard
+                    </a>
+
+                    <a
+                        href="admin.html"
+                        class="admin-dropdown-item"
+                    >
+                        Add New Word
+                    </a>
+
+                    <button
+                        type="button"
+                        class="admin-dropdown-item admin-logout"
+                        id="adminLogoutButton"
+                    >
+                        Log Out
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         Main
+         ================================================= -->
+    <main class="container admin-dashboard-page">
+
+        <section class="admin-dashboard-intro">
+
+            <p class="eyebrow">
+                Admin
+            </p>
+
+            <h1>
+                Admin Dashboard
+            </h1>
+
+            <p>
+                Manage the English Learning platform.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             Admin Actions
+             ================================================= -->
+        <section class="admin-dashboard-grid">
+
+            <article class="admin-dashboard-card">
+
+                <div class="admin-dashboard-card-content">
+
+                    <h2>
+                        Word Library
+                    </h2>
+
+                    <p>
+                        Add and manage English learning words.
+                    </p>
+
+                </div>
+
+                <a
+                    href="admin.html"
+                    class="btn btn-primary"
+                >
+                    Add New Word
+                </a>
+
+            </article>
+
+        </section>
+
+    </main>
+
+
+    <!-- =================================================
+         Footer
+         ================================================= -->
+    <footer class="site-footer">
+
+        <div class="container">
+
+            © 2026 English Learning. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =================================================
+         Admin Dashboard JavaScript
+         ================================================= -->
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+
+                const adminMenuButton =
+                    document.getElementById(
+                        "adminMenuButton"
+                    );
+
+                const adminMenu =
+                    document.getElementById(
+                        "adminMenu"
+                    );
+
+
+                if (
+                    !adminMenuButton ||
+                    !adminMenu
+                ) {
+                    return;
+                }
+
+
+                adminMenuButton.addEventListener(
+                    "click",
+                    (event) => {
+
+                        event.stopPropagation();
+
+                        const isOpen =
+                            !adminMenu.hidden;
+
+                        adminMenu.hidden =
+                            isOpen;
+
+                        adminMenuButton.setAttribute(
+                            "aria-expanded",
+                            String(!isOpen)
+                        );
+
+                    }
+                );
+
+
+                document.addEventListener(
+                    "click",
+                    (event) => {
+
+                        if (
+                            !adminMenu.contains(
+                                event.target
+                            ) &&
+                            !adminMenuButton.contains(
+                                event.target
+                            )
+                        ) {
+
+                            adminMenu.hidden =
+                                true;
+
+                            adminMenuButton.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
