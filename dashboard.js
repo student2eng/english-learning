@@ -484,15 +484,15 @@ async function loadContinueLearningStats(
 
 
 // =====================================================
-// DOM Ready
+// Dashboard Page Guard + Data Loading
 // =====================================================
 document.addEventListener(
     "DOMContentLoaded",
     async () => {
 
-        // -------------------------------------------------
+        // =================================================
         // Dashboard elements
-        // -------------------------------------------------
+        // =================================================
         const dashboardTitle =
             document.getElementById(
                 "dashboard-title"
@@ -505,7 +505,8 @@ document.addEventListener(
 
 
         // =================================================
-        // Get current user
+        // Page Guard
+        // Dashboard requires an active student session
         // =================================================
         try {
 
@@ -515,18 +516,36 @@ document.addEventListener(
             } = await supabaseClient.auth.getUser();
 
 
+            // -------------------------------------------------
+            // Authentication check error
+            // -------------------------------------------------
             if (authError) {
-                throw authError;
+
+                console.error(
+                    "Dashboard authentication error:",
+                    authError
+                );
+
+                window.location.replace(
+                    "auth.html"
+                );
+
+                return;
             }
 
 
             // -------------------------------------------------
-            // No logged-in user
+            // No active session
             // -------------------------------------------------
             if (!user) {
 
-                window.location.href =
-                    "auth.html";
+                console.log(
+                    "Dashboard access denied: no active session."
+                );
+
+                window.location.replace(
+                    "auth.html"
+                );
 
                 return;
             }
@@ -551,6 +570,7 @@ document.addEventListener(
 
 
             if (profileError) {
+
                 throw profileError;
             }
 
@@ -615,9 +635,9 @@ document.addEventListener(
             );
 
 
-            // -------------------------------------------------
+            // =================================================
             // Debug
-            // -------------------------------------------------
+            // =================================================
             console.log(
                 "Dashboard user:",
                 user
@@ -635,6 +655,15 @@ document.addEventListener(
                 "Dashboard error:",
                 error
             );
+
+            // -------------------------------------------------
+            // If the page cannot verify the account,
+            // return to Auth.
+            // -------------------------------------------------
+            window.location.replace(
+                "auth.html"
+            );
+
         }
 
     }
