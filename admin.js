@@ -1215,3 +1215,54 @@ async function checkAdminAccess(supabase) {
         return false;
     }
 }
+
+// =====================================================
+// Admin Dropdown Menu
+// =====================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    const adminMenuButton =
+        document.getElementById("adminMenuButton");
+
+    const adminMenu =
+        document.getElementById("adminMenu");
+
+    if (!adminMenuButton || !adminMenu) {
+        return;
+    }
+
+    adminMenuButton.addEventListener(
+        "click",
+        (event) => {
+            event.stopPropagation();
+
+            const isOpen =
+                !adminMenu.hidden;
+
+            adminMenu.hidden =
+                isOpen;
+
+            adminMenuButton.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+        }
+    );
+
+    document.addEventListener(
+        "click",
+        (event) => {
+            if (
+                !adminMenu.contains(event.target) &&
+                !adminMenuButton.contains(event.target)
+            ) {
+                adminMenu.hidden = true;
+
+                adminMenuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+            }
+        }
+    );
+});
