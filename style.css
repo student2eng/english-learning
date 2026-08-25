@@ -266,7 +266,7 @@ img {
    ======================================== */
 
 .intro-section {
-  padding: 76px 0;
+  padding: 28px 0 76px;
   background: var(--bg);
 }
 
@@ -2039,4 +2039,8 @@ img {
     font-size: 18px;
   }
 
-     }
+  .intro-section {
+    padding: 24px 0 60px;
+  }
+
+}
