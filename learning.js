@@ -63,24 +63,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     // -------------------------------------------------
 
     accountMenuButton.addEventListener(
-        "click",
-        (event) => {
+    "click",
+    (event) => {
 
-            event.stopPropagation();
+        event.stopPropagation();
 
-            const isOpen =
-                !accountMenu.hidden;
+        // Guest → Sign In
+        if (
+            accountMenuButton.dataset.guest ===
+            "true"
+        ) {
 
-            accountMenu.hidden =
-                isOpen;
+            window.location.href =
+                "auth.html";
 
-            accountMenuButton.setAttribute(
-                "aria-expanded",
-                String(!isOpen)
-            );
-
+            return;
         }
-    );
+
+
+        // Student → Account Menu
+        const isOpen =
+            !accountMenu.hidden;
+
+        accountMenu.hidden =
+            isOpen;
+
+        accountMenuButton.setAttribute(
+            "aria-expanded",
+            String(!isOpen)
+        );
+
+    }
+);
 
 
     // -------------------------------------------------
