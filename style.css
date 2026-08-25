@@ -1744,6 +1744,10 @@ img {
     color 0.2s ease;
 }
 
+.account-menu-button[hidden] {
+    display: none !important;
+}
+
 .account-menu-button:hover {
   background: var(--primary-soft);
   color: var(--primary-dark);
