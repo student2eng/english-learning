@@ -300,8 +300,8 @@ const exitLearningLink =
         }
 
         currentUser = user || null;
-        
-        // =================================================
+
+// =================================================
 // Account UI
 // =================================================
 
@@ -313,11 +313,10 @@ if (currentUser) {
     accountMenuButton.dataset.guest =
         "false";
 
-    accountMenuButton.textContent =
-        "Account";
+    accountMenuButton.innerHTML =
+        'Account <span class="account-menu-arrow">▼</span>';
 
-    accountMenu.hidden =
-        true;
+    accountMenu.hidden = true;
 
     accountMenuButton.setAttribute(
         "aria-expanded",
