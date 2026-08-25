@@ -295,6 +295,27 @@ const exitLearningLink =
         }
 
         currentUser = user || null;
+        
+        // =================================================
+// Guest Account UI
+// =================================================
+
+if (!currentUser) {
+
+    accountMenuButton.dataset.guest =
+        "true";
+
+    accountMenuButton.textContent =
+        "Sign In";
+
+    accountMenu.hidden =
+        true;
+
+    accountMenuButton.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+}
 
     } catch (error) {
 
