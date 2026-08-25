@@ -35,6 +35,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             "accountMenuButton"
         );
 
+    const accountMenuContainer =
+    document.getElementById(
+        "accountMenuContainer"
+    );
+
     const accountMenu =
         document.getElementById(
             "accountMenu"
