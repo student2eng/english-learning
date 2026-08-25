@@ -1957,6 +1957,38 @@ img {
   background: var(--primary-soft);
   color: var(--primary);
 }
+.start-card-account .start-card-label {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+/* Start Card Icons */
+.start-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  margin-top: 10px;
+}
+
+.start-card-icon .lucide-icon {
+  width: 32px;
+  height: 32px;
+
+  display: block;
+  stroke-width: 2;
+}
+
+.start-card-guest .start-card-icon {
+  color: var(--success);
+}
+
+.start-card-account .start-card-icon {
+  color: var(--primary);
+}
 
 .start-card h3 {
   margin: 18px 0 10px;
@@ -2043,4 +2075,30 @@ img {
     padding: 24px 0 60px;
   }
 
+}
+.start-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  margin-top: 10px;
+}
+
+.start-card-icon .lucide-icon {
+  width: 32px;
+  height: 32px;
+
+  display: block;
+  stroke-width: 2;
+}
+
+.start-card-guest .start-card-icon {
+  color: var(--success);
+}
+
+.start-card-account .start-card-icon {
+  color: var(--primary);
 }
