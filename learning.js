@@ -223,6 +223,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Learning State
     // =================================================
 
+    // =================================================
+// Exit Learning
+// =================================================
+
+const exitLearningLink =
+    document.querySelector(
+        ".exit-learning"
+    );
     let currentUser = null;
 
     let currentLevel = null;
