@@ -292,6 +292,26 @@ const exitLearningLink =
         currentUser = null;
     }
 
+    // =================================================
+// Exit Learning Destination
+// =================================================
+
+if (exitLearningLink) {
+
+    if (currentUser) {
+
+        // Logged-in student
+        exitLearningLink.href =
+            "dashboard.html";
+
+    } else {
+
+        // Guest
+        exitLearningLink.href =
+            "level.html";
+    }
+}
+
 
     // =================================================
     // Get Current Level
