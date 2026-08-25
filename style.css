@@ -1874,3 +1874,169 @@ img {
   }
 
 }
+/* ========================================
+   Home — Start Options
+   ======================================== */
+
+.start-options {
+  margin-top: 42px;
+}
+
+.start-options-title {
+  margin: 0 0 28px;
+  text-align: center;
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 750;
+}
+
+.start-options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  max-width: 920px;
+  margin-inline: auto;
+}
+
+.start-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  padding: 28px 22px 24px;
+
+  box-shadow: var(--shadow-sm);
+
+  text-align: center;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.start-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.start-card-guest {
+  border-color: rgba(18, 183, 106, 0.18);
+}
+
+.start-card-account {
+  border-color: rgba(79, 70, 229, 0.18);
+}
+
+.start-card-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 36px;
+  padding: 0 14px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.start-card-guest .start-card-label {
+  background: #ecfdf5;
+  color: var(--success);
+}
+
+.start-card-account .start-card-label {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.start-card h3 {
+  margin: 18px 0 10px;
+
+  font-size: 24px;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+  font-weight: 800;
+}
+
+.start-card p {
+  max-width: 360px;
+
+  margin: 0 auto;
+
+  color: var(--text-soft);
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.start-card .btn {
+  width: 100%;
+  margin-top: 22px;
+}
+
+.start-card-guest .btn {
+  background: var(--success);
+  color: #ffffff;
+
+  box-shadow: 0 8px 20px rgba(18, 183, 106, 0.18);
+}
+
+.start-card-guest .btn:hover {
+  background: #0f9f5d;
+}
+
+.start-card-account .btn {
+  background: var(--primary);
+  color: #ffffff;
+
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.20);
+}
+
+.start-card-account .btn:hover {
+  background: var(--primary-dark);
+}
+
+
+/* ========================================
+   Home — Start Options — Tablet/Desktop
+   ======================================== */
+
+@media (min-width: 640px) {
+
+  .start-options-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .start-card {
+    padding: 30px;
+  }
+
+}
+
+
+/* ========================================
+   Home — Start Options — Mobile
+   ======================================== */
+
+@media (max-width: 639px) {
+
+  .start-options {
+    margin-top: 34px;
+  }
+
+  .start-options-title {
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+
+     }
