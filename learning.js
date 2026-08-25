@@ -297,19 +297,34 @@ const exitLearningLink =
         currentUser = user || null;
         
         // =================================================
-// Guest Account UI
+// Account UI
 // =================================================
 
-if (!currentUser) {
+if (currentUser) {
+
+    // Logged-in student
+    accountMenuButton.hidden = false;
 
     accountMenuButton.dataset.guest =
-        "true";
+        "false";
 
     accountMenuButton.textContent =
-        "Sign In";
+        "Account";
 
     accountMenu.hidden =
         true;
+
+    accountMenuButton.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+} else {
+
+    // Guest
+    accountMenuButton.hidden = true;
+
+    accountMenu.hidden = true;
 
     accountMenuButton.setAttribute(
         "aria-expanded",
