@@ -533,7 +533,18 @@ img {
   width: 100%;
   margin-top: auto;
 }
+/* Level Buttons — Green Learning Path */
 
+.level-card .btn-primary {
+  background: var(--success);
+  color: #ffffff;
+
+  box-shadow: 0 8px 20px rgba(18, 183, 106, 0.18);
+}
+
+.level-card .btn-primary:hover {
+  background: #0f9f5d;
+   }
 
 /* ========================================
    Level Selection — Tablet
