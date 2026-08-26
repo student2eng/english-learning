@@ -320,6 +320,42 @@ img {
   box-shadow: var(--shadow-md);
 }
 
+/* Feature Card Icons */
+
+.feature-icon {
+  width: 56px;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 14px;
+
+  color: var(--primary);
+}
+
+.feature-icon .lucide-icon {
+  width: 48px;
+  height: 48px;
+
+  display: block;
+
+  stroke-width: 2;
+}
+
+.feature-icon-level {
+  color: var(--primary);
+}
+
+.feature-icon-learn {
+  color: var(--primary);
+}
+
+.feature-icon-review {
+  color: var(--primary);
+}
+
 .feature-number {
   width: 40px;
   height: 40px;
