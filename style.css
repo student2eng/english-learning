@@ -1331,6 +1331,14 @@ img {
   min-height: 48px;
 }
 
+.guest-review-option {
+  width: min(100%, 300px);
+}
+
+.guest-review-option .btn {
+  width: 100%;
+}
+
 .dashboard-actions .btn-secondary {
   background: #fff;
 }
