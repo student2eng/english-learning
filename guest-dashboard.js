@@ -3,9 +3,10 @@
 // =====================================================
 
 // =====================================================
-// Supabase configuration
+// Supabase Configuration
 // Use the SAME values from auth.js / dashboard.js
 // =====================================================
+
 const SUPABASE_URL =
     "https://azuzgodrxkxhlsekooyc.supabase.co";
 
@@ -24,11 +25,30 @@ const supabaseClient =
 //
 // Guest progress is temporary.
 // No word_progress records are created.
-// Session ends when the browser session ends.
 // =====================================================
 
 const GUEST_SESSION_KEY =
     "english_learning_guest_session";
+
+
+// =====================================================
+// Guest Settings
+// =====================================================
+
+const GUEST_SESSION_SIZE = 20;
+
+
+// =====================================================
+// Valid Levels
+// =====================================================
+
+const VALID_LEVELS = [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1"
+];
 
 
 // =====================================================
@@ -37,11 +57,20 @@ const GUEST_SESSION_KEY =
 
 const LEVEL_NAMES = {
 
-    A1: "A1 — Beginner",
-    A2: "A2 — Elementary",
-    B1: "B1 — Intermediate",
-    B2: "B2 — Upper Intermediate",
-    C1: "C1 — Advanced"
+    A1:
+        "A1 — Beginner",
+
+    A2:
+        "A2 — Elementary",
+
+    B1:
+        "B1 — Intermediate",
+
+    B2:
+        "B2 — Upper Intermediate",
+
+    C1:
+        "C1 — Advanced"
 
 };
 
@@ -59,22 +88,34 @@ function getGuestSession() {
                 GUEST_SESSION_KEY
             );
 
+
         if (!raw) {
+
             return null;
+
         }
 
+
         const session =
-            JSON.parse(raw);
+            JSON.parse(
+                raw
+            );
+
 
         if (
             !session ||
-            !session.level ||
+            !VALID_LEVELS.includes(
+                session.level
+            ) ||
             !Array.isArray(
                 session.words
             )
         ) {
+
             return null;
+
         }
+
 
         return session;
 
@@ -86,7 +127,9 @@ function getGuestSession() {
         );
 
         return null;
+
     }
+
 }
 
 
@@ -100,86 +143,49 @@ function saveGuestSession(
 
     sessionStorage.setItem(
         GUEST_SESSION_KEY,
-        JSON.stringify(session)
+        JSON.stringify(
+            session
+        )
     );
+
 }
 
 
 // =====================================================
-// Initialise Guest Session
+// Create Guest Session
 // =====================================================
 
-async function initialiseGuestSession(
+async function createGuestSession(
     level
 ) {
 
-    const existingSession =
-        getGuestSession();
-
-
     // -------------------------------------------------
-    // Continue the existing session if the level
-    // is the same.
+    // Get published words for selected level
     // -------------------------------------------------
-
-    if (
-        existingSession &&
-        existingSession.level === level
-    ) {
-
-        return existingSession;
-    }
-
-
-    // -------------------------------------------------
-    // New Guest session
-    // -------------------------------------------------
-
-    const session = {
-
-        level,
-
-        words: [],
-
-        stats: {
-
-            mastered: 0,
-
-            unmastered: 0,
-
-            reviewed: 0,
-
-            learned: 0
-
-        }
-
-    };
-
-
-    // =================================================
-    // Get published words from Word Library
-    // =================================================
 
     const {
         data,
         error
-    } = await supabaseClient
-        .from("words")
-        .select(
-            "id, created_at"
-        )
-        .eq(
-            "level",
-            level
-        )
-        .eq(
-            "status",
-            "published"
-        );
+    } =
+        await supabaseClient
+            .from("words")
+            .select(
+                "id, created_at"
+            )
+            .eq(
+                "level",
+                level
+            )
+            .eq(
+                "status",
+                "published"
+            );
 
 
     if (error) {
+
         throw error;
+
     }
 
 
@@ -208,16 +214,22 @@ async function initialiseGuestSession(
 
 
     // -------------------------------------------------
-    // Guest session starts with 20 new words.
+    // Create temporary Guest word pool
     // -------------------------------------------------
 
-    const initialWords =
-        availableWords
-            .slice(
-                0,
-                20
-            )
-            .map(
+    const selectedWords =
+        availableWords.slice(
+            0,
+            GUEST_SESSION_SIZE
+        );
+
+
+    const session = {
+
+        level,
+
+        words:
+            selectedWords.map(
                 word => ({
 
                     word_id:
@@ -227,11 +239,25 @@ async function initialiseGuestSession(
                         "new"
 
                 })
-            );
+            ),
 
+        stats: {
 
-    session.words =
-        initialWords;
+            mastered:
+                0,
+
+            unmastered:
+                0,
+
+            reviewed:
+                0,
+
+            learned:
+                0
+
+        }
+
+    };
 
 
     saveGuestSession(
@@ -240,6 +266,117 @@ async function initialiseGuestSession(
 
 
     return session;
+
+}
+
+
+// =====================================================
+// Get Or Create Guest Session
+// =====================================================
+
+async function getOrCreateGuestSession(
+    level
+) {
+
+    const existingSession =
+        getGuestSession();
+
+
+    // -------------------------------------------------
+    // Continue current session if same level
+    // -------------------------------------------------
+
+    if (
+        existingSession &&
+        existingSession.level === level
+    ) {
+
+        return existingSession;
+
+    }
+
+
+    // -------------------------------------------------
+    // New level = new Guest session
+    // -------------------------------------------------
+
+    return await createGuestSession(
+        level
+    );
+
+}
+
+
+// =====================================================
+// Calculate Guest Statistics
+// =====================================================
+
+function calculateGuestStats(
+    session
+) {
+
+    const words =
+        Array.isArray(
+            session.words
+        )
+            ? session.words
+            : [];
+
+
+    const mastered =
+        words.filter(
+            word =>
+                word.status ===
+                "mastered"
+        ).length;
+
+
+    const unmastered =
+        words.filter(
+            word =>
+                word.status ===
+                "unmastered"
+        ).length;
+
+
+    const newWords =
+        words.filter(
+            word =>
+                word.status ===
+                "new"
+        ).length;
+
+
+    const learned =
+        mastered +
+        unmastered;
+
+
+    return {
+
+        newWords,
+
+        mastered,
+
+        unmastered,
+
+        dueReviews:
+            0,
+
+        reviewWords:
+            0,
+
+        totalWords:
+            learned,
+
+        sessionWords:
+            learned,
+
+        todayWords:
+            learned
+
+    };
+
 }
 
 
@@ -251,9 +388,9 @@ function renderGuestDashboard(
     session
 ) {
 
-    // -------------------------------------------------
+    // =================================================
     // Level
-    // -------------------------------------------------
+    // =================================================
 
     const dashboardLevel =
         document.getElementById(
@@ -261,7 +398,9 @@ function renderGuestDashboard(
         );
 
 
-    if (dashboardLevel) {
+    if (
+        dashboardLevel
+    ) {
 
         dashboardLevel.textContent =
             LEVEL_NAMES[
@@ -272,127 +411,185 @@ function renderGuestDashboard(
     }
 
 
-    // -------------------------------------------------
-    // Guest Words
-    // -------------------------------------------------
+    // =================================================
+    // Statistics
+    // =================================================
 
-    const words =
-        Array.isArray(
-            session.words
-        )
-            ? session.words
-            : [];
-
-
-    // -------------------------------------------------
-    // Mastered
-    // -------------------------------------------------
-
-    const mastered =
-        words.filter(
-            word =>
-                word.status ===
-                "mastered"
-        ).length;
-
-
-    // -------------------------------------------------
-    // Unmastered
-    // -------------------------------------------------
-
-    const unmastered =
-        words.filter(
-            word =>
-                word.status ===
-                "unmastered"
-        ).length;
-
-
-    // -------------------------------------------------
-    // New Words
-    // -------------------------------------------------
-
-    const newWords =
-        words.filter(
-            word =>
-                word.status ===
-                "new"
-        ).length;
-
-
-    // -------------------------------------------------
-    // Words Learned
-    // -------------------------------------------------
-
-    const learned =
-        mastered +
-        unmastered;
-
-
-    // -------------------------------------------------
-    // Guest Reviews
-    //
-    // Guest does not have a Review system.
-    // -------------------------------------------------
-
-    const dueReviews = 0;
-
-    const reviewWords = 0;
+    const stats =
+        calculateGuestStats(
+            session
+        );
 
 
     // =================================================
-    // Dashboard Values
+    // Dashboard Elements
     // =================================================
 
-    const values = {
+    const elements = {
 
-        newWords,
+        newWords:
+            document.getElementById(
+                "newWords"
+            ),
 
         unmasteredWords:
-            unmastered,
+            document.getElementById(
+                "unmasteredWords"
+            ),
 
-        dueReviews,
+        dueReviews:
+            document.getElementById(
+                "dueReviews"
+            ),
 
         masteredWords:
-            mastered,
+            document.getElementById(
+                "masteredWords"
+            ),
 
         totalWords:
-            learned,
+            document.getElementById(
+                "totalWords"
+            ),
 
         sessionWords:
-            learned,
+            document.getElementById(
+                "sessionWords"
+            ),
 
         todayWords:
-            learned,
+            document.getElementById(
+                "todayWords"
+            ),
 
-        reviewWords
+        reviewWords:
+            document.getElementById(
+                "reviewWords"
+            )
 
     };
 
 
     // =================================================
-    // Update Dashboard
+    // Update Values
     // =================================================
 
-    Object.entries(
-        values
-    ).forEach(
-        (
-            [id, value]
-        ) => {
+    if (
+        elements.newWords
+    ) {
 
-            const element =
-                document.getElementById(
-                    id
-                );
+        elements.newWords.textContent =
+            stats.newWords;
+
+    }
 
 
-            if (element) {
+    if (
+        elements.unmasteredWords
+    ) {
 
-                element.textContent =
-                    value;
+        elements.unmasteredWords.textContent =
+            stats.unmastered;
 
-            }
+    }
+
+
+    if (
+        elements.dueReviews
+    ) {
+
+        elements.dueReviews.textContent =
+            stats.dueReviews;
+
+    }
+
+
+    if (
+        elements.masteredWords
+    ) {
+
+        elements.masteredWords.textContent =
+            stats.mastered;
+
+    }
+
+
+    if (
+        elements.totalWords
+    ) {
+
+        elements.totalWords.textContent =
+            stats.totalWords;
+
+    }
+
+
+    if (
+        elements.sessionWords
+    ) {
+
+        elements.sessionWords.textContent =
+            stats.sessionWords;
+
+    }
+
+
+    if (
+        elements.todayWords
+    ) {
+
+        elements.todayWords.textContent =
+            stats.todayWords;
+
+    }
+
+
+    if (
+        elements.reviewWords
+    ) {
+
+        elements.reviewWords.textContent =
+            stats.reviewWords;
+
+    }
+
+
+    // =================================================
+    // Start Learning Button
+    // =================================================
+
+    const startLearningButton =
+        document.getElementById(
+            "startLearningButton"
+        );
+
+
+    if (
+        startLearningButton
+    ) {
+
+        startLearningButton.href =
+            `guest-learning.html?level=${encodeURIComponent(
+                session.level
+            )}`;
+
+    }
+
+
+    // =================================================
+    // Debug
+    // =================================================
+
+    console.log(
+        "Guest Dashboard:",
+        {
+
+            level:
+                session.level,
+
+            stats,
+
+            session
 
         }
     );
@@ -401,7 +598,7 @@ function renderGuestDashboard(
 
 
 // =====================================================
-// Guest Dashboard Page
+// Page Initialization
 // =====================================================
 
 document.addEventListener(
@@ -411,7 +608,7 @@ document.addEventListener(
         try {
 
             // =================================================
-            // Get Level from URL
+            // Get Level
             // =================================================
 
             const params =
@@ -430,26 +627,11 @@ document.addEventListener(
 
 
             // =================================================
-            // Valid Guest Levels
+            // Validate Level
             // =================================================
 
-            const validLevels = [
-
-                "A1",
-                "A2",
-                "B1",
-                "B2",
-                "C1"
-
-            ];
-
-
-            // -------------------------------------------------
-            // Invalid / missing level
-            // -------------------------------------------------
-
             if (
-                !validLevels.includes(
+                !VALID_LEVELS.includes(
                     level
                 )
             ) {
@@ -459,63 +641,26 @@ document.addEventListener(
                 );
 
                 return;
+
             }
 
 
             // =================================================
-            // Initialise Session
+            // Get / Create Session
             // =================================================
 
             const session =
-                await initialiseGuestSession(
+                await getOrCreateGuestSession(
                     level
                 );
 
 
             // =================================================
-            // Render Dashboard
+            // Render
             // =================================================
 
             renderGuestDashboard(
                 session
-            );
-
-
-            // =================================================
-            // Start Learning Button
-            // =================================================
-
-            const startLearningButton =
-                document.getElementById(
-                    "startLearningButton"
-                );
-
-
-            if (
-                startLearningButton
-            ) {
-
-                startLearningButton.href =
-                    `guest-learning.html?level=${encodeURIComponent(
-                        level
-                    )}`;
-
-            }
-
-
-            // =================================================
-            // Debug
-            // =================================================
-
-            console.log(
-                "Guest Dashboard:",
-                {
-
-                    level,
-
-                    session
-
-                }
             );
 
 
@@ -526,11 +671,6 @@ document.addEventListener(
                 error
             );
 
-
-            // -------------------------------------------------
-            // Return to Level page if the Guest session
-            // cannot be initialised.
-            // -------------------------------------------------
 
             window.location.replace(
                 "level.html"
