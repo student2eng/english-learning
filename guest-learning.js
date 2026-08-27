@@ -4,7 +4,6 @@
 
 // =====================================================
 // Supabase Configuration
-// Use the SAME values from auth.js / dashboard.js
 // =====================================================
 
 const SUPABASE_URL =
@@ -22,13 +21,13 @@ const supabaseClient =
 
 // =====================================================
 // Guest Session
-//
-// Guest progress is temporary.
-// No word_progress records are created.
 // =====================================================
 
 const GUEST_SESSION_KEY =
     "english_learning_guest_session";
+
+const GUEST_SESSION_SIZE =
+    20;
 
 
 // =====================================================
@@ -37,13 +36,35 @@ const GUEST_SESSION_KEY =
 
 const LEVEL_NAMES = {
 
-    A1: "A1 — Beginner",
-    A2: "A2 — Elementary",
-    B1: "B1 — Intermediate",
-    B2: "B2 — Upper Intermediate",
-    C1: "C1 — Advanced"
+    A1:
+        "A1 — Beginner",
+
+    A2:
+        "A2 — Elementary",
+
+    B1:
+        "B1 — Intermediate",
+
+    B2:
+        "B2 — Upper Intermediate",
+
+    C1:
+        "C1 — Advanced"
 
 };
+
+
+// =====================================================
+// Valid Levels
+// =====================================================
+
+const VALID_LEVELS = [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1"
+];
 
 
 // =====================================================
@@ -130,16 +151,23 @@ document.addEventListener(
 
 
         // =================================================
-        // Learning State
+        // State
         // =================================================
 
-        let currentLevel = null;
+        let currentLevel =
+            null;
 
-        let words = [];
+        let words =
+            [];
 
-        let currentIndex = 0;
+        let currentIndex =
+            0;
 
-        let isSaving = false;
+        let isSaving =
+            false;
+
+        let guestSession =
+            null;
 
 
         // =================================================
@@ -171,7 +199,9 @@ document.addEventListener(
 
                 if (
                     !session ||
-                    !session.level ||
+                    !VALID_LEVELS.includes(
+                        session.level
+                    ) ||
                     !Array.isArray(
                         session.words
                     )
@@ -213,7 +243,7 @@ document.addEventListener(
 
 
         // =================================================
-        // URL Parameters
+        // URL Level
         // =================================================
 
         const params =
@@ -231,32 +261,21 @@ document.addEventListener(
             ).toUpperCase();
 
 
-        const validLevels = [
-
-            "A1",
-            "A2",
-            "B1",
-            "B2",
-            "C1"
-
-        ];
-
-
         // =================================================
-        // Get Existing Guest Session
+        // Get Guest Session
         // =================================================
 
-        let guestSession =
+        guestSession =
             getGuestSession();
 
 
-        // -------------------------------------------------
-        // Existing session
-        // -------------------------------------------------
+        // =================================================
+        // Validate / Determine Level
+        // =================================================
 
         if (
             guestSession &&
-            validLevels.includes(
+            VALID_LEVELS.includes(
                 guestSession.level
             )
         ) {
@@ -264,15 +283,8 @@ document.addEventListener(
             currentLevel =
                 guestSession.level;
 
-        }
-
-
-        // -------------------------------------------------
-        // New session from URL
-        // -------------------------------------------------
-
-        else if (
-            validLevels.includes(
+        } else if (
+            VALID_LEVELS.includes(
                 levelFromURL
             )
         ) {
@@ -280,23 +292,27 @@ document.addEventListener(
             currentLevel =
                 levelFromURL;
 
-
             guestSession = {
 
                 level:
                     currentLevel,
 
-                words: [],
+                words:
+                    [],
 
                 stats: {
 
-                    mastered: 0,
+                    mastered:
+                        0,
 
-                    unmastered: 0,
+                    unmastered:
+                        0,
 
-                    reviewed: 0,
+                    reviewed:
+                        0,
 
-                    learned: 0
+                    learned:
+                        0
 
                 }
 
@@ -307,14 +323,7 @@ document.addEventListener(
                 guestSession
             );
 
-        }
-
-
-        // -------------------------------------------------
-        // No valid level
-        // -------------------------------------------------
-
-        else {
+        } else {
 
             window.location.replace(
                 "level.html"
@@ -329,7 +338,9 @@ document.addEventListener(
         // Display Level
         // =================================================
 
-        if (learningLevel) {
+        if (
+            learningLevel
+        ) {
 
             learningLevel.textContent =
                 LEVEL_NAMES[
@@ -341,7 +352,7 @@ document.addEventListener(
 
 
         // =================================================
-        // Load Learning Session
+        // Load Guest Learning Session
         // =================================================
 
         try {
@@ -349,7 +360,9 @@ document.addEventListener(
             await loadGuestLearningSession();
 
 
-            if (!words.length) {
+            if (
+                !words.length
+            ) {
 
                 showMessage(
                     "No words are currently available for this level.",
@@ -365,6 +378,7 @@ document.addEventListener(
 
 
             renderWord();
+
 
         } catch (error) {
 
@@ -382,8 +396,6 @@ document.addEventListener(
                 )}`
             );
 
-            return;
-
         }
 
 
@@ -393,33 +405,38 @@ document.addEventListener(
 
         async function loadGuestLearningSession() {
 
+            // =================================================
+            // Get Published Words
+            // =================================================
+
             const {
                 data: libraryWords,
                 error
-            } = await supabaseClient
-                .from("words")
-                .select(
-                    `
-                    id,
-                    created_at,
-                    word,
-                    level,
-                    part_of_speech,
-                    pronunciation,
-                    meaning,
-                    example,
-                    image_url,
-                    status
-                    `
-                )
-                .eq(
-                    "level",
-                    currentLevel
-                )
-                .eq(
-                    "status",
-                    "published"
-                );
+            } =
+                await supabaseClient
+                    .from("words")
+                    .select(
+                        `
+                        id,
+                        created_at,
+                        word,
+                        level,
+                        part_of_speech,
+                        pronunciation,
+                        meaning,
+                        example,
+                        image_url,
+                        status
+                        `
+                    )
+                    .eq(
+                        "level",
+                        currentLevel
+                    )
+                    .eq(
+                        "status",
+                        "published"
+                    );
 
 
             if (error) {
@@ -434,21 +451,8 @@ document.addEventListener(
 
 
             // =================================================
-            // Check Existing Session Words
+            // Build Word Map
             // =================================================
-
-            const sessionWordIds =
-                Array.isArray(
-                    guestSession?.words
-                )
-                    ? guestSession.words
-                        .map(
-                            item =>
-                                item.word_id
-                        )
-                        .filter(Boolean)
-                    : [];
-
 
             const wordMap =
                 new Map();
@@ -466,6 +470,19 @@ document.addEventListener(
             );
 
 
+            // =================================================
+            // Existing Guest Word Pool
+            // =================================================
+
+            const sessionWordIds =
+                guestSession.words
+                    .map(
+                        item =>
+                            item.word_id
+                    )
+                    .filter(Boolean);
+
+
             let sessionWords =
                 sessionWordIds
                     .map(
@@ -478,7 +495,7 @@ document.addEventListener(
 
 
             // =================================================
-            // Create Initial Guest Session
+            // Create Word Pool if Needed
             // =================================================
 
             if (
@@ -489,7 +506,7 @@ document.addEventListener(
                     [...availableWords];
 
 
-                // Oldest words first
+                // Oldest first
                 sessionWords.sort(
                     (a, b) => {
 
@@ -506,11 +523,11 @@ document.addEventListener(
                 );
 
 
-                // Guest session = 20 new words
+                // Maximum 20 words
                 sessionWords =
                     sessionWords.slice(
                         0,
-                        20
+                        GUEST_SESSION_SIZE
                     );
 
 
@@ -530,13 +547,17 @@ document.addEventListener(
 
                 guestSession.stats = {
 
-                    mastered: 0,
+                    mastered:
+                        0,
 
-                    unmastered: 0,
+                    unmastered:
+                        0,
 
-                    reviewed: 0,
+                    reviewed:
+                        0,
 
-                    learned: 0
+                    learned:
+                        0
 
                 };
 
@@ -549,7 +570,7 @@ document.addEventListener(
 
 
             // =================================================
-            // Preserve Word Order
+            // Keep Session Word Order
             // =================================================
 
             words =
@@ -559,7 +580,7 @@ document.addEventListener(
 
 
         // =================================================
-        // Render Current Word
+        // Render Word
         // =================================================
 
         function renderWord() {
@@ -654,7 +675,6 @@ document.addEventListener(
             dontKnowButton.disabled =
                 false;
 
-
             gotItButton.disabled =
                 false;
 
@@ -664,7 +684,8 @@ document.addEventListener(
             // -------------------------------------------------
 
             const currentWord =
-                currentIndex + 1;
+                currentIndex +
+                1;
 
 
             const totalWords =
@@ -708,7 +729,9 @@ document.addEventListener(
                 getGuestSession();
 
 
-            if (!currentSession) {
+            if (
+                !currentSession
+            ) {
 
                 return;
 
@@ -729,7 +752,7 @@ document.addEventListener(
 
 
             // -------------------------------------------------
-            // Find word in Guest session
+            // Find Current Word
             // -------------------------------------------------
 
             const sessionWord =
@@ -740,7 +763,9 @@ document.addEventListener(
                 );
 
 
-            if (sessionWord) {
+            if (
+                sessionWord
+            ) {
 
                 sessionWord.status =
                     status;
@@ -761,7 +786,7 @@ document.addEventListener(
 
 
             // =================================================
-            // Recalculate Guest Statistics
+            // Recalculate Statistics
             // =================================================
 
             const mastered =
@@ -782,11 +807,16 @@ document.addEventListener(
 
             currentSession.stats = {
 
-                mastered,
+                mastered:
 
-                unmastered,
+                    mastered,
 
-                reviewed: 0,
+                unmastered:
+
+                    unmastered,
+
+                reviewed:
+                    0,
 
                 learned:
                     mastered +
@@ -795,16 +825,15 @@ document.addEventListener(
             };
 
 
-            // -------------------------------------------------
-            // Save temporary session
-            // -------------------------------------------------
+            // =================================================
+            // Save
+            // =================================================
 
             saveGuestSession(
                 currentSession
             );
 
 
-            // Keep local reference current
             guestSession =
                 currentSession;
 
@@ -819,7 +848,9 @@ document.addEventListener(
             "click",
             async () => {
 
-                if (isSaving) {
+                if (
+                    isSaving
+                ) {
 
                     return;
 
@@ -845,6 +876,7 @@ document.addEventListener(
 
 
                     nextWord();
+
 
                 } catch (error) {
 
@@ -878,7 +910,9 @@ document.addEventListener(
             "click",
             async () => {
 
-                if (isSaving) {
+                if (
+                    isSaving
+                ) {
 
                     return;
 
@@ -903,12 +937,12 @@ document.addEventListener(
                     );
 
 
-                    // Reveal meaning and example
                     initialActions.hidden =
                         true;
 
                     wordReveal.hidden =
                         false;
+
 
                 } catch (error) {
 
@@ -942,7 +976,9 @@ document.addEventListener(
             "click",
             () => {
 
-                if (isSaving) {
+                if (
+                    isSaving
+                ) {
 
                     return;
 
@@ -1022,7 +1058,8 @@ document.addEventListener(
 
             if (
                 currentIndex <
-                words.length - 1
+                words.length -
+                1
             ) {
 
                 currentIndex++;
@@ -1099,7 +1136,9 @@ document.addEventListener(
             buttonHref
         ) {
 
-            if (!wordCard) {
+            if (
+                !wordCard
+            ) {
 
                 return;
 
