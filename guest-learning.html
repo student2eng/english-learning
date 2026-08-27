@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Guest Learning | English Learning</title>
+
+    <meta
+        name="description"
+        content="Try English vocabulary learning as a Guest with a temporary learning session."
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="learning-page">
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+
+            <a href="index.html" class="brand">
+                English Learning
+            </a>
+
+            <div class="account-menu" id="accountMenuContainer">
+
+                <a
+                    href="auth.html"
+                    class="account-menu-button guest-sign-in"
+                >
+                    Sign In
+                </a>
+
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- Guest Learning Page -->
+    <main>
+
+        <div class="container learning-container">
+
+            <!-- Exit Learning -->
+            <a href="guest-dashboard.html" class="exit-learning">
+                ← Exit Learning
+            </a>
+
+
+            <!-- Learning Heading -->
+            <section class="learning-heading">
+
+                <p class="eyebrow" id="learningLevel">
+                    —
+                </p>
+
+                <h1>
+                    English Vocabulary Learning
+                </h1>
+
+
+                <!-- Progress -->
+                <div class="learning-progress">
+
+                    <div class="progress-meta">
+
+                        <span id="progressText">
+                            Word 1 of 20
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="progress-track"
+                        role="progressbar"
+                        aria-valuemin="0"
+                        aria-valuemax="20"
+                        aria-valuenow="1"
+                        aria-label="Learning progress"
+                    >
+
+                        <div
+                            id="progressBar"
+                            class="progress-fill"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Word Card -->
+            <section
+                class="word-card"
+                id="wordCard"
+                aria-live="polite"
+            >
+
+                <!-- Word Image -->
+                <div class="word-image-wrap">
+
+                    <div
+                        class="word-image-placeholder"
+                        id="wordImage"
+                        aria-label="Word image"
+                    >
+                        Image
+                    </div>
+
+                </div>
+
+
+                <!-- Word -->
+                <h2
+                    class="word-title"
+                    id="wordText"
+                >
+                    Loading...
+                </h2>
+
+
+                <!-- Listen -->
+                <button
+                    type="button"
+                    class="listen-button"
+                    id="listenButton"
+                >
+                    <span aria-hidden="true">🔊</span>
+                    Listen
+                </button>
+
+
+                <!-- Initial Actions -->
+                <div
+                    class="word-actions"
+                    id="initialActions"
+                >
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="dontKnowButton"
+                    >
+                        I Don't Know
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="knowButton"
+                    >
+                        I Know ✓
+                    </button>
+
+                </div>
+
+
+                <!-- Meaning + Example -->
+                <div
+                    class="word-reveal"
+                    id="wordReveal"
+                    hidden
+                >
+
+                    <div class="meaning-block">
+
+                        <h3>
+                            Meaning
+                        </h3>
+
+                        <p id="meaningText"></p>
+
+                    </div>
+
+
+                    <div class="example-block">
+
+                        <h3>
+                            Example
+                        </h3>
+
+                        <p id="exampleText"></p>
+
+                    </div>
+
+
+                    <!-- Got It -->
+                    <button
+                        type="button"
+                        class="btn btn-primary got-it-button"
+                        id="gotItButton"
+                    >
+                        Got It →
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Guest Learning JavaScript -->
+    <script src="guest-learning.js"></script>
+
+</body>
+</html>
