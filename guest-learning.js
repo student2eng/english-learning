@@ -98,7 +98,22 @@ document.addEventListener(
             document.getElementById(
                 "wordImage"
             );
+        
+const wordStatusBadge =
+    document.getElementById(
+        "wordStatusBadge"
+    );
 
+const wordStatusIcon =
+    document.getElementById(
+        "wordStatusIcon"
+    );
+
+const wordStatusText =
+    document.getElementById(
+        "wordStatusText"
+    );
+        
         const meaningText =
             document.getElementById(
                 "meaningText"
