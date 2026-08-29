@@ -612,7 +612,72 @@ const wordStatusText =
 
             }
 
+// =================================================
+// Word Status Badge
+// Guest:
+// New
+// Unmastered
+// No Due Review
+// =================================================
 
+let wordStatus = "";
+let wordStatusIconValue = "";
+
+if (item.progress) {
+
+    if (
+        item.progress.status ===
+        "unmastered"
+    ) {
+
+        wordStatus =
+            "Unmastered";
+
+        wordStatusIconValue =
+            "⚠️";
+
+    } else {
+
+        wordStatus =
+            "New";
+
+        wordStatusIconValue =
+            "✨";
+
+    }
+
+} else {
+
+    wordStatus =
+        "New";
+
+    wordStatusIconValue =
+        "✨";
+
+}
+
+
+// =================================================
+// Render Badge
+// =================================================
+
+if (
+    wordStatusBadge &&
+    wordStatusIcon &&
+    wordStatusText
+) {
+
+    wordStatusBadge.hidden =
+        false;
+
+    wordStatusIcon.textContent =
+        wordStatusIconValue;
+
+    wordStatusText.textContent =
+        wordStatus;
+
+        }
+            
             // -------------------------------------------------
             // Word
             // -------------------------------------------------
