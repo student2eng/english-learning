@@ -1124,7 +1124,7 @@ if (!item.progress) {
 
     // New
     wordStatus = "New";
-    statusIcon = "🆕";
+    statusIcon = "⭐";
 
 } else if (
     item.progress.status === "unmastered"
