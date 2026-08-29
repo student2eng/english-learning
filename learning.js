@@ -1105,7 +1105,53 @@ const wordPartOfSpeech =
 
             wordText.textContent =
                 item.word;
+            
+// -------------------------------------------------
+// Pronunciation + Part of Speech
+// -------------------------------------------------
 
+const pronunciation =
+    item.pronunciation ||
+    "";
+
+const partOfSpeech =
+    item.part_of_speech ||
+    "";
+
+if (
+    wordPronunciation &&
+    wordPartOfSpeech &&
+    wordMeta
+) {
+
+    wordPronunciation.textContent =
+        pronunciation;
+
+    wordPartOfSpeech.textContent =
+        partOfSpeech;
+
+    const separator =
+        wordMeta.querySelector(
+            ".word-meta-separator"
+        );
+
+    if (separator) {
+
+        separator.hidden =
+            !(
+                pronunciation &&
+                partOfSpeech
+            );
+
+    }
+
+    wordMeta.hidden =
+        !(
+            pronunciation ||
+            partOfSpeech
+        );
+
+}
 
             // -------------------------------------------------
             // Meaning
