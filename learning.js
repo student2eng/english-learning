@@ -1113,6 +1113,79 @@ const wordStatusText =
                 return;
             }
 
+    // -------------------------------------------------
+// Word Status Badge
+// -------------------------------------------------
+
+let wordStatus = "";
+let wordStatusIcon = "";
+
+if (!item.progress) {
+
+    // New
+    wordStatus = "New";
+    wordStatusIcon = "✨";
+
+} else if (
+    item.progress.status ===
+    "unmastered"
+) {
+
+    // Unmastered
+    wordStatus = "Unmastered";
+    wordStatusIcon = "↻";
+
+} else if (
+    item.progress.status ===
+        "mastered" &&
+    item.progress.next_review &&
+    new Date(
+        item.progress.next_review
+    ) <= new Date()
+) {
+
+    // Due Review
+    wordStatus = "Due Review";
+    wordStatusIcon = "🔄";
+
+}
+
+
+// -------------------------------------------------
+// Render Badge
+// -------------------------------------------------
+
+if (
+    wordStatusBadge &&
+    wordStatusIcon &&
+    wordStatusText
+) {
+
+    if (wordStatus) {
+
+        wordStatusBadge.hidden =
+            false;
+
+        wordStatusIcon.textContent =
+            wordStatusIcon;
+
+        wordStatusText.textContent =
+            wordStatus;
+
+    } else {
+
+        wordStatusBadge.hidden =
+            true;
+
+        wordStatusIcon.textContent =
+            "";
+
+        wordStatusText.textContent =
+            "";
+
+    }
+
+    }
 
             // -------------------------------------------------
             // Word
