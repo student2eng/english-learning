@@ -639,7 +639,7 @@ sessionWords =
 
 words =
     sessionWords;
-
+        }
 
         // =================================================
         // Render Word
