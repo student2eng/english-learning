@@ -1572,13 +1572,24 @@ img {
 
     cursor: pointer;
 
-    margin-bottom: 20px;
+    margin-bottom: 32px;
 }
 
 .listen-button:hover {
     background: #f8f8ff;
 }
 
+/* Pronunciation + Part of Speech */
+
+.word-meta {
+    margin-top: -16px;
+    margin-bottom: 24px;
+
+    color: #667085;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+}
 
 /* I Know / I Don't Know */
 
