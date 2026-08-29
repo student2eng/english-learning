@@ -205,7 +205,20 @@ document.addEventListener(
             document.getElementById(
                 "wordImage"
             );
+const wordMeta =
+    document.getElementById(
+        "wordMeta"
+    );
 
+const wordPronunciation =
+    document.getElementById(
+        "wordPronunciation"
+    );
+
+const wordPartOfSpeech =
+    document.getElementById(
+        "wordPartOfSpeech"
+    );
 
         const meaningText =
             document.getElementById(
