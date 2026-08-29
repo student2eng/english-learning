@@ -640,14 +640,6 @@ let sessionWords =
 // New
 // Unmastered
 // No Due Review
-// =================================================
-
-// =================================================
-// Word Status Badge
-// Guest:
-// New
-// Unmastered
-// No Due Review
 // Mastered → No Badge
 // =================================================
 
