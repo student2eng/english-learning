@@ -927,31 +927,31 @@ if (
 ) {
 
     if (
-        status ===
-        "unmastered"
-    ) {
+    status ===
+    "unmastered"
+) {
 
-        wordStatusBadge.hidden =
-            false;
+    wordStatusBadge.hidden =
+        false;
 
-        wordStatusIcon.textContent =
-            "⚠️";
+    wordStatusIcon.textContent =
+        "🔄";
 
-        wordStatusText.textContent =
-            "Unmastered";
+    wordStatusText.textContent =
+        "Unmastered";
 
-    } else {
+} else {
 
-        wordStatusBadge.hidden =
-            false;
+    wordStatusBadge.hidden =
+        false;
 
-        wordStatusIcon.textContent =
-            "✨";
+    wordStatusIcon.textContent =
+        "⭐";
 
-        wordStatusText.textContent =
-            "New";
+    wordStatusText.textContent =
+        "New";
 
-    }
+}
 
 }
 
