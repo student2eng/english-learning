@@ -490,23 +490,45 @@ const wordStatusText =
             // =================================================
 
             const sessionWordIds =
-                guestSession.words
-                    .map(
-                        item =>
-                            item.word_id
-                    )
-                    .filter(Boolean);
+    guestSession.words
+        .map(
+            item =>
+                item.word_id
+        )
+        .filter(Boolean);
 
 
-            let sessionWords =
-                sessionWordIds
-                    .map(
-                        id =>
-                            wordMap.get(
-                                id
-                            )
-                    )
-                    .filter(Boolean);
+let sessionWords =
+    guestSession.words
+        .map(
+            sessionItem => {
+
+                const word =
+                    wordMap.get(
+                        sessionItem.word_id
+                    );
+
+                if (!word) {
+                    return null;
+                }
+
+                return {
+
+                    ...word,
+
+                    progress: {
+
+                        status:
+                            sessionItem.status ||
+                            "new"
+
+                    }
+
+                };
+
+            }
+        )
+        .filter(Boolean);
 
 
             // =================================================
