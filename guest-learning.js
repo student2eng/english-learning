@@ -660,7 +660,7 @@ if (
         "Unmastered";
 
     wordStatusIconValue =
-        "⚠️";
+        "🔄";
 
 } else if (
     guestWordStatus ===
@@ -671,7 +671,7 @@ if (
         "New";
 
     wordStatusIconValue =
-        "✨";
+        "⭐";
 
 }
 
