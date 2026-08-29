@@ -1113,40 +1113,36 @@ const wordStatusText =
                 return;
             }
 
-    // -------------------------------------------------
+// -------------------------------------------------
 // Word Status Badge
 // -------------------------------------------------
 
 let wordStatus = "";
-let wordStatusIcon = "";
+let statusIcon = "";
 
 if (!item.progress) {
 
     // New
     wordStatus = "New";
-    wordStatusIcon = "✨";
+    statusIcon = "🆕";
 
 } else if (
-    item.progress.status ===
-    "unmastered"
+    item.progress.status === "unmastered"
 ) {
 
     // Unmastered
     wordStatus = "Unmastered";
-    wordStatusIcon = "↻";
+    statusIcon = "🔄";
 
 } else if (
-    item.progress.status ===
-        "mastered" &&
+    item.progress.status === "mastered" &&
     item.progress.next_review &&
-    new Date(
-        item.progress.next_review
-    ) <= new Date()
+    new Date(item.progress.next_review) <= new Date()
 ) {
 
-    // Due Review
-    wordStatus = "Due Review";
-    wordStatusIcon = "🔄";
+    // Due Reviews
+    wordStatus = "Due Reviews";
+    statusIcon = "📅";
 
 }
 
@@ -1163,29 +1159,24 @@ if (
 
     if (wordStatus) {
 
-        wordStatusBadge.hidden =
-            false;
+        wordStatusBadge.hidden = false;
 
         wordStatusIcon.textContent =
-            wordStatusIcon;
+            statusIcon;
 
         wordStatusText.textContent =
             wordStatus;
 
     } else {
 
-        wordStatusBadge.hidden =
-            true;
+        wordStatusBadge.hidden = true;
 
-        wordStatusIcon.textContent =
-            "";
-
-        wordStatusText.textContent =
-            "";
+        wordStatusIcon.textContent = "";
+        wordStatusText.textContent = "";
 
     }
 
-    }
+}
 
             // -------------------------------------------------
             // Word
