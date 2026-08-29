@@ -642,33 +642,38 @@ let sessionWords =
 // No Due Review
 // =================================================
 
+// =================================================
+// Word Status Badge
+// Guest:
+// New
+// Unmastered
+// No Due Review
+// Mastered → No Badge
+// =================================================
+
 let wordStatus = "";
 let wordStatusIconValue = "";
 
-if (item.progress) {
+const guestWordStatus =
+    item.progress?.status ||
+    "new";
 
-    if (
-        item.progress.status ===
-        "unmastered"
-    ) {
 
-        wordStatus =
-            "Unmastered";
+if (
+    guestWordStatus ===
+    "unmastered"
+) {
 
-        wordStatusIconValue =
-            "⚠️";
+    wordStatus =
+        "Unmastered";
 
-    } else {
+    wordStatusIconValue =
+        "⚠️";
 
-        wordStatus =
-            "New";
-
-        wordStatusIconValue =
-            "✨";
-
-    }
-
-} else {
+} else if (
+    guestWordStatus ===
+    "new"
+) {
 
     wordStatus =
         "New";
@@ -689,16 +694,33 @@ if (
     wordStatusText
 ) {
 
-    wordStatusBadge.hidden =
-        false;
+    if (
+        wordStatus
+    ) {
 
-    wordStatusIcon.textContent =
-        wordStatusIconValue;
+        wordStatusBadge.hidden =
+            false;
 
-    wordStatusText.textContent =
-        wordStatus;
+        wordStatusIcon.textContent =
+            wordStatusIconValue;
 
-        }
+        wordStatusText.textContent =
+            wordStatus;
+
+    } else {
+
+        wordStatusBadge.hidden =
+            true;
+
+        wordStatusIcon.textContent =
+            "";
+
+        wordStatusText.textContent =
+            "";
+
+    }
+
+}
             
             // -------------------------------------------------
             // Word
