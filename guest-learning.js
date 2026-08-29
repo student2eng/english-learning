@@ -485,11 +485,11 @@ const wordStatusText =
             );
 
 
-            // =================================================
-            // Existing Guest Word Pool
-            // =================================================
+    // =================================================
+// Existing Guest Word Pool
+// =================================================
 
-            const sessionWordIds =
+const sessionWordIds =
     guestSession.words
         .map(
             item =>
@@ -497,6 +497,85 @@ const wordStatusText =
         )
         .filter(Boolean);
 
+
+// =================================================
+// Create Word Pool if Needed
+// =================================================
+
+if (
+    !sessionWordIds.length
+) {
+
+    let newSessionWords =
+        [...availableWords];
+
+
+    // Oldest first
+    newSessionWords.sort(
+        (a, b) => {
+
+            return (
+                new Date(
+                    a.created_at
+                ) -
+                new Date(
+                    b.created_at
+                )
+            );
+
+        }
+    );
+
+
+    // Maximum 20 words
+    newSessionWords =
+        newSessionWords.slice(
+            0,
+            GUEST_SESSION_SIZE
+        );
+
+
+    guestSession.words =
+        newSessionWords.map(
+            word => ({
+
+                word_id:
+                    word.id,
+
+                status:
+                    "new"
+
+            })
+        );
+
+
+    guestSession.stats = {
+
+        mastered:
+            0,
+
+        unmastered:
+            0,
+
+        reviewed:
+            0,
+
+        learned:
+            0
+
+    };
+
+
+    saveGuestSession(
+        guestSession
+    );
+
+}
+
+
+// =================================================
+// Build Current Session Words
+// =================================================
 
 let sessionWords =
     guestSession.words
@@ -508,9 +587,13 @@ let sessionWords =
                         sessionItem.word_id
                     );
 
+
                 if (!word) {
+
                     return null;
+
                 }
+
 
                 return {
 
@@ -531,89 +614,31 @@ let sessionWords =
         .filter(Boolean);
 
 
-            // =================================================
-            // Create Word Pool if Needed
-            // =================================================
+// =================================================
+// Guest Learning Filter
+// =================================================
+// Guest Learning shows only:
+// ⭐ New
+// 🔄 Unmastered
+//
+// Mastered words remain stored in the Guest Session
+// for statistics, but are not shown again.
+// =================================================
 
-            if (
-                !sessionWords.length
-            ) {
-
-                sessionWords =
-                    [...availableWords];
-
-
-                // Oldest first
-                sessionWords.sort(
-                    (a, b) => {
-
-                        return (
-                            new Date(
-                                a.created_at
-                            ) -
-                            new Date(
-                                b.created_at
-                            )
-                        );
-
-                    }
-                );
+sessionWords =
+    sessionWords.filter(
+        word =>
+            word.progress?.status !==
+            "mastered"
+    );
 
 
-                // Maximum 20 words
-                sessionWords =
-                    sessionWords.slice(
-                        0,
-                        GUEST_SESSION_SIZE
-                    );
+// =================================================
+// Keep Session Word Order
+// =================================================
 
-
-                guestSession.words =
-                    sessionWords.map(
-                        word => ({
-
-                            word_id:
-                                word.id,
-
-                            status:
-                                "new"
-
-                        })
-                    );
-
-
-                guestSession.stats = {
-
-                    mastered:
-                        0,
-
-                    unmastered:
-                        0,
-
-                    reviewed:
-                        0,
-
-                    learned:
-                        0
-
-                };
-
-
-                saveGuestSession(
-                    guestSession
-                );
-
-            }
-
-
-            // =================================================
-            // Keep Session Word Order
-            // =================================================
-
-            words =
-                sessionWords;
-
-        }
+words =
+    sessionWords;
 
 
         // =================================================
