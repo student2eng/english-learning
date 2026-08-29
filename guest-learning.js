@@ -866,25 +866,80 @@ if (
 
 
             if (
-                sessionWord
-            ) {
+    sessionWord
+) {
 
-                sessionWord.status =
-                    status;
+    sessionWord.status =
+        status;
 
-            } else {
+} else {
 
-                currentSession.words.push({
+    currentSession.words.push({
 
-                    word_id:
-                        item.id,
+        word_id:
+            item.id,
 
-                    status:
-                        status
+        status:
+            status
 
-                });
+    });
 
-            }
+}
+
+
+// =================================================
+// Keep Current Word Status Updated
+// Used by the Word Status Badge
+// =================================================
+
+item.progress = {
+
+    ...(item.progress || {}),
+
+    status:
+        status
+
+};
+
+
+// =================================================
+// Update Guest Word Status Badge
+// =================================================
+
+if (
+    wordStatusBadge &&
+    wordStatusIcon &&
+    wordStatusText
+) {
+
+    if (
+        status ===
+        "unmastered"
+    ) {
+
+        wordStatusBadge.hidden =
+            false;
+
+        wordStatusIcon.textContent =
+            "⚠️";
+
+        wordStatusText.textContent =
+            "Unmastered";
+
+    } else {
+
+        wordStatusBadge.hidden =
+            false;
+
+        wordStatusIcon.textContent =
+            "✨";
+
+        wordStatusText.textContent =
+            "New";
+
+    }
+
+}
 
 
             // =================================================
