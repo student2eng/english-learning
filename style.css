@@ -2165,3 +2165,44 @@ img {
 .start-card-account .start-card-icon {
   color: var(--primary);
 }
+
+/* =========================================
+   Word Status Badge
+   ========================================= */
+
+.word-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    min-height: 30px;
+    padding: 0 10px;
+
+    margin-bottom: 12px;
+
+    background: #f8f9fc;
+    color: #475467;
+
+    border: 1px solid #e4e7ec;
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+
+    white-space: nowrap;
+}
+
+.word-status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+    line-height: 1;
+}
+
+.word-status-badge[hidden] {
+    display: none !important;
+}
