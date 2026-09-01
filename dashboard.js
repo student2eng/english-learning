@@ -6,8 +6,8 @@
 // Supabase configuration
 // Use the SAME values from auth.js
 // =====================================================
-const SUPABASE_URL = "https://azuzgodrxkxhlsekooyc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
+const SUPABASE_URL = "0000000";
+const SUPABASE_KEY = "0000000";
 
 // Create Supabase client
 const supabaseClient = window.supabase.createClient(
@@ -24,9 +24,6 @@ async function loadProgressStats(userId) {
 
     try {
 
-        // -------------------------------------------------
-        // Get user's word progress
-        // -------------------------------------------------
         const {
             data: progressRows,
             error: progressError
@@ -40,18 +37,8 @@ async function loadProgressStats(userId) {
         }
 
         const rows = progressRows || [];
-
-
-        // -------------------------------------------------
-        // Current local date and time
-        // -------------------------------------------------
         const now = new Date();
 
-
-        // -------------------------------------------------
-        // Today
-        // 00:00:00 → 23:59:59
-        // -------------------------------------------------
         const startOfToday = new Date(
             now.getFullYear(),
             now.getMonth(),
@@ -64,11 +51,6 @@ async function loadProgressStats(userId) {
             now.getDate() + 1
         );
 
-
-        // -------------------------------------------------
-        // This Week
-        // Sunday → Saturday
-        // -------------------------------------------------
         const dayOfWeek = now.getDay();
 
         const startOfWeek = new Date(
@@ -83,11 +65,6 @@ async function loadProgressStats(userId) {
             startOfWeek.getDate() + 7
         );
 
-
-        // -------------------------------------------------
-        // This Month
-        // First day → last day
-        // -------------------------------------------------
         const startOfMonth = new Date(
             now.getFullYear(),
             now.getMonth(),
@@ -100,20 +77,11 @@ async function loadProgressStats(userId) {
             1
         );
 
-
-        // -------------------------------------------------
-        // Total Words
-        // -------------------------------------------------
         const totalWords = rows.length;
 
-
-        // -------------------------------------------------
-        // Review counts
-        // -------------------------------------------------
         let todayWords = 0;
         let weekWords = 0;
         let monthWords = 0;
-
 
         rows.forEach(row => {
 
@@ -121,12 +89,9 @@ async function loadProgressStats(userId) {
                 return;
             }
 
-
             const lastReview =
                 new Date(row.last_review);
 
-
-            // Today
             if (
                 lastReview >= startOfToday &&
                 lastReview < startOfTomorrow
@@ -134,8 +99,6 @@ async function loadProgressStats(userId) {
                 todayWords++;
             }
 
-
-            // This Week
             if (
                 lastReview >= startOfWeek &&
                 lastReview < startOfNextWeek
@@ -143,8 +106,6 @@ async function loadProgressStats(userId) {
                 weekWords++;
             }
 
-
-            // This Month
             if (
                 lastReview >= startOfMonth &&
                 lastReview < startOfNextMonth
@@ -154,10 +115,6 @@ async function loadProgressStats(userId) {
 
         });
 
-
-        // -------------------------------------------------
-        // Update Dashboard
-        // -------------------------------------------------
         const totalWordsElement =
             document.getElementById("totalWords");
 
@@ -169,7 +126,6 @@ async function loadProgressStats(userId) {
 
         const monthWordsElement =
             document.getElementById("monthWords");
-
 
         if (totalWordsElement) {
             totalWordsElement.textContent =
@@ -191,10 +147,6 @@ async function loadProgressStats(userId) {
                 monthWords;
         }
 
-
-        // -------------------------------------------------
-        // Debug
-        // -------------------------------------------------
         console.log(
             "Learning progress:",
             {
@@ -204,7 +156,6 @@ async function loadProgressStats(userId) {
                 monthWords
             }
         );
-
 
     } catch (error) {
 
@@ -228,10 +179,6 @@ async function loadContinueLearningStats(
 
     try {
 
-        // =================================================
-        // Get user's word progress
-        // =================================================
-
         const {
             data: progressRows,
             error: progressError
@@ -245,19 +192,12 @@ async function loadContinueLearningStats(
                 userId
             );
 
-
         if (progressError) {
             throw progressError;
         }
 
-
         const progress =
             progressRows || [];
-
-
-        // =================================================
-        // Count Unmastered
-        // =================================================
 
         const totalUnmastered =
             progress.filter(
@@ -266,11 +206,6 @@ async function loadContinueLearningStats(
                     "unmastered"
             ).length;
 
-
-        // =================================================
-        // Count Mastered
-        // =================================================
-
         const totalMastered =
             progress.filter(
                 row =>
@@ -278,14 +213,8 @@ async function loadContinueLearningStats(
                     "mastered"
             ).length;
 
-
-        // =================================================
-        // Count Due Reviews
-        // =================================================
-
         const now =
             new Date();
-
 
         const totalDueReviews =
             progress.filter(row => {
@@ -297,11 +226,9 @@ async function loadContinueLearningStats(
                     return false;
                 }
 
-
                 if (!row.next_review) {
                     return false;
                 }
-
 
                 return (
                     new Date(
@@ -311,23 +238,10 @@ async function loadContinueLearningStats(
 
             }).length;
 
-
-        // =================================================
-        // Get New Words available in Word Library
-        //
-        // Rules:
-        // - Same level as student
-        // - published only
-        // - not previously studied
-        // - not currently Unmastered
-        // - not in Review / Mastered
-        // =================================================
-
         const progressWordIds =
             progress
                 .map(row => row.word_id)
                 .filter(Boolean);
-
 
         let newWordsQuery =
             supabaseClient
@@ -344,12 +258,6 @@ async function loadContinueLearningStats(
                     "published"
                 );
 
-
-        // -------------------------------------------------
-        // If the student has progress records,
-        // exclude all words already studied.
-        // -------------------------------------------------
-
         if (
             progressWordIds.length > 0
         ) {
@@ -362,30 +270,17 @@ async function loadContinueLearningStats(
                 );
         }
 
-
         const {
             data: availableNewRows,
             error: newWordsError
         } = await newWordsQuery;
 
-
         if (newWordsError) {
             throw newWordsError;
         }
 
-
         const availableNewWords =
             availableNewRows || [];
-
-
-        // =================================================
-        // New Words calculation
-        //
-        // 20 − Total Unmastered
-        //
-        // Then limited by the number of
-        // New Words actually available.
-        // =================================================
 
         const newWordsLimit =
             Math.max(
@@ -393,17 +288,11 @@ async function loadContinueLearningStats(
                 20 - totalUnmastered
             );
 
-
         const totalNewWords =
             Math.min(
                 newWordsLimit,
                 availableNewWords.length
             );
-
-
-        // =================================================
-        // Update Dashboard
-        // =================================================
 
         const newWordsElement =
             document.getElementById(
@@ -425,38 +314,25 @@ async function loadContinueLearningStats(
                 "masteredWords"
             );
 
-
         if (newWordsElement) {
-
             newWordsElement.textContent =
                 totalNewWords;
         }
 
-
         if (unmasteredElement) {
-
             unmasteredElement.textContent =
                 totalUnmastered;
         }
 
-
         if (dueReviewsElement) {
-
             dueReviewsElement.textContent =
                 totalDueReviews;
         }
 
-
         if (masteredElement) {
-
             masteredElement.textContent =
                 totalMastered;
         }
-
-
-        // =================================================
-        // Debug
-        // =================================================
 
         console.log(
             "Continue Learning:",
@@ -471,7 +347,6 @@ async function loadContinueLearningStats(
                 totalMastered
             }
         );
-
 
     } catch (error) {
 
@@ -491,8 +366,45 @@ document.addEventListener(
     async () => {
 
         // =================================================
+        // Subscription Guard
+        // =================================================
+
+        const subscriptionResult =
+            await window.subscriptionGuardReady;
+
+        if (
+            !subscriptionResult ||
+            subscriptionResult.allowed !== true
+        ) {
+
+            console.error(
+                "Dashboard access denied by Subscription Guard:",
+                subscriptionResult
+            );
+
+            return;
+        }
+
+        // =================================================
+        // Authenticated User
+        // =================================================
+
+        const user =
+            subscriptionResult.user;
+
+        if (!user) {
+
+            console.error(
+                "Dashboard: authenticated user is missing from Subscription Guard result."
+            );
+
+            return;
+        }
+
+        // =================================================
         // Dashboard elements
         // =================================================
+
         const dashboardTitle =
             document.getElementById(
                 "dashboard-title"
@@ -503,57 +415,12 @@ document.addEventListener(
                 "dashboardLevel"
             );
 
+        // =================================================
+        // Get user profile
+        // =================================================
 
-        // =================================================
-        // Page Guard
-        // Dashboard requires an active student session
-        // =================================================
         try {
 
-            const {
-                data: { user },
-                error: authError
-            } = await supabaseClient.auth.getUser();
-
-
-            // -------------------------------------------------
-            // Authentication check error
-            // -------------------------------------------------
-            if (authError) {
-
-                console.error(
-                    "Dashboard authentication error:",
-                    authError
-                );
-
-                window.location.replace(
-                    "auth.html"
-                );
-
-                return;
-            }
-
-
-            // -------------------------------------------------
-            // No active session
-            // -------------------------------------------------
-            if (!user) {
-
-                console.log(
-                    "Dashboard access denied: no active session."
-                );
-
-                window.location.replace(
-                    "auth.html"
-                );
-
-                return;
-            }
-
-
-            // =================================================
-            // Get user profile
-            // =================================================
             const {
                 data: profile,
                 error: profileError
@@ -568,32 +435,20 @@ document.addEventListener(
                 )
                 .single();
 
-
             if (profileError) {
-
                 throw profileError;
             }
 
-
-            // =================================================
-            // Display Name
-            // =================================================
             const displayName =
                 profile?.display_name ||
                 user.user_metadata?.display_name ||
                 "Learner";
 
-
             if (dashboardTitle) {
-
                 dashboardTitle.textContent =
                     `Welcome back, ${displayName}!`;
             }
 
-
-            // =================================================
-            // English Level
-            // =================================================
             const levelNames = {
 
                 A1: "A1 — Beginner",
@@ -604,40 +459,25 @@ document.addEventListener(
 
             };
 
-
             const level =
                 profile?.level || "";
 
-
             if (dashboardLevel) {
-
                 dashboardLevel.textContent =
                     levelNames[level] ||
                     level ||
                     "—";
             }
 
-
-            // =================================================
-            // Load Your Progress
-            // =================================================
             await loadProgressStats(
                 user.id
             );
 
-
-            // =================================================
-            // Load Continue Learning
-            // =================================================
             await loadContinueLearningStats(
                 user.id,
                 level
             );
 
-
-            // =================================================
-            // Debug
-            // =================================================
             console.log(
                 "Dashboard user:",
                 user
@@ -648,7 +488,6 @@ document.addEventListener(
                 profile
             );
 
-
         } catch (error) {
 
             console.error(
@@ -656,10 +495,6 @@ document.addEventListener(
                 error
             );
 
-            // -------------------------------------------------
-            // If the page cannot verify the account,
-            // return to Auth.
-            // -------------------------------------------------
             window.location.replace(
                 "auth.html"
             );
@@ -668,6 +503,7 @@ document.addEventListener(
 
     }
 );
+
 
 // =====================================================
 // Account Dropdown Menu
@@ -691,10 +527,6 @@ document.addEventListener(
                 "accountLogoutButton"
             );
 
-
-        // -------------------------------------------------
-        // Check Account Menu
-        // -------------------------------------------------
         if (
             !accountMenuButton ||
             !accountMenu
@@ -702,10 +534,6 @@ document.addEventListener(
             return;
         }
 
-
-        // =================================================
-        // Open / Close Account Menu
-        // =================================================
         accountMenuButton.addEventListener(
             "click",
             (event) => {
@@ -726,10 +554,6 @@ document.addEventListener(
             }
         );
 
-
-        // =================================================
-        // Close Menu When Clicking Outside
-        // =================================================
         document.addEventListener(
             "click",
             (event) => {
@@ -755,10 +579,6 @@ document.addEventListener(
             }
         );
 
-
-        // =================================================
-        // Student Log Out
-        // =================================================
         if (accountLogoutButton) {
 
             accountLogoutButton.addEventListener(
@@ -773,7 +593,6 @@ document.addEventListener(
                         accountLogoutButton.textContent =
                             "Logging out...";
 
-
                         const {
                             error
                         } =
@@ -781,17 +600,13 @@ document.addEventListener(
                                 .auth
                                 .signOut();
 
-
                         if (error) {
                             throw error;
                         }
 
-
-                        // Redirect to Auth
                         window.location.replace(
                             "auth.html"
                         );
-
 
                     } catch (error) {
 
@@ -799,7 +614,6 @@ document.addEventListener(
                             "Account logout error:",
                             error
                         );
-
 
                         accountLogoutButton.disabled =
                             false;
