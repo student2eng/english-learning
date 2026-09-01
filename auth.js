@@ -3,8 +3,8 @@
 // =====================================================
 
 // Supabase configuration
-const SUPABASE_URL = "https://azuzgodrxkxhlsekooyc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
+const SUPABASE_URL = "0000000";
+const SUPABASE_KEY = "000000000";
 
 // Create Supabase client
 const supabaseClient = window.supabase.createClient(
@@ -20,7 +20,7 @@ console.log("Supabase client:", supabaseClient);
 // DOM Ready
 // =====================================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
     // -------------------------------------------------
     // Forms
@@ -66,12 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 selectedLevel.value = level;
             }
 
-            // Remove selected state
             levelOptions.forEach((item) => {
                 item.classList.remove("selected");
             });
 
-            // Add selected state
             option.classList.add("selected");
 
         });
@@ -80,118 +78,242 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =================================================
+    // Activate Trial
+    // =================================================
+
+    async function activateTrial() {
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient.functions.invoke(
+                "activate-trial"
+            );
+
+            if (error) {
+                console.error(
+                    "activate-trial error:",
+                    error
+                );
+
+                return {
+                    success: false,
+                    error: error
+                };
+            }
+
+
+            console.log(
+                "activate-trial result:",
+                data
+            );
+
+
+            return {
+                success: true,
+                data: data
+            };
+
+
+        } catch (error) {
+
+            console.error(
+                "activate-trial request error:",
+                error
+            );
+
+            return {
+                success: false,
+                error: error
+            };
+
+        }
+
+    }
+
+
+    // =================================================
     // Login
     // =================================================
 
     if (loginForm) {
 
-        loginForm.addEventListener("submit", async (event) => {
+        loginForm.addEventListener(
+            "submit",
+            async (event) => {
 
-            event.preventDefault();
+                event.preventDefault();
 
-            clearMessage(loginMessage);
-
-            const emailInput =
-                loginForm.querySelector('input[type="email"]');
-
-            const passwordInput =
-                loginForm.querySelector('input[type="password"]');
+                clearMessage(loginMessage);
 
 
-            const email = emailInput
-                ? emailInput.value.trim()
-                : "";
+                const emailInput =
+                    loginForm.querySelector(
+                        'input[type="email"]'
+                    );
 
-            const password = passwordInput
-                ? passwordInput.value
-                : "";
-
-
-            if (!email || !password) {
-
-                showMessage(
-                    loginMessage,
-                    "Please enter your email and password.",
-                    "error"
-                );
-
-                return;
-            }
+                const passwordInput =
+                    loginForm.querySelector(
+                        'input[type="password"]'
+                    );
 
 
-            // Disable button
-            if (loginSubmit) {
-                loginSubmit.disabled = true;
-                loginSubmit.textContent = "Signing in...";
-            }
+                const email = emailInput
+                    ? emailInput.value.trim()
+                    : "";
+
+                const password = passwordInput
+                    ? passwordInput.value
+                    : "";
 
 
-            try {
+                if (!email || !password) {
 
-                const { data, error } =
-                    await supabaseClient.auth.signInWithPassword({
-                        email: email,
-                        password: password
-                    });
+                    showMessage(
+                        loginMessage,
+                        "Please enter your email and password.",
+                        "error"
+                    );
 
-
-                if (error) {
-                    throw error;
+                    return;
                 }
 
-
-                console.log("Login successful:", data);
-
-
-                showMessage(
-                    loginMessage,
-                    "Login successful.",
-                    "success"
-                );
-
-
-            // Redirect based on user role
-setTimeout(() => {
-
-    const role =
-        data?.user?.app_metadata?.role;
-
-    if (role === "admin") {
-
-        window.location.href =
-            "admin-dashboard.html";
-
-    } else {
-
-        window.location.href =
-            "dashboard.html";
-
-    }
-
-}, 800);
-
-
-            } catch (error) {
-
-                console.error("Login error:", error);
-
-
-                showMessage(
-                    loginMessage,
-                    getAuthErrorMessage(error),
-                    "error"
-                );
-
-            } finally {
 
                 if (loginSubmit) {
-                    loginSubmit.disabled = false;
-                    loginSubmit.textContent = "Sign In";
+                    loginSubmit.disabled = true;
+                    loginSubmit.textContent = "Signing in...";
+                }
+
+
+                try {
+
+                    // ---------------------------------------------
+                    // Sign in
+                    // ---------------------------------------------
+
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient.auth.signInWithPassword({
+                            email: email,
+                            password: password
+                        });
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    console.log(
+                        "Login successful:",
+                        data
+                    );
+
+
+                    // ---------------------------------------------
+                    // Check user role
+                    // ---------------------------------------------
+
+                    const role =
+                        data?.user?.app_metadata?.role;
+
+
+                    // ---------------------------------------------
+                    // Admin
+                    // ---------------------------------------------
+
+                    if (role === "admin") {
+
+                        showMessage(
+                            loginMessage,
+                            "Login successful.",
+                            "success"
+                        );
+
+
+                        setTimeout(() => {
+
+                            window.location.href =
+                                "admin-dashboard.html";
+
+                        }, 800);
+
+                        return;
+                    }
+
+
+                    // ---------------------------------------------
+                    // Student
+                    // Activate trial
+                    // ---------------------------------------------
+
+                    const trialResult =
+                        await activateTrial();
+
+
+                    if (!trialResult.success) {
+
+                        showMessage(
+                            loginMessage,
+                            "We could not activate or verify your trial. Please try again.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    showMessage(
+                        loginMessage,
+                        "Login successful.",
+                        "success"
+                    );
+
+
+                    // ---------------------------------------------
+                    // Redirect student
+                    // ---------------------------------------------
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "dashboard.html";
+
+                    }, 800);
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+
+                    showMessage(
+                        loginMessage,
+                        getAuthErrorMessage(error),
+                        "error"
+                    );
+
+
+                } finally {
+
+                    if (loginSubmit) {
+
+                        loginSubmit.disabled = false;
+                        loginSubmit.textContent = "Sign In";
+
+                    }
+
                 }
 
             }
-
-        });
+        );
 
     }
 
@@ -202,215 +324,360 @@ setTimeout(() => {
 
     if (signupForm) {
 
-        signupForm.addEventListener("submit", async (event) => {
+        signupForm.addEventListener(
+            "submit",
+            async (event) => {
 
-            event.preventDefault();
+                event.preventDefault();
 
-            clearMessage(signupMessage);
-
-
-            // Find fields
-            const nameInput =
-                signupForm.querySelector(
-                    'input[name="display_name"], input[name="name"], input[type="text"]'
-                );
-
-            const emailInput =
-                signupForm.querySelector(
-                    'input[type="email"]'
-                );
-
-            const passwordInput =
-                signupForm.querySelector(
-                    'input[type="password"]'
-                );
+                clearMessage(signupMessage);
 
 
-            const displayName = nameInput
-                ? nameInput.value.trim()
-                : "";
+                // ---------------------------------------------
+                // Find fields
+                // ---------------------------------------------
 
-            const email = emailInput
-                ? emailInput.value.trim()
-                : "";
+                const nameInput =
+                    signupForm.querySelector(
+                        'input[name="display_name"], input[name="name"], input[type="text"]'
+                    );
 
-            const password = passwordInput
-                ? passwordInput.value
-                : "";
+                const emailInput =
+                    signupForm.querySelector(
+                        'input[type="email"]'
+                    );
 
-            const level =
-                selectedLevel
-                    ? selectedLevel.value
-                    : "";
-
-
-            // -------------------------------------------------
-            // Validation
-            // -------------------------------------------------
+                const passwordInput =
+                    signupForm.querySelector(
+                        'input[type="password"]'
+                    );
 
 
-            if (!email) {
+                const displayName =
+                    nameInput
+                        ? nameInput.value.trim()
+                        : "";
 
-                showMessage(
-                    signupMessage,
-                    "Please enter your email address.",
-                    "error"
-                );
+                const email =
+                    emailInput
+                        ? emailInput.value.trim()
+                        : "";
 
-                return;
-            }
+                const password =
+                    passwordInput
+                        ? passwordInput.value
+                        : "";
 
-
-            if (!password) {
-
-                showMessage(
-                    signupMessage,
-                    "Please enter a password.",
-                    "error"
-                );
-
-                return;
-            }
+                const level =
+                    selectedLevel
+                        ? selectedLevel.value
+                        : "";
 
 
-            if (!level) {
+                // ---------------------------------------------
+                // Validation
+                // ---------------------------------------------
 
-                showMessage(
-                    signupMessage,
-                    "Please choose your English level.",
-                    "error"
-                );
+                if (!email) {
 
-                return;
-            }
+                    showMessage(
+                        signupMessage,
+                        "Please enter your email address.",
+                        "error"
+                    );
 
-
-            // -------------------------------------------------
-            // Disable button
-            // -------------------------------------------------
-
-            if (signupSubmit) {
-                signupSubmit.disabled = true;
-                signupSubmit.textContent = "Creating account...";
-            }
-
-
-            try {
-
-                // -------------------------------------------------
-                // Create Supabase Auth account
-                // -------------------------------------------------
-
-                const { data, error } =
-                    await supabaseClient.auth.signUp({
-
-                        email: email,
-
-                        password: password,
-
-                        options: {
-                            data: {
-                                display_name: displayName,
-                                level: level
-                            }
-                        }
-
-                    });
-
-
-                if (error) {
-                    throw error;
+                    return;
                 }
 
 
-                console.log(
-                    "Signup successful:",
-                    data
-                );
+                if (!password) {
 
+                    showMessage(
+                        signupMessage,
+                        "Please enter a password.",
+                        "error"
+                    );
 
-                // -------------------------------------------------
-                // Email confirmation
-                // -------------------------------------------------
-
-                if (
-    data.user &&
-    !data.session
-) {
-showMessage(
-    signupMessage,
-    "Account created. Please check your email to confirm your account.",
-    "success"
-);
-
-// Clear signup form
-signupForm.reset();
-
-if (selectedLevel) {
-    selectedLevel.value = "";
-}
-
-// Remove selected level styling
-levelOptions.forEach((option) => {
-    option.classList.remove("active", "selected");
-});
-
-// Hide signup section
-const signupSection = document.getElementById("signup-section");
-const showSignupBtn = document.getElementById("show-signup-btn");
-
-if (signupSection) {
-    signupSection.style.display = "none";
-}
-
-if (showSignupBtn) {
-    showSignupBtn.style.display = "block";
-}
-
-return;
+                    return;
                 }
 
-                // -------------------------------------------------
-                // Account created and session available
-                // -------------------------------------------------
 
-                showMessage(
-                    signupMessage,
-                    "Account created successfully.",
-                    "success"
-                );
+                if (!level) {
 
+                    showMessage(
+                        signupMessage,
+                        "Please choose your English level.",
+                        "error"
+                    );
 
-                // Temporary redirect
-                setTimeout(() => {
-                    window.location.href = "dashboard.html";
-                }, 800);
+                    return;
+                }
 
 
-            } catch (error) {
-
-                console.error(
-                    "Signup error:",
-                    error
-                );
-
-
-                showMessage(
-                    signupMessage,
-                    getAuthErrorMessage(error),
-                    "error"
-                );
-
-            } finally {
+                // ---------------------------------------------
+                // Disable button
+                // ---------------------------------------------
 
                 if (signupSubmit) {
-                    signupSubmit.disabled = false;
-                    signupSubmit.textContent = "Create Account";
+
+                    signupSubmit.disabled = true;
+                    signupSubmit.textContent =
+                        "Creating account...";
+
+                }
+
+
+                try {
+
+                    // ---------------------------------------------
+                    // Create Supabase Auth account
+                    // ---------------------------------------------
+
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient.auth.signUp({
+
+                            email: email,
+
+                            password: password,
+
+                            options: {
+
+                                data: {
+                                    display_name:
+                                        displayName,
+
+                                    level:
+                                        level
+                                }
+
+                            }
+
+                        });
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    console.log(
+                        "Signup successful:",
+                        data
+                    );
+
+
+                    // ---------------------------------------------
+                    // Email confirmation required
+                    // ---------------------------------------------
+
+                    if (
+                        data.user &&
+                        !data.session
+                    ) {
+
+                        showMessage(
+                            signupMessage,
+                            "Account created. Please check your email to confirm your account.",
+                            "success"
+                        );
+
+
+                        signupForm.reset();
+
+
+                        if (selectedLevel) {
+                            selectedLevel.value = "";
+                        }
+
+
+                        levelOptions.forEach(
+                            (option) => {
+
+                                option.classList.remove(
+                                    "active",
+                                    "selected"
+                                );
+
+                            }
+                        );
+
+
+                        const signupSection =
+                            document.getElementById(
+                                "signup-section"
+                            );
+
+                        const showSignupBtn =
+                            document.getElementById(
+                                "show-signup-btn"
+                            );
+
+
+                        if (signupSection) {
+                            signupSection.style.display =
+                                "none";
+                        }
+
+
+                        if (showSignupBtn) {
+                            showSignupBtn.style.display =
+                                "block";
+                        }
+
+
+                        return;
+                    }
+
+
+                    // ---------------------------------------------
+                    // Account created + session available
+                    // ---------------------------------------------
+
+                    const trialResult =
+                        await activateTrial();
+
+
+                    if (!trialResult.success) {
+
+                        showMessage(
+                            signupMessage,
+                            "Account created, but we could not activate or verify your trial. Please try signing in again.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    showMessage(
+                        signupMessage,
+                        "Account created successfully.",
+                        "success"
+                    );
+
+
+                    // ---------------------------------------------
+                    // Redirect
+                    // ---------------------------------------------
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "dashboard.html";
+
+                    }, 800);
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Signup error:",
+                        error
+                    );
+
+
+                    showMessage(
+                        signupMessage,
+                        getAuthErrorMessage(error),
+                        "error"
+                    );
+
+
+                } finally {
+
+                    if (signupSubmit) {
+
+                        signupSubmit.disabled = false;
+                        signupSubmit.textContent =
+                            "Create Account";
+
+                    }
+
                 }
 
             }
+        );
 
-        });
+    }
+
+
+    // =================================================
+    // Existing Session Check
+    // =================================================
+    // Handles cases where the user already has a valid
+    // session, including returning after email confirmation.
+    // =================================================
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.getSession();
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        const session =
+            data?.session;
+
+
+        if (session?.user) {
+
+            const role =
+                session.user.app_metadata?.role;
+
+
+            // ---------------------------------------------
+            // Admin
+            // ---------------------------------------------
+
+            if (role === "admin") {
+
+                window.location.href =
+                    "admin-dashboard.html";
+
+                return;
+            }
+
+
+            // ---------------------------------------------
+            // Student
+            // ---------------------------------------------
+
+            const trialResult =
+                await activateTrial();
+
+
+            if (trialResult.success) {
+
+                console.log(
+                    "Existing session trial check completed."
+                );
+
+            } else {
+
+                console.error(
+                    "Existing session trial activation failed."
+                );
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Existing session check error:",
+            error
+        );
 
     }
 
@@ -419,21 +686,32 @@ return;
     // Helper Functions
     // =================================================
 
-    function showMessage(element, message, type) {
+    function showMessage(
+        element,
+        message,
+        type
+    ) {
 
         if (!element) return;
 
-        element.textContent = message;
-        element.style.display = "block";
+        element.textContent =
+            message;
+
+        element.style.display =
+            "block";
 
         element.classList.remove(
             "success",
             "error"
         );
 
-        element.classList.add(type);
+        element.classList.add(
+            type
+        );
 
-        element.hidden = false;
+        element.hidden =
+            false;
+
     }
 
 
@@ -441,22 +719,31 @@ return;
 
         if (!element) return;
 
-        element.textContent = "";
-        element.style.display = "none";
+        element.textContent =
+            "";
+
+        element.style.display =
+            "none";
 
         element.classList.remove(
             "success",
             "error"
         );
 
-        element.hidden = true;
+        element.hidden =
+            true;
+
     }
 
 
     function getAuthErrorMessage(error) {
 
         if (!error) {
-            return "Something went wrong. Please try again.";
+
+            return (
+                "Something went wrong. Please try again."
+            );
+
         }
 
 
@@ -464,46 +751,66 @@ return;
             error.message || "";
 
 
-        // Common Supabase errors
+        const lowerMessage =
+            message.toLowerCase();
+
 
         if (
-            message.toLowerCase().includes(
+            lowerMessage.includes(
                 "invalid login credentials"
             )
         ) {
-            return "Incorrect email or password.";
+
+            return (
+                "Incorrect email or password."
+            );
+
         }
 
 
         if (
-            message.toLowerCase().includes(
+            lowerMessage.includes(
                 "user already registered"
             )
         ) {
-            return "An account with this email already exists.";
+
+            return (
+                "An account with this email already exists."
+            );
+
         }
 
 
         if (
-            message.toLowerCase().includes(
+            lowerMessage.includes(
                 "password should be at least"
             )
         ) {
-            return "Your password is too short.";
+
+            return (
+                "Your password is too short."
+            );
+
         }
 
 
         if (
-            message.toLowerCase().includes(
+            lowerMessage.includes(
                 "email not confirmed"
             )
         ) {
-            return "Please confirm your email before signing in.";
+
+            return (
+                "Please confirm your email before signing in."
+            );
+
         }
 
 
-        return message ||
-            "Something went wrong. Please try again.";
+        return (
+            message ||
+            "Something went wrong. Please try again."
+        );
 
     }
 
