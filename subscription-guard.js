@@ -182,10 +182,16 @@ async function checkSubscriptionAccess() {
             // -------------------------------------------------
 
             window.currentSubscription =
-                data;
+    {
+        ...data,
+        user
+    };
 
 
-            return data;
+return {
+    ...data,
+    user
+};
 
         }
 
