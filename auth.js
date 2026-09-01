@@ -3,8 +3,8 @@
 // =====================================================
 
 // Supabase configuration
-const SUPABASE_URL = "0000000";
-const SUPABASE_KEY = "000000000";
+const SUPABASE_URL = "https://azuzgodrxkxhlsekooyc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
 
 // Create Supabase client
 const supabaseClient = window.supabase.createClient(
