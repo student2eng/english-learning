@@ -30,6 +30,45 @@ document.addEventListener(
     async () => {
 
         // =================================================
+        // Shared Subscription Guard
+        // =================================================
+
+        const subscriptionResult =
+            await window.subscriptionGuardReady;
+
+
+        if (
+            !subscriptionResult ||
+            !subscriptionResult.allowed
+        ) {
+
+            console.error(
+                "Learning access denied by Subscription Guard."
+            );
+
+            return;
+
+        }
+
+
+        const currentUser =
+            subscriptionResult.user;
+
+
+        if (
+            !currentUser
+        ) {
+
+            console.error(
+                "Learning page: authenticated user is missing."
+            );
+
+            return;
+
+        }
+
+
+        // =================================================
         // Account Dropdown Menu
         // =================================================
 
@@ -38,10 +77,12 @@ document.addEventListener(
                 "accountMenuButton"
             );
 
+
         const accountMenu =
             document.getElementById(
                 "accountMenu"
             );
+
 
         const accountLogoutButton =
             document.getElementById(
@@ -205,36 +246,44 @@ document.addEventListener(
             document.getElementById(
                 "wordImage"
             );
-const wordMeta =
-    document.getElementById(
-        "wordMeta"
-    );
 
-const wordPronunciation =
-    document.getElementById(
-        "wordPronunciation"
-    );
 
-const wordPartOfSpeech =
-    document.getElementById(
-        "wordPartOfSpeech"
-    );
-        
-const wordStatusBadge =
-    document.getElementById(
-        "wordStatusBadge"
-    );
+        const wordMeta =
+            document.getElementById(
+                "wordMeta"
+            );
 
-const wordStatusIcon =
-    document.getElementById(
-        "wordStatusIcon"
-    );
 
-const wordStatusText =
-    document.getElementById(
-        "wordStatusText"
-    );
-        
+        const wordPronunciation =
+            document.getElementById(
+                "wordPronunciation"
+            );
+
+
+        const wordPartOfSpeech =
+            document.getElementById(
+                "wordPartOfSpeech"
+            );
+
+
+        const wordStatusBadge =
+            document.getElementById(
+                "wordStatusBadge"
+            );
+
+
+        const wordStatusIcon =
+            document.getElementById(
+                "wordStatusIcon"
+            );
+
+
+        const wordStatusText =
+            document.getElementById(
+                "wordStatusText"
+            );
+
+
         const meaningText =
             document.getElementById(
                 "meaningText"
@@ -305,10 +354,6 @@ const wordStatusText =
         // Learning State
         // =================================================
 
-        let currentUser =
-            null;
-
-
         let currentLevel =
             null;
 
@@ -352,63 +397,6 @@ const wordStatusText =
 
             currentMode =
                 "unmastered";
-
-        }
-
-
-        // =================================================
-        // Authentication Guard
-        //
-        // learning.html is for registered students only.
-        // =================================================
-
-        try {
-
-            const {
-                data: {
-                    user
-                },
-                error
-            } =
-                await supabaseClient
-                    .auth
-                    .getUser();
-
-
-            if (error) {
-                throw error;
-            }
-
-
-            if (!user) {
-
-                window.location.replace(
-                    "auth.html"
-                );
-
-                return;
-
-            }
-
-
-            currentUser =
-                user;
-
-
-        } catch (error) {
-
-            console.error(
-                "Authentication error:",
-                error
-            );
-
-
-            window.location.replace(
-                "auth.html"
-            );
-
-
-            return;
 
         }
 
@@ -1113,70 +1101,106 @@ const wordStatusText =
                 return;
             }
 
-// -------------------------------------------------
-// Word Status Badge
-// -------------------------------------------------
 
-let wordStatus = "";
-let statusIcon = "";
+            // -------------------------------------------------
+            // Word Status Badge
+            // -------------------------------------------------
 
-if (!item.progress) {
-
-    // New
-    wordStatus = "New";
-    statusIcon = "⭐";
-
-} else if (
-    item.progress.status === "unmastered"
-) {
-
-    // Unmastered
-    wordStatus = "Unmastered";
-    statusIcon = "🔄";
-
-} else if (
-    item.progress.status === "mastered" &&
-    item.progress.next_review &&
-    new Date(item.progress.next_review) <= new Date()
-) {
-
-    // Due Reviews
-    wordStatus = "Due Reviews";
-    statusIcon = "📅";
-
-}
+            let wordStatus =
+                "";
 
 
-// -------------------------------------------------
-// Render Badge
-// -------------------------------------------------
+            let statusIcon =
+                "";
 
-if (
-    wordStatusBadge &&
-    wordStatusIcon &&
-    wordStatusText
-) {
 
-    if (wordStatus) {
+            if (
+                !item.progress
+            ) {
 
-        wordStatusBadge.hidden = false;
+                // New
+                wordStatus =
+                    "New";
 
-        wordStatusIcon.textContent =
-            statusIcon;
 
-        wordStatusText.textContent =
-            wordStatus;
+                statusIcon =
+                    "⭐";
 
-    } else {
+            } else if (
+                item.progress.status ===
+                "unmastered"
+            ) {
 
-        wordStatusBadge.hidden = true;
+                // Unmastered
+                wordStatus =
+                    "Unmastered";
 
-        wordStatusIcon.textContent = "";
-        wordStatusText.textContent = "";
 
-    }
+                statusIcon =
+                    "🔄";
 
-}
+            } else if (
+                item.progress.status ===
+                    "mastered" &&
+                item.progress.next_review &&
+                new Date(
+                    item.progress.next_review
+                ) <= new Date()
+            ) {
+
+                // Due Reviews
+                wordStatus =
+                    "Due Reviews";
+
+
+                statusIcon =
+                    "📅";
+
+            }
+
+
+            // -------------------------------------------------
+            // Render Badge
+            // -------------------------------------------------
+
+            if (
+                wordStatusBadge &&
+                wordStatusIcon &&
+                wordStatusText
+            ) {
+
+                if (
+                    wordStatus
+                ) {
+
+                    wordStatusBadge.hidden =
+                        false;
+
+
+                    wordStatusIcon.textContent =
+                        statusIcon;
+
+
+                    wordStatusText.textContent =
+                        wordStatus;
+
+                } else {
+
+                    wordStatusBadge.hidden =
+                        true;
+
+
+                    wordStatusIcon.textContent =
+                        "";
+
+
+                    wordStatusText.textContent =
+                        "";
+
+                }
+
+            }
+
 
             // -------------------------------------------------
             // Word
@@ -1184,53 +1208,63 @@ if (
 
             wordText.textContent =
                 item.word;
-            
-// -------------------------------------------------
-// Pronunciation + Part of Speech
-// -------------------------------------------------
 
-const pronunciation =
-    item.pronunciation ||
-    "";
 
-const partOfSpeech =
-    item.part_of_speech ||
-    "";
+            // -------------------------------------------------
+            // Pronunciation + Part of Speech
+            // -------------------------------------------------
 
-if (
-    wordPronunciation &&
-    wordPartOfSpeech &&
-    wordMeta
-) {
+            const pronunciation =
+                item.pronunciation ||
+                "";
 
-    wordPronunciation.textContent =
-        pronunciation;
 
-    wordPartOfSpeech.textContent =
-        partOfSpeech;
+            const partOfSpeech =
+                item.part_of_speech ||
+                "";
 
-    const separator =
-        wordMeta.querySelector(
-            ".word-meta-separator"
-        );
 
-    if (separator) {
+            if (
+                wordPronunciation &&
+                wordPartOfSpeech &&
+                wordMeta
+            ) {
 
-        separator.hidden =
-            !(
-                pronunciation &&
-                partOfSpeech
-            );
+                wordPronunciation.textContent =
+                    pronunciation;
 
-    }
 
-    wordMeta.hidden =
-        !(
-            pronunciation ||
-            partOfSpeech
-        );
+                wordPartOfSpeech.textContent =
+                    partOfSpeech;
 
-}
+
+                const separator =
+                    wordMeta.querySelector(
+                        ".word-meta-separator"
+                    );
+
+
+                if (
+                    separator
+                ) {
+
+                    separator.hidden =
+                        !(
+                            pronunciation &&
+                            partOfSpeech
+                        );
+
+                }
+
+
+                wordMeta.hidden =
+                    !(
+                        pronunciation ||
+                        partOfSpeech
+                    );
+
+            }
+
 
             // -------------------------------------------------
             // Meaning
