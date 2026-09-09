@@ -280,13 +280,21 @@
 
 
                     // -----------------------------------------
-                    // Session exists
-                    // Payment verification will be added next.
-                    // -----------------------------------------
+// Session exists
+// Verify payment
+// -----------------------------------------
 
-                    console.log(
-                        "Payment return session detected."
-                    );
+const verificationResult =
+    await verifyPayment(
+        session,
+        paymentId
+    );
+
+
+console.log(
+    "Payment verification result:",
+    verificationResult
+);
 
 
                 } catch (error) {
