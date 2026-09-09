@@ -296,10 +296,6 @@
         // UI Elements
         // =====================================================
 
-        const card =
-            document.querySelector(".card");
-
-
         const icon =
             document.querySelector(".icon");
 
@@ -314,6 +310,27 @@
 
         const note =
             document.querySelector(".note");
+
+
+
+        // =====================================================
+        // Fixed User Messages
+        // =====================================================
+
+        const RECOVERY_MESSAGE =
+            "We could not complete the payment verification. Please retry verification; do not pay again.";
+
+
+        const SESSION_ERROR_MESSAGE =
+            "We could not verify your account session. Please try again.";
+
+
+        const FAILURE_MESSAGE =
+            "We could not verify your payment. Please return to the Subscription Plans page and try again.";
+
+
+        const NO_PAYMENT_ID_MESSAGE =
+            "No payment reference was found. Please return to the subscription plans.";
 
 
 
@@ -377,7 +394,7 @@
         // Recovery
         // =====================================================
 
-        function showRecovery(errorMessage) {
+        function showRecovery() {
 
             clearAction();
 
@@ -391,8 +408,7 @@
 
 
             message.textContent =
-                errorMessage ||
-                "Your payment may have been completed, but we could not finish the verification.";
+                RECOVERY_MESSAGE;
 
 
             note.textContent =
@@ -460,9 +476,7 @@
                         );
 
 
-                        showRecovery(
-                            "We could not verify your account session. Please try again."
-                        );
+                        showRecovery();
 
 
                         return;
@@ -472,12 +486,25 @@
 
                     if (!session?.access_token) {
 
+                        const paymentId =
+                            new URLSearchParams(
+                                window.location.search
+                            ).get("payment_id");
+
+
+                        if (!paymentId) {
+
+                            showError();
+
+                            return;
+
+                        }
+
+
                         window.location.replace(
                             "auth.html?return_to=payment-return.html&payment_id=" +
                             encodeURIComponent(
-                                new URLSearchParams(
-                                    window.location.search
-                                ).get("payment_id")
+                                paymentId
                             )
                         );
 
@@ -489,7 +516,7 @@
 
 
                     // ---------------------------------------------
-                    // Retry verification
+                    // Get same payment ID
                     // ---------------------------------------------
 
                     const paymentId =
@@ -500,10 +527,7 @@
 
                     if (!paymentId) {
 
-                        showError(
-                            "No payment reference was found. Please return to the subscription plans."
-                        );
-
+                        showError();
 
                         return;
 
@@ -558,17 +582,30 @@
 
 
                     // ---------------------------------------------
-                    // Network / unexpected error
+                    // Network error
                     // ---------------------------------------------
 
                     if (
                         verificationResult.error
                     ) {
 
-                        showRecovery(
-                            "We could not confirm the verification result. Please retry verification; do not pay again."
-                        );
+                        showRecovery();
 
+                        return;
+
+                    }
+
+
+
+                    // ---------------------------------------------
+                    // Invalid / missing JSON
+                    // ---------------------------------------------
+
+                    if (
+                        !verificationData
+                    ) {
+
+                        showRecovery();
 
                         return;
 
@@ -587,7 +624,6 @@
 
                         showSuccess();
 
-
                         return;
 
                     }
@@ -602,10 +638,7 @@
                         verificationData?.recoverable === true
                     ) {
 
-                        showRecovery(
-                            verificationData?.error
-                        );
-
+                        showRecovery();
 
                         return;
 
@@ -617,9 +650,7 @@
                     // Failure
                     // ---------------------------------------------
 
-                    showError(
-                        verificationData?.error
-                    );
+                    showError();
 
                 }
             );
@@ -637,7 +668,7 @@
         // Error / Failure
         // =====================================================
 
-        function showError(errorMessage) {
+        function showError() {
 
             clearAction();
 
@@ -651,8 +682,7 @@
 
 
             message.textContent =
-                errorMessage ||
-                "We could not verify your payment.";
+                FAILURE_MESSAGE;
 
 
             note.textContent =
@@ -797,10 +827,7 @@
 
                     if (!paymentId) {
 
-                        showError(
-                            "No payment reference was found. Please return to the subscription plans."
-                        );
-
+                        showError();
 
                         return;
 
@@ -872,17 +899,33 @@
 
 
                     // ---------------------------------------------
-                    // Network / unexpected error
+                    // Network error
                     // ---------------------------------------------
 
                     if (
                         verificationResult.error
                     ) {
 
-                        showRecovery(
-                            "We could not confirm the verification result. Please retry verification; do not pay again."
-                        );
+                        showRecovery();
 
+                        return;
+
+                    }
+
+
+
+                    // ---------------------------------------------
+                    // Invalid / missing JSON
+                    //
+                    // We cannot safely classify this as Failure.
+                    // Therefore use Recovery.
+                    // ---------------------------------------------
+
+                    if (
+                        !verificationData
+                    ) {
+
+                        showRecovery();
 
                         return;
 
@@ -906,7 +949,6 @@
 
                         showSuccess();
 
-
                         return;
 
                     }
@@ -924,10 +966,7 @@
                         verificationData?.recoverable === true
                     ) {
 
-                        showRecovery(
-                            verificationData?.error
-                        );
-
+                        showRecovery();
 
                         return;
 
@@ -939,9 +978,7 @@
                     // Failure / incomplete payment
                     // ---------------------------------------------
 
-                    showError(
-                        verificationData?.error
-                    );
+                    showError();
 
                 } catch (error) {
 
@@ -954,7 +991,7 @@
                     // ---------------------------------------------
                     // Unexpected error
                     //
-                    // Do NOT assume that the user is logged out.
+                    // Do not assume that the user is logged out.
                     // Preserve the same payment ID and offer
                     // Recovery instead.
                     // ---------------------------------------------
@@ -967,15 +1004,11 @@
 
                     if (paymentId) {
 
-                        showRecovery(
-                            "We could not complete the payment verification. Please retry verification; do not pay again."
-                        );
+                        showRecovery();
 
                     } else {
 
-                        showError(
-                            "No payment reference was found. Please return to the subscription plans."
-                        );
+                        showError();
 
                     }
 
