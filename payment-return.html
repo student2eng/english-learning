@@ -182,5 +182,132 @@
         © 2026 English Learning
     </footer>
 
+
+    <!-- =================================================
+         Supabase
+         ================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+        // =================================================
+        // Supabase Configuration
+        // =================================================
+
+        const SUPABASE_URL =
+            "https://azuzgodrxkxhlsekooyc.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
+
+
+        // =================================================
+        // Supabase Client
+        // =================================================
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        // =================================================
+        // Payment Return
+        // =================================================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            async () => {
+
+                const urlParams =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+                const paymentId =
+                    urlParams.get("payment_id");
+
+
+                // ---------------------------------------------
+                // Validate payment_id
+                // ---------------------------------------------
+
+                if (!paymentId) {
+
+                    return;
+
+                }
+
+
+                // ---------------------------------------------
+                // Check Session
+                // ---------------------------------------------
+
+                try {
+
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient.auth.getSession();
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    const session =
+                        data?.session;
+
+
+                    // -----------------------------------------
+                    // No Session
+                    // -----------------------------------------
+
+                    if (!session?.access_token) {
+
+                        window.location.replace(
+                            "auth.html?return_to=payment-return.html&payment_id=" +
+                            encodeURIComponent(paymentId)
+                        );
+
+                        return;
+                    }
+
+
+                    // -----------------------------------------
+                    // Session exists
+                    // Payment verification will be added next.
+                    // -----------------------------------------
+
+                    console.log(
+                        "Payment return session detected."
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Payment return session check error:",
+                        error
+                    );
+
+
+                    window.location.replace(
+                        "auth.html?return_to=payment-return.html&payment_id=" +
+                        encodeURIComponent(paymentId)
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
 </body>
 </html>
