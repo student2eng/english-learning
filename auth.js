@@ -698,11 +698,24 @@ setTimeout(() => {
 
 
             // ---------------------------------------------
-            // Student
-            // ---------------------------------------------
+// Student
+// ---------------------------------------------
 
-            const trialResult =
-                await activateTrial();
+// ---------------------------------------------
+// Student - Payment Return Intent
+// ---------------------------------------------
+
+if (hasPaymentReturnIntent) {
+
+    window.location.href =
+        getPaymentReturnUrl();
+
+    return;
+}
+
+
+const trialResult =
+    await activateTrial();
 
 
             if (trialResult.success) {
