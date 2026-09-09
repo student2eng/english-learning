@@ -22,6 +22,31 @@ console.log("Supabase client:", supabaseClient);
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    // =================================================
+    // Return Intent
+    // =================================================
+
+    const urlParams = new URLSearchParams(
+        window.location.search
+    );
+
+    const returnTo = urlParams.get("return_to");
+    const paymentId = urlParams.get("payment_id");
+
+    const hasPaymentReturnIntent =
+        returnTo === "payment-return.html" &&
+        !!paymentId;
+
+
+    function getPaymentReturnUrl() {
+
+        return (
+            "payment-return.html?payment_id=" +
+            encodeURIComponent(paymentId)
+        );
+
+    }
+
     // -------------------------------------------------
     // Forms
     // -------------------------------------------------
