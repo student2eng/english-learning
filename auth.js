@@ -271,44 +271,68 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }
 
 
-                    // ---------------------------------------------
-                    // Student
-                    // Activate trial
-                    // ---------------------------------------------
+                    // -------------------------------------------------
+// Student
+// Payment Return Intent
+// -------------------------------------------------
 
-                    const trialResult =
-                        await activateTrial();
+if (hasPaymentReturnIntent) {
 
+    showMessage(
+        loginMessage,
+        "Login successful.",
+        "success"
+    );
 
-                    if (!trialResult.success) {
+    setTimeout(() => {
 
-                        showMessage(
-                            loginMessage,
-                            "We could not activate or verify your trial. Please try again.",
-                            "error"
-                        );
+        window.location.href =
+            getPaymentReturnUrl();
 
-                        return;
-                    }
+    }, 800);
 
-
-                    showMessage(
-                        loginMessage,
-                        "Login successful.",
-                        "success"
-                    );
+    return;
+}
 
 
-                    // ---------------------------------------------
-                    // Redirect student
-                    // ---------------------------------------------
+// -------------------------------------------------
+// Student
+// Activate trial
+// -------------------------------------------------
 
-                    setTimeout(() => {
+const trialResult =
+    await activateTrial();
 
-                        window.location.href =
-                            "dashboard.html";
 
-                    }, 800);
+if (!trialResult.success) {
+
+    showMessage(
+        loginMessage,
+        "We could not activate or verify your trial. Please try again.",
+        "error"
+    );
+
+    return;
+}
+
+
+showMessage(
+    loginMessage,
+    "Login successful.",
+    "success"
+);
+
+
+// ---------------------------------------------
+// Redirect student
+// ---------------------------------------------
+
+setTimeout(() => {
+
+    window.location.href =
+        "dashboard.html";
+
+}, 800);
 
 
                 } catch (error) {
