@@ -215,6 +215,94 @@
 
 
         // =================================================
+        // Verify Payment
+        // =================================================
+
+        async function verifyPayment(
+            session,
+            paymentId
+        ) {
+
+            let response;
+            let data = null;
+
+
+            try {
+
+                response = await fetch(
+                    SUPABASE_URL +
+                    "/functions/v1/verify-payment",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Authorization":
+                                "Bearer " +
+                                session.access_token,
+
+                            "apikey":
+                                SUPABASE_KEY,
+
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            payment_id:
+                                paymentId
+                        })
+                    }
+                );
+
+
+                // ---------------------------------------------
+                // Parse response regardless of HTTP status
+                // ---------------------------------------------
+
+                try {
+
+                    data =
+                        await response.json();
+
+                } catch {
+
+                    data = null;
+
+                }
+
+
+                console.log(
+                    "verify-payment HTTP status:",
+                    response.status
+                );
+
+
+                return {
+                    response: response,
+                    data: data
+                };
+
+
+            } catch (error) {
+
+                console.error(
+                    "verify-payment network error:",
+                    error
+                );
+
+
+                return {
+                    response: null,
+                    data: null,
+                    error: error
+                };
+
+            }
+
+        }
+
+
+        // =================================================
         // Payment Return
         // =================================================
 
@@ -280,21 +368,21 @@
 
 
                     // -----------------------------------------
-// Session exists
-// Verify payment
-// -----------------------------------------
+                    // Session exists
+                    // Verify payment
+                    // -----------------------------------------
 
-const verificationResult =
-    await verifyPayment(
-        session,
-        paymentId
-    );
+                    const verificationResult =
+                        await verifyPayment(
+                            session,
+                            paymentId
+                        );
 
 
-console.log(
-    "Payment verification result:",
-    verificationResult
-);
+                    console.log(
+                        "Payment verification result:",
+                        verificationResult
+                    );
 
 
                 } catch (error) {
