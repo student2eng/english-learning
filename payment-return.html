@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -10,11 +11,13 @@
 
     <title>Payment Verification</title>
 
+
     <style>
 
         * {
             box-sizing: border-box;
         }
+
 
         body {
             margin: 0;
@@ -38,6 +41,7 @@
             color: #1f2937;
         }
 
+
         .card {
             width: 100%;
             max-width: 480px;
@@ -54,6 +58,7 @@
                 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
+
         .icon {
             width: 72px;
             height: 72px;
@@ -67,6 +72,7 @@
             font-size: 42px;
         }
 
+
         .result-icon {
             width: 72px;
             height: 72px;
@@ -76,7 +82,44 @@
             justify-content: center;
 
             margin: 0 auto;
+
+            font-size: 42px;
+            font-weight: 700;
         }
+
+
+        /* =====================================================
+           Spinner
+           ===================================================== */
+
+        .spinner {
+            width: 42px;
+            height: 42px;
+
+            margin: 0 auto;
+
+            border: 4px solid #e5e7eb;
+            border-top-color: #111827;
+
+            border-radius: 50%;
+
+            animation:
+                spin 0.8s linear infinite;
+        }
+
+
+        @keyframes spin {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
 
         h1 {
             margin: 0 0 14px;
@@ -84,6 +127,7 @@
             font-size: 28px;
             line-height: 1.3;
         }
+
 
         .card p {
             margin: 0;
@@ -94,6 +138,7 @@
             color: #4b5563;
         }
 
+
         .note {
             margin-top: 18px !important;
 
@@ -102,9 +147,11 @@
             color: #6b7280 !important;
         }
 
+
         .action {
             margin-top: 24px;
         }
+
 
         .action button {
             width: 100%;
@@ -127,18 +174,22 @@
                 transform 0.1s ease;
         }
 
+
         .action button:hover {
             opacity: 0.9;
         }
+
 
         .action button:active {
             transform: scale(0.99);
         }
 
+
         .action button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
+
 
         .action a {
             display: inline-block;
@@ -156,6 +207,7 @@
             font-weight: 600;
         }
 
+
         footer {
             margin-top: 28px;
 
@@ -165,9 +217,12 @@
         }
 
     </style>
+
 </head>
 
+
 <body>
+
 
     <div class="card">
 
@@ -175,19 +230,24 @@
             <div class="spinner"></div>
         </div>
 
+
         <h1>
             Checking Payment
         </h1>
+
 
         <p>
             We are securely verifying your payment.
         </p>
 
+
         <p class="note">
             Please wait while our system checks the transaction.
         </p>
 
+
         <div class="action"></div>
+
 
         <footer>
             English Learning
@@ -196,8 +256,13 @@
     </div>
 
 
-    <!-- Supabase -->
+
+    <!-- =====================================================
+         Supabase
+         ===================================================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 
     <script>
@@ -208,6 +273,7 @@
 
         const SUPABASE_URL =
             "https://azuzgodrxkxhlsekooyc.supabase.co";
+
 
         const SUPABASE_KEY =
             "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
@@ -225,6 +291,7 @@
             );
 
 
+
         // =====================================================
         // UI Elements
         // =====================================================
@@ -232,17 +299,22 @@
         const card =
             document.querySelector(".card");
 
+
         const icon =
             document.querySelector(".icon");
+
 
         const title =
             document.querySelector("h1");
 
+
         const message =
             document.querySelector(".card p");
 
+
         const note =
             document.querySelector(".note");
+
 
 
         // =====================================================
@@ -254,9 +326,11 @@
             const action =
                 document.querySelector(".action");
 
+
             action.innerHTML = "";
 
         }
+
 
 
         // =====================================================
@@ -267,14 +341,18 @@
 
             clearAction();
 
+
             icon.innerHTML =
                 '<div class="result-icon">✓</div>';
+
 
             title.textContent =
                 "Payment Successful";
 
+
             message.textContent =
                 "Your payment has been verified and your subscription is now active.";
+
 
             note.textContent =
                 "Redirecting you to your Dashboard...";
@@ -294,6 +372,7 @@
         }
 
 
+
         // =====================================================
         // Recovery
         // =====================================================
@@ -302,15 +381,19 @@
 
             clearAction();
 
+
             icon.innerHTML =
                 '<div class="result-icon">!</div>';
+
 
             title.textContent =
                 "Payment Needs Verification";
 
+
             message.textContent =
                 errorMessage ||
                 "Your payment may have been completed, but we could not finish the verification.";
+
 
             note.textContent =
                 "Do not make another payment. Retry verification using the same payment.";
@@ -339,6 +422,7 @@
                     button.disabled =
                         true;
 
+
                     button.textContent =
                         "Verifying...";
 
@@ -348,6 +432,7 @@
                     // ---------------------------------------------
 
                     let session;
+
 
                     try {
 
@@ -379,6 +464,7 @@
                             "We could not verify your account session. Please try again."
                         );
 
+
                         return;
 
                     }
@@ -395,9 +481,11 @@
                             )
                         );
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
@@ -416,9 +504,11 @@
                             "No payment reference was found. Please return to the subscription plans."
                         );
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
@@ -427,17 +517,22 @@
 
                     clearAction();
 
+
                     icon.innerHTML =
                         '<div class="spinner"></div>';
+
 
                     title.textContent =
                         "Checking Payment";
 
+
                     message.textContent =
                         "We are securely checking your payment again.";
 
+
                     note.textContent =
                         "Please wait while our system verifies the transaction.";
+
 
 
                     // ---------------------------------------------
@@ -461,6 +556,7 @@
                         verificationResult.data;
 
 
+
                     // ---------------------------------------------
                     // Network / unexpected error
                     // ---------------------------------------------
@@ -473,9 +569,11 @@
                             "We could not confirm the verification result. Please retry verification; do not pay again."
                         );
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
@@ -489,9 +587,11 @@
 
                         showSuccess();
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
@@ -506,9 +606,11 @@
                             verificationData?.error
                         );
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
@@ -530,6 +632,7 @@
         }
 
 
+
         // =====================================================
         // Error / Failure
         // =====================================================
@@ -538,15 +641,19 @@
 
             clearAction();
 
+
             icon.innerHTML =
                 '<div class="result-icon">×</div>';
+
 
             title.textContent =
                 "Payment Verification Failed";
 
+
             message.textContent =
                 errorMessage ||
                 "We could not verify your payment.";
+
 
             note.textContent =
                 "Please return to the Subscription Plans page and try again.";
@@ -575,6 +682,7 @@
         }
 
 
+
         // =====================================================
         // Verify Payment
         // =====================================================
@@ -585,6 +693,7 @@
         ) {
 
             let response;
+
 
             let data = null;
 
@@ -665,6 +774,7 @@
         }
 
 
+
         // =====================================================
         // Initial Page Load
         // =====================================================
@@ -691,9 +801,11 @@
                             "No payment reference was found. Please return to the subscription plans."
                         );
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
@@ -716,6 +828,7 @@
                         data?.session;
 
 
+
                     // ---------------------------------------------
                     // No session
                     // ---------------------------------------------
@@ -729,9 +842,11 @@
                             )
                         );
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
@@ -755,6 +870,7 @@
                         verificationResult.data;
 
 
+
                     // ---------------------------------------------
                     // Network / unexpected error
                     // ---------------------------------------------
@@ -767,15 +883,18 @@
                             "We could not confirm the verification result. Please retry verification; do not pay again."
                         );
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
                     // Success
                     //
                     // Final success requires BOTH:
+                    //
                     // payment_completed === true
                     // subscription_activated === true
                     // ---------------------------------------------
@@ -787,9 +906,11 @@
 
                         showSuccess();
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
@@ -807,9 +928,11 @@
                             verificationData?.error
                         );
 
+
                         return;
 
                     }
+
 
 
                     // ---------------------------------------------
@@ -828,8 +951,13 @@
                     );
 
 
-                    // Preserve the payment ID
-                    // and return to the payment flow.
+                    // ---------------------------------------------
+                    // Unexpected error
+                    //
+                    // Do NOT assume that the user is logged out.
+                    // Preserve the same payment ID and offer
+                    // Recovery instead.
+                    // ---------------------------------------------
 
                     const paymentId =
                         new URLSearchParams(
@@ -839,11 +967,8 @@
 
                     if (paymentId) {
 
-                        window.location.replace(
-                            "auth.html?return_to=payment-return.html&payment_id=" +
-                            encodeURIComponent(
-                                paymentId
-                            )
+                        showRecovery(
+                            "We could not complete the payment verification. Please retry verification; do not pay again."
                         );
 
                     } else {
