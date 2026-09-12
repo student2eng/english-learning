@@ -29,42 +29,45 @@
      --------------------------------------------------------- */
 
   function getSupabaseClient() {
-    // Preferred: a shared client exposed by the page/app.
-    if (window.supabaseClient) {
-      return window.supabaseClient;
-    }
 
-    // Optional shared configuration bridge.
-    // The HTML pages can provide:
-    //
-    // window.APP_SUPABASE_CONFIG = {
-    //   url: "...",
-    //   anonKey: "..."
-    // };
-
-    if (
-      window.supabase &&
-      window.APP_SUPABASE_CONFIG &&
-      window.APP_SUPABASE_CONFIG.url &&
-      window.APP_SUPABASE_CONFIG.anonKey
-    ) {
-      if (!window.accountAuthSupabaseClient) {
-        window.accountAuthSupabaseClient =
-          window.supabase.createClient(
-            window.APP_SUPABASE_CONFIG.url,
-            window.APP_SUPABASE_CONFIG.anonKey
-          );
-      }
-
-      return window.accountAuthSupabaseClient;
-    }
-
-    console.error(
-      "[account-auth] Supabase client/config is not available."
-    );
-
-    return null;
+  // Preferred: a shared client exposed on window.
+  if (window.supabaseClient) {
+    return window.supabaseClient;
   }
+
+  // Support pages where supabaseClient exists
+  // as a global lexical variable created by another
+  // classic script, such as dashboard.js.
+  if (typeof supabaseClient !== "undefined") {
+    return supabaseClient;
+  }
+
+  // Optional shared configuration bridge.
+  if (
+    window.supabase &&
+    window.APP_SUPABASE_CONFIG &&
+    window.APP_SUPABASE_CONFIG.url &&
+    window.APP_SUPABASE_CONFIG.anonKey
+  ) {
+
+    if (!window.accountAuthSupabaseClient) {
+
+      window.accountAuthSupabaseClient =
+        window.supabase.createClient(
+          window.APP_SUPABASE_CONFIG.url,
+          window.APP_SUPABASE_CONFIG.anonKey
+        );
+    }
+
+    return window.accountAuthSupabaseClient;
+  }
+
+  console.error(
+    "[account-auth] Supabase client/config is not available."
+  );
+
+  return null;
+}
 
   const supabaseClient = getSupabaseClient();
 
