@@ -121,8 +121,8 @@
     );
 
     const accountMenu = document.querySelector(
-      "#accountMenu, .account-menu, [data-account-menu]"
-    );
+  "#accountMenu, [data-account-menu]"
+);
 
     return {
       loginLink,
