@@ -30,46 +30,46 @@
 
   function getSupabaseClient() {
 
-  // Preferred: a shared client exposed on window.
-  if (window.supabaseClient) {
-    return window.supabaseClient;
-  }
-
-  // Support pages where supabaseClient exists
-  // as a global lexical variable created by another
-  // classic script, such as dashboard.js.
-  if (typeof supabaseClient !== "undefined") {
-    return supabaseClient;
-  }
-
-  // Optional shared configuration bridge.
-  if (
-    window.supabase &&
-    window.APP_SUPABASE_CONFIG &&
-    window.APP_SUPABASE_CONFIG.url &&
-    window.APP_SUPABASE_CONFIG.anonKey
-  ) {
-
-    if (!window.accountAuthSupabaseClient) {
-
-      window.accountAuthSupabaseClient =
-        window.supabase.createClient(
-          window.APP_SUPABASE_CONFIG.url,
-          window.APP_SUPABASE_CONFIG.anonKey
-        );
+    // Preferred: a shared client exposed on window.
+    if (window.supabaseClient) {
+      return window.supabaseClient;
     }
 
-    return window.accountAuthSupabaseClient;
+    // Support pages where supabaseClient exists
+    // as a global lexical variable created by another
+    // classic script, such as dashboard.js.
+    if (typeof supabaseClient !== "undefined") {
+      return supabaseClient;
+    }
+
+    // Optional shared configuration bridge.
+    if (
+      window.supabase &&
+      window.APP_SUPABASE_CONFIG &&
+      window.APP_SUPABASE_CONFIG.url &&
+      window.APP_SUPABASE_CONFIG.anonKey
+    ) {
+
+      if (!window.accountAuthSupabaseClient) {
+
+        window.accountAuthSupabaseClient =
+          window.supabase.createClient(
+            window.APP_SUPABASE_CONFIG.url,
+            window.APP_SUPABASE_CONFIG.anonKey
+          );
+      }
+
+      return window.accountAuthSupabaseClient;
+    }
+
+    console.error(
+      "[account-auth] Supabase client/config is not available."
+    );
+
+    return null;
   }
 
-  console.error(
-    "[account-auth] Supabase client/config is not available."
-  );
-
-  return null;
-}
-
-  const supabaseClient = getSupabaseClient();
+  const accountAuthClient = getSupabaseClient();
 
 
   /* ---------------------------------------------------------
@@ -108,6 +108,7 @@
      --------------------------------------------------------- */
 
   function getHeaderElements() {
+
     const loginLink = document.querySelector(
       ".header-login, [data-header-login]"
     );
@@ -121,8 +122,8 @@
     );
 
     const accountMenu = document.querySelector(
-  "#accountMenu, [data-account-menu]"
-);
+      "#accountMenu, [data-account-menu]"
+    );
 
     return {
       loginLink,
@@ -138,27 +139,33 @@
      --------------------------------------------------------- */
 
   function closeAccountMenu() {
+
     const {
       accountButton,
       accountMenu
     } = getHeaderElements();
 
     if (accountMenu) {
+
       accountMenu.classList.remove("show");
       accountMenu.classList.remove("open");
       accountMenu.hidden = true;
+
     }
 
     if (accountButton) {
+
       accountButton.setAttribute(
         "aria-expanded",
         "false"
       );
+
     }
   }
 
 
   function openAccountMenu() {
+
     const {
       accountButton,
       accountMenu
@@ -174,15 +181,18 @@
     accountMenu.classList.add("open");
 
     if (accountButton) {
+
       accountButton.setAttribute(
         "aria-expanded",
         "true"
       );
+
     }
   }
 
 
   function toggleAccountMenu(event) {
+
     if (event) {
       event.stopPropagation();
     }
@@ -201,14 +211,19 @@
       accountMenu.hidden === false;
 
     if (isOpen) {
+
       closeAccountMenu();
+
     } else {
+
       openAccountMenu();
+
     }
   }
 
 
   function setupAccountMenu() {
+
     const {
       accountButton,
       accountMenu
@@ -244,6 +259,7 @@
         }
 
         closeAccountMenu();
+
       }
     );
 
@@ -253,7 +269,9 @@
       function (event) {
 
         if (event.key === "Escape") {
+
           closeAccountMenu();
+
         }
 
       }
@@ -266,6 +284,7 @@
      --------------------------------------------------------- */
 
   function renderSignedOutHeader() {
+
     const {
       loginLink,
       accountContainer
@@ -281,6 +300,7 @@
       loginLink.textContent = "Sign In";
 
       loginLink.href = "auth.html";
+
     }
 
 
@@ -289,6 +309,7 @@
       accountContainer.hidden = true;
 
       accountContainer.style.display = "none";
+
     }
 
 
@@ -297,6 +318,7 @@
 
 
   function renderSignedInHeader() {
+
     const {
       loginLink,
       accountContainer
@@ -308,6 +330,7 @@
       loginLink.hidden = true;
 
       loginLink.style.display = "none";
+
     }
 
 
@@ -316,6 +339,7 @@
       accountContainer.hidden = false;
 
       accountContainer.style.display = "";
+
     }
   }
 
@@ -326,7 +350,7 @@
 
   async function getSession() {
 
-    if (!supabaseClient) {
+    if (!accountAuthClient) {
 
       return {
         session: null,
@@ -341,15 +365,17 @@
     const {
       data,
       error
-    } = await supabaseClient.auth.getSession();
+    } = await accountAuthClient.auth.getSession();
 
 
     return {
+
       session: data
         ? data.session
         : null,
 
       error
+
     };
   }
 
@@ -380,6 +406,7 @@
       renderSignedInHeader();
 
       return session;
+
     }
 
 
@@ -400,16 +427,18 @@
       event.preventDefault();
 
       event.stopPropagation();
+
     }
 
 
-    if (!supabaseClient) {
+    if (!accountAuthClient) {
 
       console.error(
         "[account-auth] Cannot logout: Supabase client unavailable."
       );
 
       return;
+
     }
 
 
@@ -417,7 +446,7 @@
 
       const {
         error
-      } = await supabaseClient.auth.signOut();
+      } = await accountAuthClient.auth.signOut();
 
 
       if (error) {
@@ -428,6 +457,7 @@
         );
 
         return;
+
       }
 
 
@@ -439,6 +469,7 @@
 
       window.location.href =
         "index.html";
+
 
     } catch (error) {
 
@@ -502,6 +533,7 @@
 
         window.location.href =
           redirectTo;
+
       }
 
 
@@ -518,6 +550,7 @@
           )
 
       };
+
     }
 
 
@@ -539,12 +572,12 @@
 
   function setupAuthStateListener() {
 
-    if (!supabaseClient) {
+    if (!accountAuthClient) {
       return;
     }
 
 
-    supabaseClient.auth.onAuthStateChange(
+    accountAuthClient.auth.onAuthStateChange(
       function (event, session) {
 
         // This updates only the shared Header state.
