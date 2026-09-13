@@ -263,7 +263,22 @@
 
 
   <script src="main.js"></script>
-  <script src="account-auth.js"></script>
+
+<script>
+  const SUPABASE_URL =
+    "https://azuzgodrxkxhlsekooyc.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+</script>
+
+<script src="account-auth.js"></script>
 
 </body>
   </html>
