@@ -2,51 +2,637 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Account | FitSpend</title>
+    <title>Account | English Learning</title>
+
+    <meta
+        name="description"
+        content="Manage your English Learning account, level, password, and subscription."
+    >
+
+    <link rel="stylesheet" href="style.css">
 
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        /* =====================================================
+           Account Page
+           English Learning — Account v1
+           ===================================================== */
+
+        .account-page {
+            padding: 70px 0 90px;
+            background: #f7f8fc;
+            min-height: calc(100vh - 140px);
         }
 
-        body {
-            min-height: 100vh;
+        .account-page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .account-page-header .eyebrow {
+            margin-bottom: 12px;
+        }
+
+        .account-page-header h1 {
+            margin-bottom: 12px;
+        }
+
+        .account-page-header p {
+            color: #73798c;
+            font-size: 18px;
+        }
+
+        .account-grid {
+            max-width: 850px;
+            margin: 0 auto;
+            display: grid;
+            gap: 24px;
+        }
+
+        .account-card {
+            background: #ffffff;
+            border: 1px solid #e7e8ef;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 8px 30px rgba(31, 35, 55, 0.05);
+        }
+
+        .account-card h2 {
+            margin-bottom: 8px;
+        }
+
+        .account-card-description {
+            color: #73798c;
+            margin-bottom: 26px;
+        }
+
+        .account-info-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .account-info-row {
             display: flex;
             align-items: center;
-            justify-content: center;
-            background: #f8f7fc;
-            font-family: Arial, sans-serif;
-            color: #2d2a3d;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 18px 0;
+            border-bottom: 1px solid #ececf2;
         }
 
-        .message {
-            text-align: center;
-            padding: 30px;
+        .account-info-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
         }
 
-        .message h1 {
-            font-size: 28px;
+        .account-info-label {
+            color: #73798c;
+            font-size: 15px;
+        }
+
+        .account-info-value {
+            color: #171a2b;
             font-weight: 600;
-            margin-bottom: 10px;
+            text-align: right;
+            word-break: break-word;
         }
 
-        .message p {
-            font-size: 16px;
-            color: #77738a;
+        .account-actions {
+            display: grid;
+            gap: 12px;
+        }
+
+        .account-action-button {
+            width: 100%;
+            min-height: 52px;
+        }
+
+        .account-action-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .account-subscription-card {
+            background: linear-gradient(
+                135deg,
+                #f7f5ff,
+                #ffffff
+            );
+        }
+
+        .account-subscription-actions {
+            margin-top: 24px;
+        }
+
+        .account-subscription-actions .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .account-loading {
+            text-align: center;
+            color: #73798c;
+            padding: 40px 20px;
+        }
+
+        .account-error {
+            text-align: center;
+            color: #c53030;
+            padding: 20px;
+        }
+
+        @media (max-width: 640px) {
+
+            .account-page {
+                padding: 50px 0 70px;
+            }
+
+            .account-card {
+                padding: 24px 20px;
+                border-radius: 20px;
+            }
+
+            .account-info-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .account-info-value {
+                text-align: left;
+            }
+
         }
     </style>
 </head>
 
 <body>
 
-    <main class="message">
-        <h1>Under Construction</h1>
-        <p>The Account page is currently under construction.</p>
+    <!-- =====================================================
+         Header
+         ===================================================== -->
+
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a
+                href="index.html"
+                class="brand"
+            >
+                English Learning
+            </a>
+
+
+            <!-- Account Menu -->
+
+            <div
+                class="account-menu"
+                id="accountMenuContainer"
+            >
+
+                <button
+                    type="button"
+                    class="account-menu-button"
+                    id="accountMenuButton"
+                    aria-expanded="false"
+                    aria-controls="accountMenu"
+                >
+                    Account
+                    <span class="account-menu-arrow">
+                        ▼
+                    </span>
+                </button>
+
+
+                <div
+                    class="account-dropdown"
+                    id="accountMenu"
+                    hidden
+                >
+
+                    <a
+                        href="dashboard.html"
+                        class="account-dropdown-item"
+                    >
+                        Dashboard
+                    </a>
+
+
+                    <a
+                        href="account.html"
+                        class="account-dropdown-item"
+                    >
+                        Account
+                    </a>
+
+
+                    <button
+                        type="button"
+                        class="account-dropdown-item"
+                        disabled
+                    >
+                        Change Level
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="account-dropdown-item"
+                        disabled
+                    >
+                        Change Password
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="account-dropdown-item account-logout"
+                        id="accountLogoutButton"
+                    >
+                        Log Out
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         Account Page
+         ===================================================== -->
+
+    <main class="account-page">
+
+        <div class="container">
+
+            <!-- Page Header -->
+
+            <section class="account-page-header">
+
+                <p class="eyebrow">
+                    Your Account
+                </p>
+
+                <h1>
+                    Account
+                </h1>
+
+                <p>
+                    Manage your English Learning account.
+                </p>
+
+            </section>
+
+
+            <!-- Account Content -->
+
+            <div
+                class="account-grid"
+                id="accountContent"
+            >
+
+                <div class="account-loading">
+                    Loading your account...
+                </div>
+
+            </div>
+
+        </div>
+
     </main>
+
+
+    <!-- =====================================================
+         Footer
+         ===================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <p>
+                © 2026 English Learning. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         Supabase
+         ===================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =====================================================
+         Account Authentication
+         ===================================================== -->
+
+    <script src="account-auth.js"></script>
+
+
+    <!-- =====================================================
+         Account Page Logic
+         ===================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            async () => {
+
+                const accountContent =
+                    document.getElementById(
+                        "accountContent"
+                    );
+
+
+                try {
+
+                    // -------------------------------------------------
+                    // Require authenticated user
+                    // -------------------------------------------------
+
+                    const authResult =
+                        await window.accountAuth
+                            .requireAuthenticatedUser();
+
+
+                    if (
+                        !authResult ||
+                        !authResult.allowed
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const session =
+                        authResult.session;
+
+
+                    const user =
+                        session.user;
+
+
+                    // -------------------------------------------------
+                    // User Information
+                    // -------------------------------------------------
+
+                    const displayName =
+                        user.user_metadata?.display_name ||
+                        user.user_metadata?.full_name ||
+                        "Student";
+
+
+                    const email =
+                        user.email ||
+                        "—";
+
+
+                    const level =
+                        user.user_metadata?.level ||
+                        "Not set";
+
+
+                    const levelNames = {
+
+                        A1:
+                            "A1 — Beginner",
+
+                        A2:
+                            "A2 — Elementary",
+
+                        B1:
+                            "B1 — Intermediate",
+
+                        B2:
+                            "B2 — Upper Intermediate",
+
+                        C1:
+                            "C1 — Advanced"
+
+                    };
+
+
+                    const levelDisplay =
+                        levelNames[level] ||
+                        level;
+
+
+                    // -------------------------------------------------
+                    // Render Account
+                    // -------------------------------------------------
+
+                    accountContent.innerHTML = `
+
+                        <!-- Account Information -->
+
+                        <section
+                            class="account-card"
+                            aria-labelledby="account-information-title"
+                        >
+
+                            <h2 id="account-information-title">
+                                Account Information
+                            </h2>
+
+                            <p class="account-card-description">
+                                Your current account details.
+                            </p>
+
+
+                            <div class="account-info-list">
+
+                                <div class="account-info-row">
+
+                                    <span class="account-info-label">
+                                        Display Name
+                                    </span>
+
+                                    <strong class="account-info-value">
+                                        ${escapeHtml(displayName)}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="account-info-row">
+
+                                    <span class="account-info-label">
+                                        Email
+                                    </span>
+
+                                    <strong class="account-info-value">
+                                        ${escapeHtml(email)}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="account-info-row">
+
+                                    <span class="account-info-label">
+                                        Current Level
+                                    </span>
+
+                                    <strong class="account-info-value">
+                                        ${escapeHtml(levelDisplay)}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- Account Actions -->
+
+                        <section
+                            class="account-card"
+                            aria-labelledby="account-actions-title"
+                        >
+
+                            <h2 id="account-actions-title">
+                                Account Settings
+                            </h2>
+
+                            <p class="account-card-description">
+                                Update your account settings.
+                            </p>
+
+
+                            <div class="account-actions">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary account-action-button"
+                                    disabled
+                                >
+                                    Change Level
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary account-action-button"
+                                    disabled
+                                >
+                                    Change Password
+                                </button>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- Subscription -->
+
+                        <section
+                            class="account-card account-subscription-card"
+                            aria-labelledby="subscription-title"
+                        >
+
+                            <h2 id="subscription-title">
+                                Subscription
+                            </h2>
+
+                            <p class="account-card-description">
+                                Manage your learning subscription and view the available plans.
+                            </p>
+
+
+                            <div class="account-subscription-actions">
+
+                                <a
+                                    href="subscription-plans.html"
+                                    class="btn btn-primary"
+                                >
+                                    View Subscription Plans
+                                </a>
+
+                            </div>
+
+                        </section>
+
+                    `;
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Account page error:",
+                        error
+                    );
+
+
+                    accountContent.innerHTML = `
+
+                        <div class="account-card">
+
+                            <div class="account-error">
+
+                                Unable to load your account.
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+
+            }
+        );
+
+
+        // =====================================================
+        // Escape HTML
+        // =====================================================
+
+        function escapeHtml(
+            value
+        ) {
+
+            return String(value)
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+    </script>
 
 </body>
 </html>
