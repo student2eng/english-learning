@@ -22,12 +22,85 @@
 <body>
 
   <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="logo">English Learning</a>
+  <div class="container header-inner">
 
-      <a href="auth.html" class="header-login">Sign In</a>
+    <a href="index.html" class="logo">
+      English Learning
+    </a>
+
+    <a
+      href="auth.html"
+      class="header-login"
+    >
+      Sign In
+    </a>
+
+    <div
+      class="account-menu"
+      id="accountMenuContainer"
+    >
+
+      <button
+        type="button"
+        class="account-menu-button"
+        id="accountMenuButton"
+        aria-expanded="false"
+        aria-controls="accountMenu"
+      >
+        Account
+        <span class="account-menu-arrow">▼</span>
+      </button>
+
+      <div
+        class="account-dropdown"
+        id="accountMenu"
+        hidden
+      >
+
+        <a
+          href="dashboard.html"
+          class="account-dropdown-item"
+        >
+          Dashboard
+        </a>
+
+        <a
+          href="account.html"
+          class="account-dropdown-item"
+        >
+          Account
+        </a>
+
+        <button
+          type="button"
+          class="account-dropdown-item"
+          disabled
+        >
+          Change Level
+        </button>
+
+        <button
+          type="button"
+          class="account-dropdown-item"
+          disabled
+        >
+          Change Password
+        </button>
+
+        <button
+          type="button"
+          class="account-dropdown-item account-logout"
+          id="accountLogoutButton"
+        >
+          Log Out
+        </button>
+
+      </div>
+
     </div>
-  </header>
+
+  </div>
+</header>
 
 
   <main>
@@ -189,6 +262,7 @@
 
 
   <script src="main.js"></script>
+  <script src="account-auth.js"></script>
 
 </body>
   </html>
