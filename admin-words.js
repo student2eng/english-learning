@@ -749,43 +749,59 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     // =================================================
-    // Create Edit Button
-    // =================================================
+// Create Edit Button
+// =================================================
 
-    function createEditButton(word) {
+function createEditButton(word) {
 
-        const button =
-            document.createElement("button");
+    const button =
+        document.createElement("button");
 
-        button.type =
-            "button";
+    button.type =
+        "button";
 
-        button.className =
-            "word-edit-button";
+    button.className =
+        "word-edit-button";
 
-        button.textContent =
-            "Edit";
+    button.textContent =
+        "Edit";
 
 
-        // Edit functionality will be
-        // connected in the Edit Word stage.
+    // -------------------------------------------------
+    // Open Edit Word Page
+    // -------------------------------------------------
 
-        button.addEventListener(
-            "click",
-            () => {
+    button.addEventListener(
+        "click",
+        () => {
 
-                console.log(
-                    "Edit Word:",
+            if (!word?.id) {
+
+                console.error(
+                    "Cannot edit word: word ID is missing.",
+                    word
+                );
+
+                return;
+            }
+
+
+            const wordId =
+                encodeURIComponent(
                     word.id
                 );
 
-            }
-        );
+
+            window.location.href =
+                `admin-edit-word.html?id=${wordId}`;
+
+        }
+    );
 
 
-        return button;
+    return button;
 
-    }
+}
 
 
     // =================================================
