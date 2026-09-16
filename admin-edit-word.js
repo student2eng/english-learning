@@ -925,6 +925,20 @@ function getWordIdFromUrl() {
     );
 }
 
+// =====================================================
+// Get Form Value
+// =====================================================
+
+function getValue(id) {
+
+    return (
+        document
+            .getElementById(id)
+            ?.value
+            .trim() || ""
+    );
+
+}
 
 // =====================================================
 // Load Word
