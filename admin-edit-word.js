@@ -1,5 +1,5 @@
 // =====================================================
-// English Learning - Admin Edit Word v1
+// English Learning - Admin Edit Word v2
 // =====================================================
 
 
@@ -12,12 +12,28 @@ const SUPABASE_KEY = "sb_publishable_urenPm0k3KqkSpb9aSkVOw_OVYch9mM";
 
 
 // =====================================================
-// Database Configuration
+// Database / Storage Configuration
 // =====================================================
 
 const WORDS_TABLE = "words";
 
 const IMAGE_URL_COLUMN = "image_url";
+
+const STORAGE_BUCKET = "word-images";
+
+
+// =====================================================
+// Image Configuration
+// =====================================================
+
+const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
+
+const ALLOWED_IMAGE_TYPES = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif"
+];
 
 
 // =====================================================
@@ -60,6 +76,11 @@ document.addEventListener(
         const noCurrentImage =
             document.getElementById(
                 "noCurrentImage"
+            );
+
+        const saveChangesButton =
+            document.getElementById(
+                "saveChangesButton"
             );
 
 
@@ -144,6 +165,29 @@ document.addEventListener(
 
 
         // -------------------------------------------------
+        // Check Storage Configuration
+        // -------------------------------------------------
+
+        if (
+            STORAGE_BUCKET ===
+            "YOUR_WORD_IMAGES_BUCKET"
+        ) {
+
+            showMessage(
+                formMessage,
+                "Word image storage is not configured yet.",
+                "error"
+            );
+
+            console.error(
+                "Set STORAGE_BUCKET in admin-edit-word.js."
+            );
+
+            return;
+        }
+
+
+        // -------------------------------------------------
         // Create Supabase Client
         // -------------------------------------------------
 
@@ -155,6 +199,7 @@ document.addEventListener(
 
 
         // Temporary shared reference
+
         window.supabaseClient =
             supabase;
 
@@ -215,20 +260,22 @@ document.addEventListener(
         }
 
 
-        // -------------------------------------------------
+        // =================================================
         // Load Word
-        // -------------------------------------------------
+        // =================================================
+
+        let originalWord = null;
 
         try {
 
-            const word =
+            originalWord =
                 await loadWord(
                     supabase,
                     wordId
                 );
 
 
-            if (!word) {
+            if (!originalWord) {
 
                 showMessage(
                     formMessage,
@@ -250,7 +297,7 @@ document.addEventListener(
             // ---------------------------------------------
 
             fillWordForm(
-                word
+                originalWord
             );
 
 
@@ -259,7 +306,7 @@ document.addEventListener(
             // ---------------------------------------------
 
             displayCurrentImage(
-                word[IMAGE_URL_COLUMN],
+                originalWord[IMAGE_URL_COLUMN],
                 currentImageContainer,
                 currentImage,
                 noCurrentImage
@@ -306,22 +353,50 @@ document.addEventListener(
                 editWordForm,
                 true
             );
+
+            return;
         }
 
 
-        // -------------------------------------------------
+        // =================================================
         // Image Selection
-        // -------------------------------------------------
+        // =================================================
 
         imageInput?.addEventListener(
             "change",
             () => {
+
+                clearMessage(
+                    formMessage
+                );
+
 
                 const file =
                     imageInput.files?.[0];
 
 
                 if (!file) {
+                    return;
+                }
+
+
+                const validation =
+                    validateImage(
+                        file
+                    );
+
+
+                if (!validation.valid) {
+
+                    showMessage(
+                        formMessage,
+                        validation.message,
+                        "error"
+                    );
+
+                    imageInput.value =
+                        "";
+
                     return;
                 }
 
@@ -336,22 +411,365 @@ document.addEventListener(
         );
 
 
-        // -------------------------------------------------
-        // Prevent Save In v1
-        // -------------------------------------------------
+        // =================================================
+        // Save Changes
+        // =================================================
 
         editWordForm.addEventListener(
             "submit",
-            (event) => {
+            async (event) => {
 
                 event.preventDefault();
 
 
-                showMessage(
-                    formMessage,
-                    "Save Changes will be enabled in the next version.",
-                    "info"
+                clearMessage(
+                    formMessage
                 );
+
+
+                setButtonLoading(
+                    saveChangesButton,
+                    true,
+                    "Saving..."
+                );
+
+
+                let newImageUrl =
+                    null;
+
+
+                let newImageUploaded =
+                    false;
+
+
+                try {
+
+                    // -------------------------------------
+                    // Get Form Values
+                    // -------------------------------------
+
+                    const word =
+                        getValue(
+                            "word"
+                        );
+
+
+                    const level =
+                        getValue(
+                            "level"
+                        );
+
+
+                    const partOfSpeech =
+                        getValue(
+                            "part_of_speech"
+                        );
+
+
+                    const pronunciation =
+                        getValue(
+                            "pronunciation"
+                        );
+
+
+                    const meaning =
+                        getValue(
+                            "meaning"
+                        );
+
+
+                    const example =
+                        getValue(
+                            "example"
+                        );
+
+
+                    const status =
+                        getValue(
+                            "status"
+                        );
+
+
+                    const imageFile =
+                        imageInput?.files?.[0] ||
+                        null;
+
+
+                    // -------------------------------------
+                    // Validate Form
+                    // -------------------------------------
+
+                    const validation =
+                        validateWord({
+                            word,
+                            level,
+                            partOfSpeech,
+                            pronunciation,
+                            meaning,
+                            example,
+                            status,
+                            imageFile
+                        });
+
+
+                    if (!validation.valid) {
+
+                        throw new Error(
+                            validation.message
+                        );
+                    }
+
+
+                    // -------------------------------------
+                    // Validate New Image
+                    // -------------------------------------
+
+                    if (imageFile) {
+
+                        const imageValidation =
+                            validateImage(
+                                imageFile
+                            );
+
+
+                        if (
+                            !imageValidation.valid
+                        ) {
+
+                            throw new Error(
+                                imageValidation.message
+                            );
+                        }
+
+                    }
+
+
+                    // -------------------------------------
+                    // Check Duplicate Word
+                    // -------------------------------------
+
+                    const {
+                        data: duplicateWords,
+                        error: duplicateError
+                    } =
+                        await supabase
+                            .from(WORDS_TABLE)
+                            .select("id")
+                            .ilike(
+                                "word",
+                                word
+                            )
+                            .neq(
+                                "id",
+                                wordId
+                            )
+                            .limit(1);
+
+
+                    if (duplicateError) {
+                        throw duplicateError;
+                    }
+
+
+                    if (
+                        duplicateWords &&
+                        duplicateWords.length > 0
+                    ) {
+
+                        throw new Error(
+                            "This word already exists in the Word Library."
+                        );
+                    }
+
+
+                    // -------------------------------------
+                    // Upload New Image
+                    // -------------------------------------
+
+                    if (imageFile) {
+
+                        newImageUrl =
+                            await uploadWordImage(
+                                supabase,
+                                imageFile,
+                                word
+                            );
+
+
+                        newImageUploaded =
+                            true;
+                    }
+
+
+                    // -------------------------------------
+                    // Prepare Update
+                    // -------------------------------------
+
+                    const wordRecord = {
+
+                        word:
+                            word,
+
+                        level:
+                            level,
+
+                        part_of_speech:
+                            partOfSpeech,
+
+                        pronunciation:
+                            pronunciation ||
+                            null,
+
+                        meaning:
+                            meaning ||
+                            null,
+
+                        example:
+                            example ||
+                            null,
+
+                        status:
+                            status,
+
+                        updated_at:
+                            new Date().toISOString()
+
+                    };
+
+
+                    // -------------------------------------
+                    // Image Update
+                    // -------------------------------------
+
+                    if (imageFile) {
+
+                        wordRecord[
+                            IMAGE_URL_COLUMN
+                        ] =
+                            newImageUrl;
+
+                    }
+
+
+                    // -------------------------------------
+                    // Update Word
+                    // -------------------------------------
+
+                    const {
+                        error: updateError
+                    } =
+                        await supabase
+                            .from(WORDS_TABLE)
+                            .update(
+                                wordRecord
+                            )
+                            .eq(
+                                "id",
+                                wordId
+                            );
+
+
+                    if (updateError) {
+
+                        throw updateError;
+                    }
+
+
+                    // -------------------------------------
+                    // Remove Old Image
+                    // -------------------------------------
+
+                    if (
+                        imageFile &&
+                        originalWord[
+                            IMAGE_URL_COLUMN
+                        ]
+                    ) {
+
+                        await removeUploadedImage(
+                            supabase,
+                            originalWord[
+                                IMAGE_URL_COLUMN
+                            ]
+                        );
+
+                    }
+
+
+                    // -------------------------------------
+                    // Success
+                    // -------------------------------------
+
+                    showMessage(
+                        formMessage,
+                        "Word updated successfully.",
+                        "success"
+                    );
+
+
+                    // -------------------------------------
+                    // Redirect
+                    // -------------------------------------
+
+                    setTimeout(
+                        () => {
+
+                            window.location.replace(
+                                "admin-words.html"
+                            );
+
+                        },
+                        700
+                    );
+
+                }
+
+
+                catch (error) {
+
+                    console.error(
+                        "Save changes error:",
+                        error
+                    );
+
+
+                    // -------------------------------------
+                    // Remove New Image If Update Failed
+                    // -------------------------------------
+
+                    if (
+                        newImageUploaded &&
+                        newImageUrl
+                    ) {
+
+                        await removeUploadedImage(
+                            supabase,
+                            newImageUrl
+                        );
+
+                    }
+
+
+                    showMessage(
+                        formMessage,
+                        getFriendlyErrorMessage(
+                            error
+                        ),
+                        "error"
+                    );
+
+                }
+
+
+                finally {
+
+                    setButtonLoading(
+                        saveChangesButton,
+                        false,
+                        "Save Changes"
+                    );
+
+                }
 
             }
         );
@@ -366,7 +784,6 @@ document.addEventListener(
 
 function loadSupabaseLibrary() {
 
-    // Already loaded
     if (window.supabase) {
 
         return Promise.resolve();
@@ -403,14 +820,18 @@ function loadSupabaseLibrary() {
                         }
 
                     },
-                    { once: true }
+                    {
+                        once: true
+                    }
                 );
 
 
                 existingScript.addEventListener(
                     "error",
                     reject,
-                    { once: true }
+                    {
+                        once: true
+                    }
                 );
 
 
@@ -427,37 +848,43 @@ function loadSupabaseLibrary() {
             script.src =
                 "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
 
-            script.async = true;
+
+            script.async =
+                true;
 
 
-            script.onload = () => {
+            script.onload =
+                () => {
 
-                if (window.supabase) {
+                    if (
+                        window.supabase
+                    ) {
 
-                    resolve();
+                        resolve();
 
-                } else {
+                    } else {
+
+                        reject(
+                            new Error(
+                                "Supabase library loaded without a global client."
+                            )
+                        );
+
+                    }
+
+                };
+
+
+            script.onerror =
+                () => {
 
                     reject(
                         new Error(
-                            "Supabase library loaded without a global client."
+                            "Could not load Supabase library."
                         )
                     );
 
-                }
-
-            };
-
-
-            script.onerror = () => {
-
-                reject(
-                    new Error(
-                        "Could not load Supabase library."
-                    )
-                );
-
-            };
+                };
 
 
             document.head.appendChild(
@@ -466,6 +893,7 @@ function loadSupabaseLibrary() {
 
         }
     );
+
 }
 
 
@@ -491,12 +919,15 @@ function getWordIdFromUrl() {
     }
 
 
-    return wordId.trim() || null;
+    return (
+        wordId.trim() ||
+        null
+    );
 }
 
 
 // =====================================================
-// Load Word From Supabase
+// Load Word
 // =====================================================
 
 async function loadWord(
@@ -507,26 +938,27 @@ async function loadWord(
     const {
         data,
         error
-    } = await supabase
-        .from(WORDS_TABLE)
-        .select(
-            `
-            id,
-            word,
-            level,
-            part_of_speech,
-            pronunciation,
-            meaning,
-            example,
-            ${IMAGE_URL_COLUMN},
-            status
-            `
-        )
-        .eq(
-            "id",
-            wordId
-        )
-        .maybeSingle();
+    } =
+        await supabase
+            .from(WORDS_TABLE)
+            .select(
+                `
+                id,
+                word,
+                level,
+                part_of_speech,
+                pronunciation,
+                meaning,
+                example,
+                ${IMAGE_URL_COLUMN},
+                status
+                `
+            )
+            .eq(
+                "id",
+                wordId
+            )
+            .maybeSingle();
 
 
     if (error) {
@@ -552,30 +984,36 @@ function fillWordForm(
             "word"
         );
 
+
     const levelInput =
         document.getElementById(
             "level"
         );
+
 
     const partOfSpeechInput =
         document.getElementById(
             "part_of_speech"
         );
 
+
     const pronunciationInput =
         document.getElementById(
             "pronunciation"
         );
+
 
     const meaningInput =
         document.getElementById(
             "meaning"
         );
 
+
     const exampleInput =
         document.getElementById(
             "example"
         );
+
 
     const statusInput =
         document.getElementById(
@@ -658,8 +1096,10 @@ function fillWordForm(
     if (statusInput) {
 
         statusInput.value =
-            word.status || "draft";
+            word.status ||
+            "draft";
     }
+
 }
 
 
@@ -681,10 +1121,6 @@ function setSelectValue(
         value || "";
 
 
-    // -------------------------------------------------
-    // Existing Option
-    // -------------------------------------------------
-
     const optionExists =
         Array.from(
             select.options
@@ -699,10 +1135,6 @@ function setSelectValue(
         normalizedValue &&
         !optionExists
     ) {
-
-        // ---------------------------------------------
-        // Preserve Existing Database Value
-        // ---------------------------------------------
 
         const option =
             document.createElement(
@@ -721,11 +1153,13 @@ function setSelectValue(
         select.appendChild(
             option
         );
+
     }
 
 
     select.value =
         normalizedValue;
+
 }
 
 
@@ -750,18 +1184,17 @@ function displayCurrentImage(
     }
 
 
-    // -------------------------------------------------
-    // Reset
-    // -------------------------------------------------
-
     container.hidden =
         true;
+
 
     image.hidden =
         true;
 
+
     noImageMessage.hidden =
         true;
+
 
     image.removeAttribute(
         "src"
@@ -780,8 +1213,10 @@ function displayCurrentImage(
         container.hidden =
             false;
 
+
         noImageMessage.hidden =
             false;
+
 
         return;
     }
@@ -791,34 +1226,507 @@ function displayCurrentImage(
     // Image Exists
     // -------------------------------------------------
 
-    image.onload = () => {
+    image.onload =
+        () => {
 
-        image.hidden =
-            false;
-
-        noImageMessage.hidden =
-            true;
-
-        container.hidden =
-            false;
-    };
+            image.hidden =
+                false;
 
 
-    image.onerror = () => {
+            noImageMessage.hidden =
+                true;
 
-        image.hidden =
-            true;
 
-        noImageMessage.hidden =
-            false;
+            container.hidden =
+                false;
 
-        container.hidden =
-            false;
-    };
+        };
+
+
+    image.onerror =
+        () => {
+
+            image.hidden =
+                true;
+
+
+            noImageMessage.hidden =
+                false;
+
+
+            container.hidden =
+                false;
+
+        };
 
 
     image.src =
         imageUrl.trim();
+
+}
+
+
+// =====================================================
+// Validate Word
+// =====================================================
+
+function validateWord({
+    word,
+    level,
+    partOfSpeech,
+    pronunciation,
+    meaning,
+    example,
+    status,
+    imageFile
+}) {
+
+    // -------------------------------------------------
+    // Word
+    // -------------------------------------------------
+
+    if (!word) {
+
+        return {
+
+            valid: false,
+
+            message:
+                "Please enter a word."
+
+        };
+    }
+
+
+    // -------------------------------------------------
+    // Level
+    // -------------------------------------------------
+
+    const allowedLevels = [
+
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "C1"
+
+    ];
+
+
+    if (!allowedLevels.includes(level)) {
+
+        return {
+
+            valid: false,
+
+            message:
+                "Invalid English level."
+
+        };
+    }
+
+
+    // -------------------------------------------------
+    // Part of Speech
+    // -------------------------------------------------
+
+    if (!partOfSpeech) {
+
+        return {
+
+            valid: false,
+
+            message:
+                "Please select a part of speech."
+
+        };
+    }
+
+
+    // -------------------------------------------------
+    // Status
+    // -------------------------------------------------
+
+    const allowedStatuses = [
+
+        "draft",
+        "published"
+
+    ];
+
+
+    if (!allowedStatuses.includes(status)) {
+
+        return {
+
+            valid: false,
+
+            message:
+                "Invalid word status."
+
+        };
+    }
+
+
+    // -------------------------------------------------
+    // Image
+    // -------------------------------------------------
+
+    if (imageFile) {
+
+        const imageValidation =
+            validateImage(
+                imageFile
+            );
+
+
+        if (
+            !imageValidation.valid
+        ) {
+
+            return imageValidation;
+
+        }
+
+    }
+
+
+    return {
+
+        valid: true
+
+    };
+
+}
+
+
+// =====================================================
+// Validate Image
+// =====================================================
+
+function validateImage(
+    file
+) {
+
+    if (!file) {
+
+        return {
+
+            valid: false,
+
+            message:
+                "Please select a valid image."
+
+        };
+    }
+
+
+    if (
+        !ALLOWED_IMAGE_TYPES.includes(
+            file.type
+        )
+    ) {
+
+        return {
+
+            valid: false,
+
+            message:
+                "Please select a JPG, PNG, WEBP, or GIF image."
+
+        };
+    }
+
+
+    if (
+        file.size >
+        MAX_IMAGE_SIZE
+    ) {
+
+        return {
+
+            valid: false,
+
+            message:
+                "Image size must be 2 MB or less."
+
+        };
+    }
+
+
+    return {
+
+        valid: true
+
+    };
+
+}
+
+
+// =====================================================
+// Upload Word Image
+// =====================================================
+
+async function uploadWordImage(
+    supabase,
+    file,
+    word
+) {
+
+    const extension =
+        getFileExtension(
+            file.name
+        );
+
+
+    const safeWord =
+        createSafeFileName(
+            word
+        );
+
+
+    const uniqueId =
+        createUniqueId();
+
+
+    const filePath =
+        `words/${safeWord}-${uniqueId}.${extension}`;
+
+
+    const {
+        error: uploadError
+    } =
+        await supabase
+            .storage
+            .from(
+                STORAGE_BUCKET
+            )
+            .upload(
+                filePath,
+                file,
+                {
+
+                    cacheControl:
+                        "3600",
+
+                    upsert:
+                        false,
+
+                    contentType:
+                        file.type
+
+                }
+            );
+
+
+    if (uploadError) {
+
+        throw uploadError;
+    }
+
+
+    const {
+        data
+    } =
+        supabase
+            .storage
+            .from(
+                STORAGE_BUCKET
+            )
+            .getPublicUrl(
+                filePath
+            );
+
+
+    if (
+        !data?.publicUrl
+    ) {
+
+        throw new Error(
+            "The image was uploaded, but no public image URL was returned."
+        );
+    }
+
+
+    return data.publicUrl;
+
+}
+
+
+// =====================================================
+// Remove Uploaded Image
+// =====================================================
+
+async function removeUploadedImage(
+    supabase,
+    imageUrl
+) {
+
+    try {
+
+        if (
+            !imageUrl ||
+            !imageUrl.trim()
+        ) {
+
+            return;
+        }
+
+
+        const marker =
+            `/storage/v1/object/public/${STORAGE_BUCKET}/`;
+
+
+        const markerIndex =
+            imageUrl.indexOf(
+                marker
+            );
+
+
+        if (
+            markerIndex === -1
+        ) {
+
+            console.warn(
+                "Image URL does not belong to the configured Storage bucket."
+            );
+
+            return;
+        }
+
+
+        const filePath =
+            decodeURIComponent(
+                imageUrl.substring(
+                    markerIndex +
+                    marker.length
+                )
+            );
+
+
+        if (!filePath) {
+
+            return;
+        }
+
+
+        const {
+            error
+        } =
+            await supabase
+                .storage
+                .from(
+                    STORAGE_BUCKET
+                )
+                .remove([
+                    filePath
+                ]);
+
+
+        if (error) {
+
+            console.warn(
+                "Could not remove image:",
+                error
+            );
+
+        }
+
+    }
+
+
+    catch (error) {
+
+        console.warn(
+            "Could not remove image:",
+            error
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// Get File Extension
+// =====================================================
+
+function getFileExtension(
+    fileName
+) {
+
+    const parts =
+        fileName.split(".");
+
+
+    const extension =
+        parts.length > 1
+            ? parts.pop()
+            : "jpg";
+
+
+    return extension
+        .toLowerCase()
+        .replace(
+            /[^a-z0-9]/g,
+            ""
+        ) || "jpg";
+
+}
+
+
+// =====================================================
+// Create Safe File Name
+// =====================================================
+
+function createSafeFileName(
+    value
+) {
+
+    return value
+        .toLowerCase()
+        .trim()
+        .replace(
+            /\s+/g,
+            "-"
+        )
+        .replace(
+            /[^a-z0-9-]/g,
+            ""
+        )
+        .replace(
+            /-+/g,
+            "-"
+        )
+        .replace(
+            /^-|-$/g,
+            ""
+        ) || "word";
+
+}
+
+
+// =====================================================
+// Create Unique ID
+// =====================================================
+
+function createUniqueId() {
+
+    if (
+        window.crypto?.randomUUID
+    ) {
+
+        return window.crypto.randomUUID();
+
+    }
+
+
+    return (
+        `${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2, 10)}`
+    );
+
 }
 
 
@@ -850,6 +1758,53 @@ function setFormDisabled(
 
         }
     );
+
+}
+
+
+// =====================================================
+// Button Loading State
+// =====================================================
+
+function setButtonLoading(
+    button,
+    loading,
+    text
+) {
+
+    if (!button) {
+        return;
+    }
+
+
+    if (loading) {
+
+        button.disabled =
+            true;
+
+
+        button.dataset.originalText =
+            button.textContent.trim();
+
+
+        button.textContent =
+            text;
+
+    } else {
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            button.dataset.originalText ||
+            text;
+
+
+        delete button.dataset.originalText;
+
+    }
+
 }
 
 
@@ -870,10 +1825,6 @@ async function checkAdminAccess(
             await supabase.auth.getUser();
 
 
-        // -------------------------------------------------
-        // Authentication Error
-        // -------------------------------------------------
-
         if (error) {
 
             console.error(
@@ -891,10 +1842,6 @@ async function checkAdminAccess(
         }
 
 
-        // -------------------------------------------------
-        // No Logged-in User
-        // -------------------------------------------------
-
         const user =
             data?.user;
 
@@ -910,15 +1857,13 @@ async function checkAdminAccess(
         }
 
 
-        // -------------------------------------------------
-        // Check Admin Role
-        // -------------------------------------------------
-
         const role =
             user.app_metadata?.role;
 
 
-        if (role !== "admin") {
+        if (
+            role !== "admin"
+        ) {
 
             window.location.replace(
                 "index.html"
@@ -929,14 +1874,12 @@ async function checkAdminAccess(
         }
 
 
-        // -------------------------------------------------
-        // Admin Confirmed
-        // -------------------------------------------------
-
         return true;
 
+    }
 
-    } catch (error) {
+
+    catch (error) {
 
         console.error(
             "Admin access check failed:",
@@ -950,7 +1893,9 @@ async function checkAdminAccess(
 
 
         return false;
+
     }
+
 }
 
 
@@ -981,10 +1926,6 @@ function initAdminMenu() {
     }
 
 
-    // -------------------------------------------------
-    // Open / Close Menu
-    // -------------------------------------------------
-
     adminMenuButton.addEventListener(
         "click",
         event => {
@@ -1008,10 +1949,6 @@ function initAdminMenu() {
         }
     );
 
-
-    // -------------------------------------------------
-    // Close Menu Outside
-    // -------------------------------------------------
 
     document.addEventListener(
         "click",
@@ -1039,6 +1976,7 @@ function initAdminMenu() {
 
         }
     );
+
 }
 
 
@@ -1056,7 +1994,9 @@ function initAdminLogout(
         );
 
 
-    if (!adminLogoutButton) {
+    if (
+        !adminLogoutButton
+    ) {
 
         return;
     }
@@ -1085,6 +2025,7 @@ function initAdminLogout(
                 if (error) {
 
                     throw error;
+
                 }
 
 
@@ -1092,8 +2033,10 @@ function initAdminLogout(
                     "auth.html"
                 );
 
+            }
 
-            } catch (error) {
+
+            catch (error) {
 
                 console.error(
                     "Admin logout error:",
@@ -1107,10 +2050,12 @@ function initAdminLogout(
 
                 adminLogoutButton.textContent =
                     "Log Out";
+
             }
 
         }
     );
+
 }
 
 
@@ -1153,6 +2098,7 @@ function showMessage(
         element.classList.add(
             type
         );
+
     }
 
 
@@ -1164,6 +2110,7 @@ function showMessage(
         "role",
         "status"
     );
+
 }
 
 
@@ -1201,6 +2148,7 @@ function clearMessage(
 
 
     delete element.dataset.type;
+
 }
 
 
@@ -1217,6 +2165,7 @@ function getFriendlyErrorMessage(
         return (
             "Something went wrong. Please try again."
         );
+
     }
 
 
@@ -1225,20 +2174,44 @@ function getFriendlyErrorMessage(
         String(error);
 
 
+    const lowerMessage =
+        message.toLowerCase();
+
+
     // -------------------------------------------------
     // RLS
     // -------------------------------------------------
 
     if (
-        message.toLowerCase()
-            .includes(
-                "row-level security"
-            )
+        lowerMessage.includes(
+            "row-level security"
+        )
     ) {
 
         return (
-            "You do not have permission to access this word."
+            "You do not have permission to update this word."
         );
+
+    }
+
+
+    // -------------------------------------------------
+    // Duplicate
+    // -------------------------------------------------
+
+    if (
+        lowerMessage.includes(
+            "duplicate"
+        ) ||
+        lowerMessage.includes(
+            "already exists"
+        )
+    ) {
+
+        return (
+            "This word already exists in the Word Library."
+        );
+
     }
 
 
@@ -1247,15 +2220,66 @@ function getFriendlyErrorMessage(
     // -------------------------------------------------
 
     if (
-        message.toLowerCase()
-            .includes(
-                "invalid input syntax for type uuid"
-            )
+        lowerMessage.includes(
+            "invalid input syntax for type uuid"
+        )
     ) {
 
         return (
             "The selected word ID is invalid."
         );
+
+    }
+
+
+    // -------------------------------------------------
+    // Storage Bucket
+    // -------------------------------------------------
+
+    if (
+        lowerMessage.includes(
+            "bucket not found"
+        )
+    ) {
+
+        return (
+            "The word image Storage bucket was not found."
+        );
+
+    }
+
+
+    // -------------------------------------------------
+    // Storage Permission
+    // -------------------------------------------------
+
+    if (
+        lowerMessage.includes(
+            "new row violates row-level security policy"
+        )
+    ) {
+
+        return (
+            "You do not have permission to upload the word image."
+        );
+
+    }
+
+
+    // -------------------------------------------------
+    // Network
+    // -------------------------------------------------
+
+    if (
+        lowerMessage.includes(
+            "failed to fetch"
+        )
+    ) {
+
+        return (
+            "Could not connect to the database. Please try again."
+        );
+
     }
 
 
@@ -1264,4 +2288,5 @@ function getFriendlyErrorMessage(
     // -------------------------------------------------
 
     return message;
+
 }
