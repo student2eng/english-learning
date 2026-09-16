@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Word Library | English Learning</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
+</head>
+
+
+<body>
+
+    <!-- =================================================
+         Header
+         ================================================= -->
+
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a
+                href="admin-dashboard.html"
+                class="logo"
+            >
+                English Learning
+            </a>
+
+
+            <div class="admin-menu">
+
+                <button
+                    type="button"
+                    class="admin-menu-button"
+                    id="adminMenuButton"
+                    aria-expanded="false"
+                    aria-controls="adminMenu"
+                >
+                    Admin
+
+                    <span class="admin-menu-arrow">
+                        ▾
+                    </span>
+                </button>
+
+
+                <div
+                    class="admin-dropdown"
+                    id="adminMenu"
+                    hidden
+                >
+
+                    <a
+                        href="admin-dashboard.html"
+                        class="admin-dropdown-item"
+                    >
+                        Admin Dashboard
+                    </a>
+
+
+                    <a
+                        href="admin.html"
+                        class="admin-dropdown-item"
+                    >
+                        Add New Word
+                    </a>
+
+
+                    <button
+                        type="button"
+                        class="admin-dropdown-item admin-logout"
+                        id="adminLogoutButton"
+                    >
+                        Log Out
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         Main
+         ================================================= -->
+
+    <main class="container admin-page">
+
+
+        <!-- =================================================
+             Page Header
+             ================================================= -->
+
+        <section class="admin-intro">
+
+            <div class="section-header">
+
+                <div>
+
+                    <p class="eyebrow">
+                        <a href="admin-dashboard.html">
+                            ← Word Library
+                        </a>
+                    </p>
+
+
+                    <h1>
+                        Word Library
+                    </h1>
+
+
+                    <p>
+                        Manage, search, and edit learning words.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="admin.html"
+                    class="btn btn-primary"
+                >
+                    + Add New Word
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 Word Count
+                 ================================================= -->
+
+            <p
+                class="word-library-count"
+                id="wordCount"
+            >
+                Loading words...
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             Search & Filter
+             ================================================= -->
+
+        <section class="admin-card">
+
+            <div class="word-library-controls">
+
+
+                <!-- Search -->
+
+                <div class="form-group">
+
+                    <label for="wordSearch">
+                        Search
+                    </label>
+
+                    <input
+                        type="search"
+                        id="wordSearch"
+                        name="wordSearch"
+                        placeholder="Search words..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <!-- Level Filter -->
+
+                <div class="form-group">
+
+                    <label for="levelFilter">
+                        Level
+                    </label>
+
+                    <select
+                        id="levelFilter"
+                        name="levelFilter"
+                    >
+
+                        <option value="">
+                            All Levels
+                        </option>
+
+                        <option value="A1">
+                            A1 — Beginner
+                        </option>
+
+                        <option value="A2">
+                            A2 — Elementary
+                        </option>
+
+                        <option value="B1">
+                            B1 — Intermediate
+                        </option>
+
+                        <option value="B2">
+                            B2 — Upper Intermediate
+                        </option>
+
+                        <option value="C1">
+                            C1 — Advanced
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             Word List
+             ================================================= -->
+
+        <section class="admin-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Words
+                    </h2>
+
+                    <p>
+                        Browse and edit words in the Word Library.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Desktop Table -->
+
+            <div
+                class="word-table-wrapper"
+                id="wordTableWrapper"
+            >
+
+                <table class="word-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th scope="col">
+                                Word
+                            </th>
+
+                            <th scope="col">
+                                Level
+                            </th>
+
+                            <th scope="col">
+                                Part of Speech
+                            </th>
+
+                            <th scope="col">
+                                Status
+                            </th>
+
+                            <th scope="col">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="wordTableBody">
+
+                        <!-- Words will be loaded by admin-words.js -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- Mobile List -->
+
+            <div
+                class="word-mobile-list"
+                id="wordMobileList"
+            >
+
+                <!-- Words will be loaded by admin-words.js -->
+
+            </div>
+
+
+            <!-- Empty State -->
+
+            <div
+                class="word-library-empty"
+                id="wordEmptyState"
+                hidden
+            >
+
+                <h3>
+                    No words found
+                </h3>
+
+                <p>
+                    Try changing your search or filters.
+                </p>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="clearFiltersButton"
+                >
+                    Clear Filters
+                </button>
+
+            </div>
+
+
+            <!-- Loading State -->
+
+            <div
+                class="word-library-loading"
+                id="wordLoadingState"
+                hidden
+            >
+
+                <p>
+                    Loading words...
+                </p>
+
+            </div>
+
+
+            <!-- Error State -->
+
+            <div
+                class="word-library-error"
+                id="wordErrorState"
+                hidden
+            >
+
+                <p id="wordErrorMessage">
+                    Something went wrong. Please try again.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 Pagination
+                 ================================================= -->
+
+            <div
+                class="word-pagination"
+                id="wordPagination"
+                hidden
+            >
+
+                <div
+                    class="word-pagination-info"
+                    id="paginationInfo"
+                >
+                    Showing 1–50 of 2,347 words
+                </div>
+
+
+                <div
+                    class="word-pagination-controls"
+                    id="paginationControls"
+                >
+
+                    <!-- Pagination buttons will be loaded
+                         by admin-words.js -->
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =================================================
+         Footer
+         ================================================= -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            © 2026 English Learning. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =================================================
+         Admin JavaScript
+         ================================================= -->
+
+    <script src="admin-words.js"></script>
+
+</body>
+
+</html>
