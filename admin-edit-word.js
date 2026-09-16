@@ -656,23 +656,41 @@ document.addEventListener(
                     // -------------------------------------
 
                     const {
-                        error: updateError
-                    } =
-                        await supabase
-                            .from(WORDS_TABLE)
-                            .update(
-                                wordRecord
-                            )
-                            .eq(
-                                "id",
-                                wordId
-                            );
+    data: updatedWord,
+    error: updateError
+} =
+    await supabase
+        .from(WORDS_TABLE)
+        .update(wordRecord)
+        .eq("id", wordId)
+        .select(
+            `
+            id,
+            word,
+            level,
+            part_of_speech,
+            pronunciation,
+            meaning,
+            example,
+            ${IMAGE_URL_COLUMN},
+            status
+            `
+        )
+        .single();
 
 
-                    if (updateError) {
+if (updateError) {
 
-                        throw updateError;
-                    }
+    throw updateError;
+}
+
+
+if (!updatedWord) {
+
+    throw new Error(
+        "The word could not be updated."
+    );
+}
 
 
                     // -------------------------------------
