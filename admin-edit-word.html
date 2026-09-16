@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Edit Word | English Learning</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
+</head>
+
+
+<body>
+
+    <!-- =================================================
+         Header
+         ================================================= -->
+
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a
+                href="admin-words.html"
+                class="logo"
+            >
+                English Learning
+            </a>
+
+
+            <div class="admin-menu">
+
+                <button
+                    type="button"
+                    class="admin-menu-button"
+                    id="adminMenuButton"
+                    aria-expanded="false"
+                    aria-controls="adminMenu"
+                >
+                    Admin
+
+                    <span class="admin-menu-arrow">
+                        ▾
+                    </span>
+                </button>
+
+
+                <div
+                    class="admin-dropdown"
+                    id="adminMenu"
+                    hidden
+                >
+
+                    <a
+                        href="admin-dashboard.html"
+                        class="admin-dropdown-item"
+                    >
+                        Admin Dashboard
+                    </a>
+
+
+                    <a
+                        href="admin.html"
+                        class="admin-dropdown-item"
+                    >
+                        Add New Word
+                    </a>
+
+
+                    <a
+                        href="admin-words.html"
+                        class="admin-dropdown-item"
+                    >
+                        Word Library
+                    </a>
+
+
+                    <button
+                        type="button"
+                        class="admin-dropdown-item admin-logout"
+                        id="adminLogoutButton"
+                    >
+                        Log Out
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         Main
+         ================================================= -->
+
+    <main class="container admin-page">
+
+
+        <!-- =================================================
+             Page Header
+             ================================================= -->
+
+        <section class="admin-intro">
+
+            <p class="eyebrow">
+
+                <a href="admin-words.html">
+                    ← Word Library
+                </a>
+
+            </p>
+
+
+            <h1>
+                Edit Word
+            </h1>
+
+
+            <p>
+                Edit and update this learning word.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             Edit Word Form
+             ================================================= -->
+
+        <section class="admin-form-card">
+
+            <form
+                id="editWordForm"
+                novalidate
+            >
+
+
+                <!-- =========================================
+                     Word
+                     ========================================= -->
+
+                <div class="form-group">
+
+                    <label for="word">
+                        Word
+                    </label>
+
+                    <input
+                        type="text"
+                        id="word"
+                        name="word"
+                        placeholder="e.g. recommend"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <!-- =========================================
+                     Level
+                     ========================================= -->
+
+                <div class="form-group">
+
+                    <label for="level">
+                        Level
+                    </label>
+
+                    <select
+                        id="level"
+                        name="level"
+                    >
+
+                        <option value="">
+                            Select level
+                        </option>
+
+                        <option value="A1">
+                            A1
+                        </option>
+
+                        <option value="A2">
+                            A2
+                        </option>
+
+                        <option value="B1">
+                            B1
+                        </option>
+
+                        <option value="B2">
+                            B2
+                        </option>
+
+                        <option value="C1">
+                            C1
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =========================================
+                     Part of Speech
+                     ========================================= -->
+
+                <div class="form-group">
+
+                    <label for="part_of_speech">
+                        Part of Speech
+                    </label>
+
+                    <select
+                        id="part_of_speech"
+                        name="part_of_speech"
+                    >
+
+                        <option value="">
+                            Select part of speech
+                        </option>
+
+                        <option value="noun">
+                            Noun
+                        </option>
+
+                        <option value="verb">
+                            Verb
+                        </option>
+
+                        <option value="adjective">
+                            Adjective
+                        </option>
+
+                        <option value="adverb">
+                            Adverb
+                        </option>
+
+                        <option value="pronoun">
+                            Pronoun
+                        </option>
+
+                        <option value="preposition">
+                            Preposition
+                        </option>
+
+                        <option value="conjunction">
+                            Conjunction
+                        </option>
+
+                        <option value="determiner">
+                            Determiner
+                        </option>
+
+                        <option value="interjection">
+                            Interjection
+                        </option>
+
+                        <option value="modal verb">
+                            Modal Verb
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =========================================
+                     Pronunciation
+                     ========================================= -->
+
+                <div class="form-group">
+
+                    <label for="pronunciation">
+                        Pronunciation
+                    </label>
+
+                    <input
+                        type="text"
+                        id="pronunciation"
+                        name="pronunciation"
+                        placeholder="e.g. /ˌrekəˈmend/"
+                    >
+
+                </div>
+
+
+                <!-- =========================================
+                     Meaning
+                     ========================================= -->
+
+                <div class="form-group">
+
+                    <label for="meaning">
+                        Meaning
+                    </label>
+
+                    <textarea
+                        id="meaning"
+                        name="meaning"
+                        rows="5"
+                        placeholder="Enter the meaning of the word."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- =========================================
+                     Example
+                     ========================================= -->
+
+                <div class="form-group">
+
+                    <label for="example">
+                        Example
+                    </label>
+
+                    <textarea
+                        id="example"
+                        name="example"
+                        rows="5"
+                        placeholder="Enter example sentences."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- =========================================
+                     Image
+                     ========================================= -->
+
+                <div class="form-group">
+
+                    <label>
+                        Image
+                    </label>
+
+
+                    <div
+                        class="edit-word-image"
+                        id="currentImageContainer"
+                    >
+
+                        <img
+                            id="currentImage"
+                            src=""
+                            alt="Current word image"
+                            hidden
+                        >
+
+                        <p
+                            id="noCurrentImage"
+                            class="edit-word-no-image"
+                        >
+                            No image available.
+                        </p>
+
+                    </div>
+
+
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                    >
+
+
+                    <p class="edit-word-image-help">
+                        Leave the image unchanged to keep the current image.
+                    </p>
+
+
+                    <div
+                        id="imageSelectionMessage"
+                        class="form-message"
+                        hidden
+                    ></div>
+
+                </div>
+
+
+                <!-- =========================================
+                     Status
+                     ========================================= -->
+
+                <div class="form-group">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+                    <select
+                        id="status"
+                        name="status"
+                    >
+
+                        <option value="draft">
+                            Draft
+                        </option>
+
+                        <option value="published">
+                            Published
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =========================================
+                     Form Message
+                     ========================================= -->
+
+                <div
+                    id="formMessage"
+                    class="form-message"
+                    hidden
+                ></div>
+
+
+                <!-- =========================================
+                     Form Actions
+                     ========================================= -->
+
+                <div class="edit-word-actions">
+
+                    <a
+                        href="admin-words.html"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="saveChangesButton"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- =================================================
+         Footer
+         ================================================= -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            © 2026 English Learning. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =================================================
+         Admin Edit Word JavaScript
+         ================================================= -->
+
+    <script src="admin-edit-word.js"></script>
+
+</body>
+
+</html>
