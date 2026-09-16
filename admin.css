@@ -1006,6 +1006,7 @@ body {
 }
 
 
+
 /* =====================================================
    Word Library - Tablet
    ===================================================== */
@@ -1025,3 +1026,72 @@ body {
 
 
     .word-pagination-controls {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+/* =====================================================
+   Word Library - Mobile
+   ===================================================== */
+
+@media (max-width: 480px) {
+
+    .word-library-count {
+        font-size: 14px;
+    }
+
+
+    .word-table-wrapper {
+        display: none;
+    }
+
+
+    .word-mobile-list {
+        display: block;
+    }
+
+
+    .word-mobile-card {
+        padding: 15px;
+    }
+
+
+    .word-mobile-card-header {
+        align-items: flex-start;
+    }
+
+
+    .word-mobile-word {
+        font-size: 16px;
+    }
+
+
+    .word-pagination {
+        margin-top: 20px;
+
+        padding-top: 18px;
+    }
+
+
+    .word-pagination-info {
+        font-size: 13px;
+    }
+
+
+    .word-pagination-controls {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    .word-pagination-button {
+        min-width: 36px;
+        min-height: 36px;
+
+        padding: 7px 9px;
+    }
+
+}
